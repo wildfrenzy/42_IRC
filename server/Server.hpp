@@ -14,12 +14,14 @@
 #define SERVER_HPP
 
 #include "./../client/Client.hpp"
+//#include "./../cmd/Cmd.hpp"
 
 #include <iostream>
 #include <vector>
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <map>
 #include <string.h>
 
 //socket
@@ -45,6 +47,7 @@
 #define RES "\x1b[0m"
 
 class Client;
+//class Cmd;
 
 class Server {
 public:
@@ -52,6 +55,9 @@ public:
 	~Server();
 
 	short	validatePort(char *port);
+	void	createComands();
+
+	std::vector <Client *> const &getClients() const;
 
 
 private:
@@ -60,6 +66,7 @@ private:
 	std::string	_password;
 
 	std::vector <Client *> _clients;
+//	std::map <std::string, Cmd *> _commands;
 
 	Server(const Server &s);
 	Server &operator=(const Server &s);

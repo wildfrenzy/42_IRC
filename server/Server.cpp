@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 05:31:37 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/12 19:26:46 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,4 +175,8 @@ void Server::_select() {
 			}
 		}
 	}
+}
+
+std::vector<Client *> const &Server::getClients() const {
+	return this->_clients;
 }
