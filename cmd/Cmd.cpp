@@ -6,19 +6,15 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/12 18:28:56 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/12 18:45:51 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cmd.hpp"
-        // Cmd(const std::string & str, Client & c);
-        // ~Cmd(void) {};
-        // Cmd(const Cmd & other);
-        // Cmd& operator=(const Cmd& other);
 
 Cmd::Cmd(const std::string & str, Client & c): _client(c), _server(NULL), 
 {
-        cmdTokens(&str);
+        cmdTokens(& str);
 }
 
 
@@ -39,9 +35,29 @@ void    Cmd::cmdTokens(std::string& input)
         pos = input.find(deli);
     }
     this->_tokens = tokens;
-    for (char c: tokens.front())
+    // for (char c: tokens.front())
+    // {
+    //     if (!std::isupper(c))
+    //         throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
+    // }
+    if (!tokens.empty())
     {
-        if (!std::isupper(c))
-            throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
-    }
+        const std::string& firstToken = tokens.front();
+        for (size_t i = 0; i < firstToken.length(); ++i)
+        {
+            char c = firstToken[i];
+            if (!std::isupper(c)) {
+                throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
+            }
+        }
+}
+
+Server* Cmd::get_server(void)
+{
+    return this->_server;
+}
+
+Client & Cmd::get_client(void)
+{
+    return this->_client;
 }

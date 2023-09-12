@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:36 by yli               #+#    #+#             */
-/*   Updated: 2023/09/12 18:32:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/12 19:18:55 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ class Cmd
     public:
         Cmd(const std::string & str, Client & c);
         virtual ~Cmd(void) {};
-        Cmd(const Cmd & other);
-        Cmd& operator=(const Cmd& other);
+        Cmd(const Cmd & other); //todo
+        Cmd& operator=(const Cmd& other); //todo
         
         virtual void    execute(std::vector<std::string> tokens) = 0;
-        Server  &get_server(void);
+        Server  *get_server(void); 
         Client  &get_client(void);
         void    cmdTokens(std::string& input);
         

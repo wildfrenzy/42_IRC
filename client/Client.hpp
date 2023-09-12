@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 05:18:53 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/12 19:24:38 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ public:
 
 	Server *getServer() const;
 
+	std::string getNickName(void);
+	void	setNickName(const std::string& nickName);
+
 	/**	other getters setters **/
 
 private:
@@ -46,6 +49,7 @@ private:
 	std::string _writeBuff;
 	std::string _readBuff;
 	std::string _host;
+	std::string _nickName;
 
 	Client &operator=(Client &c);
 };

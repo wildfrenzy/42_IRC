@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 03:09:44 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/12 19:29:48 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,14 @@ void Client::setWriteBuff(std::string &w) {
 
 Server *Client::getServer() const {
 	return this->_server;
+}
+
+std::string Client::getNickName(void)
+{
+	return this->_nickName;
+}
+
+void	Client::setNickName(const std::string& nickName)
+{
+	this->_nickName = nickName;
 }
