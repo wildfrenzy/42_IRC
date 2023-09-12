@@ -55,10 +55,11 @@ public:
 	~Server();
 
 	short	validatePort(char *port);
-	void	createComands();
+	//void	createComands();
 
 	std::vector <Client *> const &getClients() const;
 
+	void	reply(Client *who, std::string reply, std::string msg);
 
 private:
 	int				_mainFd;
@@ -66,12 +67,14 @@ private:
 	std::string	_password;
 
 	std::vector <Client *> _clients;
+	std::map <std::string, std::string> _replies;
 //	std::map <std::string, Cmd *> _commands;
 
 	Server(const Server &s);
 	Server &operator=(const Server &s);
 
-	void _select();
+	void	_select();
+	void	_setReplies();
 };
 
 

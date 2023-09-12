@@ -16,16 +16,20 @@
 #include <iostream>
 #include <vector>
 
-class Pass {
+#include "./../../cmd/Cmd.hpp"
+
+
+class Pass : public Cmd{
 public:
 	Pass();
 	~Pass();
 
 	void execute(std::vector<std::string> cmd);
 
-private:
 
+private:
 	//std::vector<std::string> _pass;
+	std::string _reply(int err);
 
 	Pass(Pass const &p);
 	Pass &operator=(Pass const &p);

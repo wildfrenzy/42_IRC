@@ -18,6 +18,8 @@ Server::Server(char *port, char *password){
 	this->_port = this->validatePort(port);
 	this->_password = password;
 
+	this->_setReplies();
+
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int)))
@@ -179,4 +181,14 @@ void Server::_select() {
 
 std::vector<Client *> const &Server::getClients() const {
 	return this->_clients;
+}
+
+void Server::reply(Client *who, std::string reply, std::string msg) {
+	std::string message = ":irc server " + who.getNickName();
+}
+
+void Server::_setReplies() {
+	this->_replies["ERR_NEEDMOREPARAMS"] = "461";
+	this->_replies["ERR_ALREADYREGISTERED"] = "462";
+	this->_replies["ERR_PASSWDMISMATCH"] = "464";
 }

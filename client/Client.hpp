@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 05:18:53 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/12 19:36:31 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ public:
 
 	Server *getServer() const;
 
+	bool const &getAuthenticated() const;
+	void setAuthenticated();
+
 	/**	other getters setters **/
 
 private:
@@ -46,6 +49,8 @@ private:
 	std::string _writeBuff;
 	std::string _readBuff;
 	std::string _host;
+
+	bool	_authenticated;
 
 	Client &operator=(Client &c);
 };

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "Cmd.hpp"
+#include <string>
         // Cmd(const std::string & str, Client & c);
         // ~Cmd(void) {};
         // Cmd(const Cmd & other);
@@ -21,6 +22,7 @@ Cmd::Cmd(const std::string & str, Client & c): _client(c), _server(NULL),
         cmdTokens(&str);
 }
 
+Cmd::~Cmd() {}
 
 void    Cmd::cmdTokens(std::string& input)
 {
@@ -41,7 +43,7 @@ void    Cmd::cmdTokens(std::string& input)
     this->_tokens = tokens;
     for (char c: tokens.front())
     {
-        if (!std::isupper(c))
+        if (!std::isupper(c)) //just print "unknown command" message;
             throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
     }
 }

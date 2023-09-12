@@ -12,7 +12,7 @@
 
 #include "Client.hpp"
 
-Client::Client(int fd, Server *s) : _fd(fd), _server(s){}
+Client::Client(int fd, Server *s) : _fd(fd), _server(s), _authenticated(false){}
 
 Client::~Client() {}
 
@@ -59,4 +59,13 @@ void Client::setWriteBuff(std::string &w) {
 
 Server *Client::getServer() const {
 	return this->_server;
+}
+
+const bool &Client::getAuthenticated() const {
+	return this->_authenticated;
+}
+
+void Client::setAuthenticated() {
+	if (!this->_authenticated)
+		this->_authenticated = true;
 }

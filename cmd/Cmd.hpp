@@ -20,13 +20,13 @@ class Cmd
 {
     public:
         Cmd(const std::string & str, Client & c);
-        virtual ~Cmd(void) {};
+        ~Cmd(void) {};
         Cmd(const Cmd & other);
         Cmd& operator=(const Cmd& other);
         
-        virtual void    execute(std::vector<std::string> tokens) = 0;
-        Server  &get_server(void);
-        Client  &get_client(void);
+        virtual void	execute(std::vector<std::string> tokens) = 0;
+       // Server  &get_server(void);
+      //  Client  &get_client(void);
         void    cmdTokens(std::string& input);
         
     
