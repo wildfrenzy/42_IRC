@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/12 18:45:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/12 20:28:42 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 Cmd::Cmd(const std::string & str, Client & c): _client(c), _server(NULL), 
 {
-        cmdTokens(& str);
+        cmdTokens(str);
 }
 
 
@@ -34,22 +34,17 @@ void    Cmd::cmdTokens(std::string& input)
         input.erase(0, pos + deli.size());
         pos = input.find(deli);
     }
+    if (tokens.empty())
+        throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
     this->_tokens = tokens;
-    // for (char c: tokens.front())
-    // {
-    //     if (!std::isupper(c))
-    //         throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
-    // }
-    if (!tokens.empty())
+    const std::string& firstToken = tokens.front();
+    for (size_t i = 0; i < firstToken.length(); ++i)
     {
-        const std::string& firstToken = tokens.front();
-        for (size_t i = 0; i < firstToken.length(); ++i)
-        {
-            char c = firstToken[i];
-            if (!std::isupper(c)) {
-                throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
-            }
+        char c = firstToken[i];
+        if (!std::isupper(c)) {
+            throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
         }
+    }
 }
 
 Server* Cmd::get_server(void)
@@ -60,4 +55,24 @@ Server* Cmd::get_server(void)
 Client & Cmd::get_client(void)
 {
     return this->_client;
+}
+
+void    Cmd::set_server(Server *s)
+{
+    this->_server = s;
+}
+
+
+void    Cmd::NICK(std::vector<std::string> tokens)
+{
+    if (tokens.size() != 2)
+        throw std::invalid_argument("irc cmd NICK: " + std::string(strerror(errno)));
+    std::string ni = tokens[1];
+    std::vector<Client *>::iterator it;
+    for(it = this->_server.getClients().begin(); it != this->_server.getClients().end(); ++it)
+    {
+        if ((*it)->getNickName() == ni)
+            throw std::invalid_argument("irc cmd NICK: " + std::string(strerror(errno)));
+    }
+    this->_client.setNickName(ni);
 }
