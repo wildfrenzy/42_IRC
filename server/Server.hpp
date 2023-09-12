@@ -1,14 +1,21 @@
-//
-// Created by nmaliare on 9/12/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/12 03:05:06 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef IRC_SERVER_HPP
-#define IRC_SERVER_HPP
-
+#ifndef SERVER_HPP
+#define SERVER_HPP
 
 class Server {
 
 };
 
 
-#endif //IRC_SERVER_HPP
+#endif

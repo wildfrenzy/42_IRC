@@ -53,14 +53,12 @@ public:
 Client::Client(int fd) : _fd(fd) {}
 Client::~Client() {}
 
-int main(int ac, char *av[])
-{
+int main(int ac, char *av[]) {
 	int mainfd, clientnum = 0;
 	//std::vector<int> fds;
 
 
-	if (ac < 3)
-	{
+	if (ac < 3) {
 		std::cout << RED"USAGE: ./irc <port> <pass>"RES << std::endl;
 		return 0;
 	}
@@ -91,7 +89,7 @@ int main(int ac, char *av[])
 	address.sin_addr.s_addr = INADDR_ANY; //any IP
 	address.sin_port = htons(port);
 
-	if (bind(mainfd, (struct sockaddr*)&address,sizeof(address)) < 0) {
+	if (bind(mainfd, (struct sockaddr *) &address, sizeof(address)) < 0) {
 		std::cout << RED"bind failed"RES << std::endl; //throw it from class
 		return 0;
 	}
@@ -107,15 +105,14 @@ int main(int ac, char *av[])
 
 	fd_set r, w; //read, write
 	int maxFd = mainfd;
-	std::vector<Client *> clients;
+	std::vector < Client * > clients;
 	int newfd, addrlen = sizeof(address);
 
 	char buf[11];
 	size_t bytes;
 	std::string tmp;
 
-	while (42)
-	{
+	while (42) {
 		FD_ZERO(&r);
 		FD_ZERO(&w);
 		FD_SET(mainfd, &r);
@@ -123,41 +120,43 @@ int main(int ac, char *av[])
 		for (int i = 0; i < clientnum; ++i) {
 			maxFd = maxFd < clients[i]->_fd ? clients[i]->_fd : maxFd;
 			FD_SET(clients[i]->_fd, &r);
-			if (!(clients[i]->_writeBuff.empty())){
+			if (!(clients[i]->_writeBuff.empty())) {
 				FD_SET(clients[i]->_fd, &w);
 			}
 		}
-		if (select(maxFd + 1, &r, &w, 0, 0) == -1)
-		{
+		if (select(maxFd + 1, &r, &w, 0, 0) == -1) {
 			std::cout << RED"select fail"RES << std::endl; //throw it from class
 			return 0;
 		}
-		if (FD_ISSET(mainfd, &r)){
-			if ((newfd = accept(mainfd, (struct sockaddr*)&address,(socklen_t*)&addrlen)) < 0) {
-				std::cout << RED"accept failed"RES << std::endl; //throw it from class
+		if (FD_ISSET(mainfd, &r)) {
+			if ((newfd = accept(mainfd,
+								(struct sockaddr *) &address,
+								(socklen_t * ) & addrlen)) < 0) {
+				std::cout << RED"accept failed"RES
+						  << std::endl; //throw it from class
 				return 0;
 			}
 			clientnum++;
 			clients.push_back(new Client(newfd));
 			clients[clientnum - 1]->_host = inet_ntoa(address.sin_addr);
-			std::cout << BLUE "Client [" << clientnum - 1 << "] "RES << "arrived!" << std::endl;
+			std::cout << BLUE "Client [" << clientnum - 1 << "] "RES
+					  << "arrived!" << std::endl;
 		}
 		for (int i = 0; i < clientnum; ++i) {
-			if (FD_ISSET(clients[i]->_fd, &r)){
+			if (FD_ISSET(clients[i]->_fd, &r)) {
 				fcntl(clients[i]->_fd, F_SETFL, O_NONBLOCK);
-				while ((bytes = recv(clients[i]->_fd, buf, 10,0)) == 10)
-				{
+				while ((bytes = recv(clients[i]->_fd, buf, 10, 0)) == 10) {
 					buf[bytes] = 0;
 					clients[i]->_readBuff.append(buf);
-					std::cout << BLUE "receiving ..." RES << std::endl;
 					bzero(buf, 10);
 				}
-				if (bytes <= 0){
-					std::cout << RED "connection closed during recv()" RES << std::endl;
+				if (bytes <= 0) {
+					std::cout << RED "connection closed during recv()" RES
+							  << std::endl;
 					//clean all
 					return 0;
 				}
-				else if (bytes > 0 && bytes < 10){
+				else if (bytes > 0 && bytes < 10) {
 					std::cout << "bytes: " << bytes << std::endl;;
 					buf[bytes] = 0;
 					clients[i]->_readBuff.append(buf);
@@ -165,92 +164,41 @@ int main(int ac, char *av[])
 
 				std::cout << YELLOW"CLIENT [" << i << "]: " RES;
 				std::cout << clients[i]->_readBuff;
-				// temporary :
+
+				// temporary sending to all clients everything:
 				std::istringstream stream(clients[i]->_readBuff);
 				while (std::getline(stream, tmp)) {
-					clients[i]->_readBuff = clients[i]->_readBuff.substr(clients[i]->_readBuff.find(
-							'\n') + 1);
-					//clients[i]->_writeBuff.append(tmp);
+					clients[i]->_readBuff = clients[i]->_readBuff.substr(
+							clients[i]->_readBuff.find(
+									'\n') + 1);
 					for (int j = 0; j < clientnum; ++j) {
 						clients[j]->_writeBuff.append(tmp);
 					}
 				}
 				// parse command
 				// exec command and write result in _write buff
-				continue ;
+				continue;
 			}
-			if (FD_ISSET(clients[i]->_fd, &w)){
+			if (FD_ISSET(clients[i]->_fd, &w)) {
 				send(clients[i]->_fd, "\x1b[1;93m", 7, 0); //YELLOW
 				bytes = send(clients[i]->_fd, clients[i]->_writeBuff.c_str(),
 							 clients[i]->_writeBuff.size(), 0);
 				send(clients[i]->_fd, "\n", 1, 0);
 				send(clients[i]->_fd, "\x1b[0m", 4, 0); //RES
-				if (bytes == clients[i]->_writeBuff.size())
-				{
+				if (bytes == clients[i]->_writeBuff.size()) {
 					clients[i]->_writeBuff.clear();
-					//clients[i]->_readBuff.clear();
 				}
-				else if (bytes != clients[i]->_writeBuff.size() && bytes > 0){
-					clients[i]->_writeBuff = clients[i]->_writeBuff.substr(clients[i]->_writeBuff[bytes]);
+				else if (bytes != clients[i]->_writeBuff.size() && bytes > 0) {
+					clients[i]->_writeBuff = clients[i]->_writeBuff.substr(
+							clients[i]->_writeBuff[bytes]);
 				}
-				else if (bytes <= 0){
-					std::cout << RED "connection closed during send()" RES << std::endl;
+				else if (bytes <= 0) {
+					std::cout << RED "connection closed during send()" RES
+							  << std::endl;
 					//clean all
 					return 0;
 				}
-
-				//continue;
 			}
 		}
-		/*std::cout << YELLOW"MESSAGE: "RES;
-		std::cout << message;*/
-
 	}
-
-
-
-	/*********************************************************/
-/*	int new_socket;
-	int addrlen = sizeof(address);
-*/
-/*	 Await a connection on socket FD.
-	 When a connection arrives, open a new socket to communicate with it,
-	 set *ADDR (which is *ADDR_LEN bytes long) to the address of the connecting
-	 peer and *ADDR_LEN to the address's actual length, and return the
-	 new socket's descriptor, or -1 for errors.*/
-/*
-	if ((new_socket = accept(mainfd, (struct sockaddr*)&address,(socklen_t*)&addrlen)) < 0) {
-		std::cout << RED"accept failed"RES << std::endl; //throw it from class
-		return 0;
-	}
-	std::cout << YELLOW"Client IP: "RES << inet_ntoa(address.sin_addr) << std::endl;*/
-	//char buf[10];
-	//ssize_t bytes;
-/*	std::string message;
-	std::string answer;
-
-	while (1)
-	{
-		while ((bytes = recv(new_socket, buf, sizeof(buf),0)) > 0)
-		{
-			buf[bytes] = 0;
-			message.append(buf);
-			if (message.find('\n') != std::string::npos)
-			{
-				message.substr(message.find('\n'));
-				break ;
-			}
-		}
-		if (bytes == 0) break ;
-		std::cout << YELLOW"MESSAGE: "RES;
-		std::cout << message;
-		message.clear();
-		std::cout << YELLOW"ANSWER: "RES;
-		std::getline(std::cin, answer);
-		answer += "\n";
-		send(new_socket, "\x1b[1;93m", 7, 0);
-		send(new_socket, answer.c_str(), answer.size(), 0);
-		send(new_socket, "\x1b[0m", 4, 0);
-	}*/
-
 }

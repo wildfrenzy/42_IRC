@@ -16,8 +16,8 @@ CC = c++
 
 NAME = irc
 
-SRC = irc_server.cpp
-#HEADER = PmergeMe.hpp
+SRC = irc_server.cpp ./client/Client.cpp ./server/Server.cpp
+
 OBJ = $(SRC:.cpp=.o)
 
 # COLORS
@@ -27,11 +27,11 @@ YELLOW      = \033[1;33m
 BLUE        = \033[1;34m
 
 all: $(NAME)
-#$(HEADER)
+
 $(NAME): $(OBJ)
 	@$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 	@printf "$(GREEN)$(NAME) successfully compiled !$(NOC)\n"
-#$(HEADER)
+
 $(OBJ): %.o:%.cpp
 	@$(CC) $(FLAGS) -c $< -o $@
 	@printf "$(GREEN)[\342\234\205] $(notdir $@)\n";
