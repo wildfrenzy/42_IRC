@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 03:09:44 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/12 21:42:40 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(int fd, Server *s) : _fd(fd), _server(s), _authenticated(false){}
+Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(0),  _authenticated(false){}
 
 Client::~Client() {}
 
@@ -68,4 +68,14 @@ const bool &Client::getAuthenticated() const {
 void Client::setAuthenticated() {
 	if (!this->_authenticated)
 		this->_authenticated = true;
+}
+
+std::string Client::getNickName(void)
+{
+	return this->_nickName;
+}
+
+void	Client::setNickName(const std::string& nickName)
+{
+	this->_nickName = nickName;
 }

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
 /*   Updated: 2023/09/12 19:36:31 by nmaliare         ###   ########.fr       */
@@ -37,6 +37,9 @@ public:
 
 	Server *getServer() const;
 
+	std::string getNickName(void);
+	void	setNickName(const std::string& nickName);
+
 	bool const &getAuthenticated() const;
 	void setAuthenticated();
 
@@ -49,6 +52,7 @@ private:
 	std::string _writeBuff;
 	std::string _readBuff;
 	std::string _host;
+	std::string _nickName;
 
 	bool	_authenticated;
 
