@@ -6,13 +6,13 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 19:29:48 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/12 21:42:40 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-Client::Client(int fd, Server *s) : _fd(fd), _server(s){}
+Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(0){}
 
 Client::~Client() {}
 

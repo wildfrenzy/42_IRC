@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:36 by yli               #+#    #+#             */
-/*   Updated: 2023/09/12 20:25:35 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/12 20:38:19 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class Cmd
         Client  &get_client(void);
         void    cmdTokens(std::string& input);
         void    NICK(std::vector<std::string> tokens);
-        
+        void    PRIVMSG(std::vector<std::string> tokens);
     
     protected:
         std::vector<std::string> _tokens;
