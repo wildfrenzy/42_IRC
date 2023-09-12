@@ -1,3 +1,5 @@
 TODO
 irc
 *.o
+*/*.o
+irc_server.cpp

@@ -16,7 +16,7 @@ CC = c++
 
 NAME = irc
 
-SRC = irc_server.cpp ./client/Client.cpp ./server/Server.cpp
+SRC = main.cpp ./client/Client.cpp ./server/Server.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

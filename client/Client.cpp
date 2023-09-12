@@ -16,10 +16,16 @@ Client::Client(int fd, Server *s) : _fd(fd), _server(s){}
 
 Client::~Client() {}
 
-Client::Client(Client &c) {(void)c;}
+Client::Client(Client &c) {
+	*this = c;
+}
 
 Client &Client::operator=(Client &c) {
-	(void)c;
+	this->_server = c._server;
+	this->_writeBuff = c._writeBuff;
+	this->_readBuff = c._readBuff;
+	this->_host = c._host;
+	this->_fd = c._fd;
 	return *this;
 }
 
@@ -31,7 +37,7 @@ const std::string &Client::getHost() const {
 	return this->_host;
 }
 
-void Client::setHost(std::string &host) {
+void Client::setHost(std::string const &host) {
 	this->_host = host;
 }
 
