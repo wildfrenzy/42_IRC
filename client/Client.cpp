@@ -44,16 +44,12 @@ std::vector <std::string> Client::cmdTokens(std::string &input) {
 		input.erase(0, pos + deli.size());
 		pos = input.find(deli);
 	}
-	/*const std::string& firstToken = tokens.front();
-	for (size_t i = 0; i < firstToken.length(); ++i)
-	{
-		char c = firstToken[i];
-		if (!std::isupper(c)) {
-			this->_server->reply(this, "ERR_UNKNOWNCOMMAND", firstToken + " :Unknown command");
-			tokens.erase(tokens.begin());
-			return tokens;
-		}
-	}*/
+
+	std::cout << "Tokens check: ";
+	for (size_t i = 0; i < tokens.size(); ++i) {
+		std::cout << "[" << tokens[i] << "]";
+	}
+	std::cout << std::endl;
 	return tokens;
 }
 
@@ -73,7 +69,7 @@ void Client::callExecute(std::vector <std::string> args) {
 			}
 			this->_server->reply(this->_server->getClients(), "", msg);*/
 		}
-		args.erase(args.begin());
+		//args.erase(args.begin());
 	}
 	/*else
 		std::cout << "no args" << std::endl; //remove later*/

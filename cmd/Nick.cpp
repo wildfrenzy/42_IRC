@@ -1,5 +1,9 @@
 #include "Nick.hpp"
 
+Nick::Nick() : Cmd() {}
+
+Nick::~Nick() {}
+
 Nick::Nick(const Nick& other)
 {
     *this = other;
@@ -11,7 +15,7 @@ Nick& Nick::operator=(const Nick& other)
     return *this;
 }
 
-void Pass::execute(Client& who, std::vector<std::string> cmd) const
+void Nick::execute(Client& who, std::vector<std::string> cmd) const
 {
 	if (who.getAuthenticated()){
 		who.getServer()->reply(&who,
@@ -26,20 +30,19 @@ void Pass::execute(Client& who, std::vector<std::string> cmd) const
 		return;
 	}
     std::string ni = cmd[1];
-    for(int i = 0; i < ni.size(); ++i)
+    for(unsigned long i = 0; i < ni.size(); ++i)
     {
         if (ni[i] == '#' || ni[i] == '&' || ni[i] == '+' || ni[i] == '@' 
-            || ni[i] == '%' || ni[i] == '/' || ni[i] == '*' || ni[i] == '?' || ni[i] == 127 || ni[i] <= 32)
+            || ni[i] == '%' || ni[i] == '/' || ni[i] == '*' || ni[i] == '?' ||
+			ni[i] > 127 || ni[i] <= 32)
         {
             who.getServer()->reply(&who, "ERR_ERRONEUSNICKNAME", ":Erroneous nickname");
             return;
         }
-            
     }
-    std::vector<Client *>::iterator it;
-    for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
+    for(unsigned long i = 0 ; i < who.getServer()->getClients().size(); ++i)
     {
-        if ((*it)->getNickName() == ni)
+        if (who.getServer()->getClients()[i]->getNickName() == ni)
         {
             who.getServer()->reply(&who, "ERR_NICKNAMEINUSE", ":Nickname is already in use");
             return;
