@@ -4,14 +4,15 @@
 #include "./../../cmd/Cmd.hpp"
 #include "./../../client/Client.hpp"
 
+
 class Cmd;
 class Client;
 
 class Nick: public Cmd
 {
     public:
-        Nick(void){};
-        ~Nick(void){};
+        Nick();
+        ~Nick();
     
         void    execute(Client& who, std::vector<std::string> cmd) const;
     

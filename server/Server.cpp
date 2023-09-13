@@ -129,8 +129,9 @@ void Server::_select() {
 				std::cout << YELLOW"CLIENT [" << i << "]: " RES;
 				std::cout << this->_clients[i]->getReadBuff();
 
-				std::string message = this->_clients[i]->getReadBuff();
-				this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(message));
+
+			//	std::string message = this->_clients[i]->getReadBuff();
+			//	this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(message));
 
 				//TODO Here add :
 				// parse command
@@ -138,20 +139,18 @@ void Server::_select() {
 
 				//TODO remove later everything till line 136(before continue):
 				// temporary sending to all clients everything:
-				if (this->_clients[i]->getWriteBuff().empty())
-				{
-					std::cout << "istringstream..." << std::endl;
+				//if (this->_clients[i]->getWriteBuff().empty())
+				//{
+					//std::cout << "istringstream..." << std::endl;
 					std::istringstream stream(this->_clients[i]->getReadBuff());
 					std::string rb;
 					while (std::getline(stream, tmp)) {
 						rb = this->_clients[i]->getReadBuff();
 						rb = rb.substr(rb.find('\n') + 1);
 						this->_clients[i]->setReadBuff(rb);
-						for (int j = 0; j < clientnum; ++j) {
-							this->_clients[j]->getWriteBuff().append(tmp);
-						}
+						this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(tmp));
 					}
-				}
+				//}
 
 				continue ;
 			}

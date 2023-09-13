@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Pass.hpp                                           :+:      :+:    :+:   */
+/*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 18:20:57 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 03:19:44 by nmaliare         ###   ########.fr       */
+/*   Created: 2023/09/13 18:00:49 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/13 18:00:49 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PASS_HPP
-#define PASS_HPP
+#ifndef USER_HPP
+#define USER_HPP
 
 #include <iostream>
 #include <vector>
@@ -22,19 +22,15 @@
 class Cmd;
 class Client;
 
-class Pass : public Cmd {
+class User : public Cmd{
 public:
-	Pass();
-	~Pass();
+	User();
+	~User();
 
 	void execute(Client &who, std::vector<std::string> cmd) const;
-
 private:
-	//std::vector<std::string> _pass;
-	//std::string _reply(int err);
-
-	Pass(Pass const &p);
-	Pass &operator=(Pass const &p);
+	User(User const &u);
+	User &operator=(User const &u);
 };
 
 
