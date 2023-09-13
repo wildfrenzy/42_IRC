@@ -62,6 +62,7 @@ public:
 	std::vector <Client *> const &getClients() const;
 	std::map <std::string, Cmd *> &getCommands();
 	std::string const &getPass() const;
+//	std::map <std::string, Channel *> &getChannels();
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
@@ -74,6 +75,7 @@ private:
 	std::vector <Client *>				_clients;
 	std::map <std::string, std::string>	_replies;
 	std::map <std::string, Cmd *>		_commands;
+	//std::map <std::string, Channel *>	_channels;
 
 	Server(const Server &s);
 	Server &operator=(const Server &s);

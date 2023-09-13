@@ -156,13 +156,6 @@ void Server::_select() {
 				continue ;
 			}
 			if (FD_ISSET(this->_clients[i]->getFd(), &w)){
-
-				//TODO Here we are ready to write - send response to client.
-				// we need to process and send command to execute and send response to client.
-				// ***
-				// remove later and redo almost everything inside of this if statement:
-				// temporary sending same message as I reseived to all clients:
-
 				send(this->_clients[i]->getFd(), "\x1b[1;93m", 7, 0); //YELLOW
 				bytes = send(this->_clients[i]->getFd(), this->_clients[i]->getWriteBuff().c_str(),
 							 this->_clients[i]->getWriteBuff().size(), 0);
@@ -188,6 +181,10 @@ void Server::_select() {
 		}
 	}
 }
+
+/*std::map <std::string, Channel *> &Server::getChannels() {
+	return this->_channels;
+}*/
 
 std::map<std::string, Cmd *> &Server::getCommands() {
 	return this->_commands;
