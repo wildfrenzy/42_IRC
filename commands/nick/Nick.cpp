@@ -11,7 +11,7 @@ Nick& Nick::operator=(const Nick& other)
     return *this;
 }
 
-void Pass::execute(Client& who, std::vector<std::string> cmd) const
+void Nick::execute(Client& who, std::vector<std::string> cmd) const
 {
 	if (who.getAuthenticated()){
 		who.getServer()->reply(&who,

@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:36 by yli               #+#    #+#             */
-/*   Updated: 2023/09/13 17:06:50 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 18:08:50 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ class Cmd
 {
     public:
 		Cmd();
-       // Cmd(const std::string & str, Client & c);
-        ~Cmd();
+        Cmd(void){};
+        ~Cmd(){};
         Cmd(const Cmd & other);
         Cmd& operator=(const Cmd& other);
         

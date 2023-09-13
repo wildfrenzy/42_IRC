@@ -6,20 +6,11 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/13 17:06:57 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 18:09:03 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cmd.hpp"
-
-Cmd::Cmd() {}
-
-/*Cmd::Cmd(const std::string & str, Client & c): _client(c), _server(NULL),
-{
-        cmdTokens(str);
-}*/
-
-Cmd::~Cmd() {}
 
 Cmd &Cmd::operator=(const Cmd &other) {
 	this->_tokens = other._tokens;

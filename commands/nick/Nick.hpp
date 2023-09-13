@@ -1,8 +1,8 @@
 #ifndef NICK_HPP
 #define NICK_HPP
 
-#include "../client/Client.hpp"
-#include "Cmd.hpp"
+#include "./../../cmd/Cmd.hpp"
+#include "./../../client/Client.hpp"
 
 class Cmd;
 class Client;

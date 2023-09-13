@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 17:10:22 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 17:36:51 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "./../client/Client.hpp"
 #include "./../cmd/Cmd.hpp"
 #include "./../commands/pass/Pass.hpp"
-#include "./../cmd/Nick.hpp"
+#include "./../commands/nick/Nick.hpp"
 
 #include <iostream>
 #include <vector>
@@ -76,7 +76,7 @@ private:
 	std::vector <Client *>				_clients;
 	std::map <std::string, std::string>	_replies;
 	std::map <std::string, Cmd *>		_commands;
-	//std::map <std::string, Channel *>	_channels;
+	std::map <std::string, Channel *>	_channels;
 
 	Server(const Server &s);
 	Server &operator=(const Server &s);
