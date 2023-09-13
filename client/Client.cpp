@@ -12,7 +12,8 @@
 
 #include "Client.hpp"
 
-Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(""), _authenticated(false){}
+Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(""),
+		_authenticated(false), _registered(false){}
 
 Client::~Client() {}
 
@@ -67,6 +68,28 @@ void Client::callExecute(std::vector <std::string> args) {
 	}
 }
 
+bool const &Client::getRegistered() const {
+	return this->_registered;
+}
+
+void Client::setRegistered() {
+	if (!this->_registered)
+	{
+		this->_registered = true;
+		std::string msg = ":Welcome to the IRC Network" + (!this->_nickName.empty() ? ", " + this->_nickName : ", new user") +
+				"[!" + this->_userName + "@" + this->_host + "]";
+		this->_server->reply(this, "RPL_WELCOME", msg);
+		this->_server->reply(this, "RPL_YOURHOST",
+							 ":Your host is irc server by nmaliare and yli, running version 1.0");
+		this->_server->reply(this, "RPL_CREATED",
+							 ":This server was created on September 10, 2023");
+		this->_server->reply(this, "RPL_MYINFO", "irc server v1.0 itkol");
+
+	}
+	else
+		this->_server->reply(this, "ERR_ALREADYREGISTERED", ":You may not reregister");
+}
+
 int Client::getFd() const {
 	return this->_fd;
 }
@@ -108,7 +131,7 @@ void Client::setAuthenticated() {
 		this->_authenticated = true;
 }
 
-std::string Client::getNickName(void)
+std::string const &Client::getNickName(void) const
 {
 	return this->_nickName;
 }
@@ -118,7 +141,7 @@ void	Client::setNickName(const std::string& nickName)
 	this->_nickName = nickName;
 }
 
-std::string &Client::getUserName() const {
+std::string const &Client::getUserName() const {
 	return this->_userName;
 }
 
@@ -126,7 +149,7 @@ void Client::setUserName(std::string &un) {
 	this->_userName = un;
 }
 
-std::string &Client::getModes() const {
+std::string const &Client::getModes() const {
 	return this->_modes;
 }
 
@@ -134,7 +157,7 @@ void Client::setModes(std::string &m) {
 	this->_modes = m;
 }
 
-std::string &Client::getRealName() const {
+std::string const &Client::getRealName() const {
 	return this->_realName;
 }
 

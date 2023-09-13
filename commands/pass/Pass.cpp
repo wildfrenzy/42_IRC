@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 18:20:52 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 04:43:25 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:54:12 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ Pass &Pass::operator=(const Pass &p) {
 
 void Pass::execute(Client &who, std::vector <std::string> cmd) const {
 
-/*	std::cout << "VEC CHECK: ";
-	for (int i = 0; i < cmd.size(); ++i) {
-		std::cout << "[" << cmd[i] << "]";
-	}
-	std::cout << std::endl;*/
-
 	if (who.getAuthenticated()){
 		who.getServer()->reply(&who,
 										 "ERR_ALREADYREGISTERED",
@@ -42,7 +36,7 @@ void Pass::execute(Client &who, std::vector <std::string> cmd) const {
 	if (cmd.size() < 2) {
 		who.getServer()->reply(&who,
 							   "ERR_NEEDMOREPARAMS",
-							   ":Not enough parameters");
+							   "PASS :Not enough parameters");
 		return;
 	}
 	if (cmd.size() > 2 || cmd[1] != who.getServer()->getPass()) {

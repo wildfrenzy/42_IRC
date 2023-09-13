@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 17:09:44 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 21:54:57 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ void Server::_select() {
 				}
 				if (bytes <= 0) {
 					//clean everything about current client and close fd.
-					std::cout << RED "Connection to Client["<< i << "] closed during recv()" RES << std::endl;
+					std::cout << RED "Connection to Client["
+						<< (this->_clients[i]->getNickName().empty() ? i : this->_clients[i]->getNickName())
+						<< "] closed during recv()" RES << std::endl;
 					return ;
 				}
 				else if (bytes > 0 && bytes < 10) {
@@ -126,7 +128,9 @@ void Server::_select() {
 					this->_clients[i]->getReadBuff().append(buf);
 				}
 
-				std::cout << YELLOW"CLIENT [" << i << "]: " RES;
+				std::cout << YELLOW"CLIENT ["
+					<< (this->_clients[i]->getNickName().empty() ? i : this->_clients[i]->getNickName())
+					<< "]: " RES;
 				std::cout << this->_clients[i]->getReadBuff();
 
 
@@ -198,12 +202,15 @@ std::vector<Client *> const &Server::getClients() const {
 }
 
 void Server::reply(Client *who, std::string reply, std::string msg) {
+	std::string writeBuff = who->getWriteBuff();
+	//in case not everything was sent before
+
 	std::string message = ":irc server " + (reply.empty() ? "" : this->_replies[reply] + " ");
 	if (!reply.empty())
 		message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
 	message += " " + msg + "\r\n";
 	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
-	who->setWriteBuff(message);
+	who->setWriteBuff(writeBuff.append(message));
 }
 
 void Server::reply(std::vector<Client *> clients, std::string reply, std::string msg) {
@@ -215,9 +222,13 @@ void Server::reply(std::vector<Client *> clients, std::string reply, std::string
 void Server::createComands() {
 	this->_commands["PASS"] = new Pass();
 	this->_commands["NICK"] = new Nick();
+	this->_commands["USER"] = new User();
 }
 
 void Server::_setReplies() {
+
+//:You must authenticate with the server using PASS command first
+	this->_replies["ERR_NOTREGISTERED"] = "451";
 
 	this->_replies["RPL_WELCOME"] = "001";
 	this->_replies["RPL_YOURHOST"] = "002";
@@ -263,8 +274,8 @@ void Server::_setReplies() {
 	this->_replies["RPL_CREATIONTIME"] = "329";
 
 	this->_replies["ERR_UNKNOWNCOMMAND"] = "421";
+
 /*	this->_replies[""] = "";
-	this->_replies[""] = "";
 	this->_replies[""] = "";
 	this->_replies[""] = "";*/
 

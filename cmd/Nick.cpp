@@ -17,10 +17,10 @@ Nick& Nick::operator=(const Nick& other)
 
 void Nick::execute(Client& who, std::vector<std::string> cmd) const
 {
-	if (who.getAuthenticated()){
+	if (!who.getAuthenticated()){
 		who.getServer()->reply(&who,
-										 "ERR_ALREADYREGISTERED",
-										 ":You may not reregister");
+							   "ERR_NOTREGISTERED",
+							   ":You must authenticate with the server using PASS command first");
 		return;
 	}
 	if (cmd.size() < 2) {

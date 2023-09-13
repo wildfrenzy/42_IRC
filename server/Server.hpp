@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 17:10:22 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 21:55:46 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "./../client/Client.hpp"
 #include "./../cmd/Cmd.hpp"
 #include "./../commands/pass/Pass.hpp"
+#include "./../commands/user/User.hpp"
 #include "./../cmd/Nick.hpp"
 
 #include <iostream>

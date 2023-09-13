@@ -46,20 +46,23 @@ public:
 
 	Server *getServer() const;
 
-	std::string getNickName(void);
+	std::string const &getNickName()const;
 	void	setNickName(const std::string& nickName);
 
 	bool const &getAuthenticated() const;
 	void setAuthenticated();
 
-	std::string &getUserName() const;
+	std::string const &getUserName() const;
 	void setUserName(std::string &un);
 
-	std::string &getModes() const;
+	std::string const &getModes() const;
 	void setModes(std::string &m);
 
-	std::string &getRealName() const;
+	std::string const &getRealName() const;
 	void setRealName(std::string &rn);
+
+	bool const &getRegistered() const;
+	void setRegistered();
 
 	//std::map <std::string, Channel *> &getUserChannels();
 
@@ -80,6 +83,7 @@ private:
 	//std::map <std::string, Channel *>	_userChannels;
 
 	bool	_authenticated;
+	bool	_registered;
 
 	Client &operator=(Client &c);
 };
