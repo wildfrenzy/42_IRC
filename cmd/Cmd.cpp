@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/13 03:16:52 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:06:57 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,6 @@ void    Cmd::set_server(Server *s)
 */
 
 /*
-
-void    Cmd::NICK(std::vector<std::string> tokens)
-{
-    if (tokens.size() != 2)
-        throw std::invalid_argument("irc cmd NICK: " + std::string(strerror(errno)));
-    std::string ni = tokens[1];
-    std::vector<Client *>::iterator it;
-    for(it = this->_server.getClients().begin(); it != this->_server.getClients().end(); ++it)
-    {
-        if ((*it)->getNickName() == ni)
-            throw std::invalid_argument("irc cmd NICK: " + std::string(strerror(errno)));
-    }
-    this->_client.setNickName(ni);
-}
 
 void    PRIVMSG(std::vector<std::string> tokens)
 {

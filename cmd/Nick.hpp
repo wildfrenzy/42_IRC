@@ -1,0 +1,27 @@
+#ifndef NICK_HPP
+#define NICK_HPP
+
+#include "../client/Client.hpp"
+#include "Cmd.hpp"
+
+class Cmd;
+class Client;
+
+class Nick: public Cmd
+{
+    public:
+        Nick(void){};
+        ~Nick(void){};
+    
+        void    execute(Client& who, std::vector<std::string> cmd) const;
+    
+    private:
+        std::string _reply(int err);
+        Nick(const Nick& other);
+        Nick& operator=(const Nick& other);
+};
+
+
+
+
+#endif

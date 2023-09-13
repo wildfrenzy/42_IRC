@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 05:29:02 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:09:44 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void Server::reply(std::vector<Client *> clients, std::string reply, std::string
 
 void Server::createComands() {
 	this->_commands["PASS"] = new Pass();
-	//this->_commands[""] = new ;
+	this->_commands["NICK"] = new Nick();
 }
 
 void Server::_setReplies() {

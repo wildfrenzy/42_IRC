@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 05:29:27 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:10:22 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "./../client/Client.hpp"
 #include "./../cmd/Cmd.hpp"
 #include "./../commands/pass/Pass.hpp"
+#include "./../cmd/Nick.hpp"
 
 #include <iostream>
 #include <vector>
