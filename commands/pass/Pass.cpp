@@ -6,39 +6,50 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 18:20:52 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 18:20:52 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/13 04:43:25 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Pass.hpp"
 
-Pass::Pass() {}
+Pass::Pass() : Cmd() {}
 
 Pass::~Pass() {}
 
-Pass::Pass(const Pass &p) { (void)p; }
+Pass::Pass(const Pass &p) {
+	*this = p;
+}
 
 Pass &Pass::operator=(const Pass &p) {
-	(void)p;
+	this->_tokens = p._tokens;
 	return *this;
 }
 
-void Pass::execute(std::vector <std::string> cmd) {
-	if (this->_client.getAuthenticated())
-		this->_reply(462);
-	else if (cmd.size() < 2)
-		this->_reply(461);
-	else if (cmd.size() > 2)
-		this->_reply(464);
-}
+void Pass::execute(Client &who, std::vector <std::string> cmd) const {
 
-std::string Pass::_reply(int err) {
-	std::string errorMsg;
-	//this->_client.getNickName()
-	if (err == 462)
-	{
-		errorMsg = ":irc server 462 " + " clientNICK " + ":You may not reregister"
-		this->_client.setWriteBuff(errorMsg);
+/*	std::cout << "VEC CHECK: ";
+	for (int i = 0; i < cmd.size(); ++i) {
+		std::cout << "[" << cmd[i] << "]";
 	}
-	else if (err == )
+	std::cout << std::endl;*/
+
+	if (who.getAuthenticated()){
+		who.getServer()->reply(&who,
+										 "ERR_ALREADYREGISTERED",
+										 ":You may not reregister");
+		return;
+	}
+	if (cmd.size() < 2) {
+		who.getServer()->reply(&who,
+							   "ERR_NEEDMOREPARAMS",
+							   ":Not enough parameters");
+		return;
+	}
+	if (cmd.size() > 2 || cmd[1] != who.getServer()->getPass()) {
+		who.getServer()->reply(&who,
+							   "ERR_PASSWDMISMATCH",
+							   ":Password incorrect");
+		return;
+	}
+	who.setAuthenticated();
 }

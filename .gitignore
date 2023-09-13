@@ -3,3 +3,5 @@ irc
 *.o
 */*.o
 irc_server.cpp
+.vscode
+.vscode/*

@@ -6,20 +6,33 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/12 21:38:20 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 03:16:52 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cmd.hpp"
 
-Cmd::Cmd(const std::string & str, Client & c): _client(c), _server(NULL), 
+Cmd::Cmd() {}
+
+/*Cmd::Cmd(const std::string & str, Client & c): _client(c), _server(NULL),
 {
         cmdTokens(str);
-}
+}*/
 
 Cmd::~Cmd() {}
 
-void    Cmd::cmdTokens(std::string& input)
+Cmd &Cmd::operator=(const Cmd &other) {
+	this->_tokens = other._tokens;
+	return *this;
+}
+
+Cmd::Cmd(const Cmd &other) {
+	*this = other;
+}
+
+//void Cmd::execute(Client &who, std::vector <std::string> tokens) const {}
+
+/*void    Cmd::cmdTokens(std::string& input)
 {
     std::string deli = " ";
     std::vector<std::string> tokens;
@@ -46,8 +59,9 @@ void    Cmd::cmdTokens(std::string& input)
             throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
         }
     }
-}
+}*/
 
+/*
 Server* Cmd::get_server(void)
 {
     return this->_server;
@@ -62,7 +76,9 @@ void    Cmd::set_server(Server *s)
 {
     this->_server = s;
 }
+*/
 
+/*
 
 void    Cmd::NICK(std::vector<std::string> tokens)
 {
@@ -83,7 +99,7 @@ void    PRIVMSG(std::vector<std::string> tokens)
     if (tokens.size() <= 2)
         throw std::invalid_argument("irc cmd PRIVMSG: " + std::string(strerror(errno)));
     char c = tokens[1][0];
-    if (c == '#')
+    if (c == '#'){}
         //we dont have channel now
     else
     {
@@ -110,4 +126,4 @@ void    PRIVMSG(std::vector<std::string> tokens)
             }
         }
     }
-}
+}*/

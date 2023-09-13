@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/12 19:26:46 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/13 05:29:02 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Server::Server(char *port, char *password){
 	this->_port = this->validatePort(port);
 	this->_password = password;
 
+	this->createComands();
 	this->_setReplies();
 
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -128,22 +129,30 @@ void Server::_select() {
 				std::cout << YELLOW"CLIENT [" << i << "]: " RES;
 				std::cout << this->_clients[i]->getReadBuff();
 
+				std::string message = this->_clients[i]->getReadBuff();
+				this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(message));
+
 				//TODO Here add :
 				// parse command
 				// exec command and write result in _write buff
 
 				//TODO remove later everything till line 136(before continue):
 				// temporary sending to all clients everything:
-				std::istringstream stream(this->_clients[i]->getReadBuff());
-				std::string rb;
-				while (std::getline(stream, tmp)) {
-					rb = this->_clients[i]->getReadBuff();
-					rb = rb.substr(rb.find('\n') + 1);
-					this->_clients[i]->setReadBuff(rb);
-					for (int j = 0; j < clientnum; ++j) {
-						this->_clients[j]->getWriteBuff().append(tmp);
+				if (this->_clients[i]->getWriteBuff().empty())
+				{
+					std::cout << "istringstream..." << std::endl;
+					std::istringstream stream(this->_clients[i]->getReadBuff());
+					std::string rb;
+					while (std::getline(stream, tmp)) {
+						rb = this->_clients[i]->getReadBuff();
+						rb = rb.substr(rb.find('\n') + 1);
+						this->_clients[i]->setReadBuff(rb);
+						for (int j = 0; j < clientnum; ++j) {
+							this->_clients[j]->getWriteBuff().append(tmp);
+						}
 					}
 				}
+
 				continue ;
 			}
 			if (FD_ISSET(this->_clients[i]->getFd(), &w)){
@@ -163,6 +172,7 @@ void Server::_select() {
 				std::string wb;
 				if (bytes == this->_clients[i]->getWriteBuff().size()) {
 					this->_clients[i]->getWriteBuff().clear();
+					this->_clients[i]->getReadBuff().clear(); //temporary
 				}
 				else if (bytes != this->_clients[i]->getWriteBuff().size() && bytes > 0) {
 					wb = this->_clients[i]->getWriteBuff();
@@ -179,16 +189,87 @@ void Server::_select() {
 	}
 }
 
+std::map<std::string, Cmd *> &Server::getCommands() {
+	return this->_commands;
+}
+
+const std::string &Server::getPass() const {
+	return this->_password;
+}
+
 std::vector<Client *> const &Server::getClients() const {
 	return this->_clients;
 }
 
 void Server::reply(Client *who, std::string reply, std::string msg) {
-	std::string message = ":irc server " + who.getNickName();
+	std::string message = ":irc server " + (reply.empty() ? "" : this->_replies[reply] + " ");
+	if (!reply.empty())
+		message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
+	message += " " + msg + "\r\n";
+	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
+	who->setWriteBuff(message);
+}
+
+void Server::reply(std::vector<Client *> clients, std::string reply, std::string msg) {
+	for (unsigned long i = 0; i < clients.size(); ++i) {
+		this->reply(clients[i], reply, msg);
+	}
+}
+
+void Server::createComands() {
+	this->_commands["PASS"] = new Pass();
+	//this->_commands[""] = new ;
 }
 
 void Server::_setReplies() {
+
+	this->_replies["RPL_WELCOME"] = "001";
+	this->_replies["RPL_YOURHOST"] = "002";
+	this->_replies["RPL_CREATED"] = "003";
+	this->_replies["RPL_MYINFO"] = "004";
+
 	this->_replies["ERR_NEEDMOREPARAMS"] = "461";
 	this->_replies["ERR_ALREADYREGISTERED"] = "462";
 	this->_replies["ERR_PASSWDMISMATCH"] = "464";
+
+	this->_replies["ERR_NONICKNAMEGIVEN"] = "431";
+	this->_replies["ERR_ERRONEUSNICKNAME"] = "432";
+	this->_replies["ERR_NICKNAMEINUSE"] = "433";
+
+	this->_replies["ERR_NOSUCHNICK"] = "401";
+	this->_replies["ERR_NOSUCHCHANNEL"] = "403";
+	this->_replies["ERR_CANNOTSENDTOCHAN"] = "404";
+	this->_replies["ERR_NORECIPIENT"] = "411";
+	this->_replies["ERR_NOTEXTTOSEND"] = "412";
+
+	this->_replies["RPL_NOTOPIC"] = "331";
+	this->_replies["RPL_TOPIC"] = "332";
+	this->_replies["RPL_TOPICWHOTIME"] = "333";
+
+	this->_replies["RPL_INVITELIST"] = "336";
+	this->_replies["RPL_NAMREPLY"] = "353";
+	this->_replies["RPL_ENDOFNAMES"] = "366";
+	this->_replies["ERR_BADCHANNELKEY"] = "475";
+	this->_replies["ERR_CHANNELISFULL"] = "471";
+	this->_replies["ERR_INVITEONLYCHAN"] = "473";
+	this->_replies["ERR_TOOMANYCHANNELS "] = "405";
+
+	this->_replies["RPL_INVITING"] = "341";
+	this->_replies["ERR_USERNOTINCHANNEL"] = "441";
+	this->_replies["ERR_NOTONCHANNEL"] = "442";
+	this->_replies["ERR_USERONCHANNEL"] = "443";
+	this->_replies["ERR_CHANOPRIVSNEEDED"] = "482";
+
+	this->_replies["ERR_USERSDONTMATCH"] = "502";
+	this->_replies["RPL_UMODEIS"] = "221";
+	this->_replies["ERR_UMODEUNKNOWNFLAG"] = "501";
+	this->_replies["RPL_CHANNELMODEIS"] = "324";
+	this->_replies["RPL_CREATIONTIME"] = "329";
+
+	this->_replies["ERR_UNKNOWNCOMMAND"] = "421";
+/*	this->_replies[""] = "";
+	this->_replies[""] = "";
+	this->_replies[""] = "";
+	this->_replies[""] = "";*/
+
 }

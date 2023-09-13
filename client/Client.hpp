@@ -14,15 +14,24 @@
 #define CLIENT_HPP
 
 #include <string>
+#include <iostream>
+#include <vector>
+
 #include "./../server/Server.hpp"
+#include "./../cmd/Cmd.hpp"
 
 class Server;
+class Cmd;
 
 class Client {
 public:
 	Client(int fd, Server *s);
 	Client(Client &c);
 	~Client();
+
+	std::vector<std::string> cmdTokens(std::string& input);
+	void		callExecute(std::vector<std::string> args);
+
 
 	std::string &getWriteBuff();
 	void setWriteBuff(std::string &w);

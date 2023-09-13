@@ -14,7 +14,8 @@
 #define SERVER_HPP
 
 #include "./../client/Client.hpp"
-//#include "./../cmd/Cmd.hpp"
+#include "./../cmd/Cmd.hpp"
+#include "./../commands/pass/Pass.hpp"
 
 #include <iostream>
 #include <vector>
@@ -47,7 +48,7 @@
 #define RES "\x1b[0m"
 
 class Client;
-//class Cmd;
+class Cmd;
 
 class Server {
 public:
@@ -55,26 +56,31 @@ public:
 	~Server();
 
 	short	validatePort(char *port);
-	//void	createComands();
+	void	createComands();
+
 
 	std::vector <Client *> const &getClients() const;
+	std::map <std::string, Cmd *> &getCommands();
+	std::string const &getPass() const;
 
 	void	reply(Client *who, std::string reply, std::string msg);
+	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 
 private:
 	int				_mainFd;
 	short			_port;
-	std::string	_password;
+	std::string		_password;
 
-	std::vector <Client *> _clients;
-	std::map <std::string, std::string> _replies;
-//	std::map <std::string, Cmd *> _commands;
+	std::vector <Client *>				_clients;
+	std::map <std::string, std::string>	_replies;
+	std::map <std::string, Cmd *>		_commands;
 
 	Server(const Server &s);
 	Server &operator=(const Server &s);
 
 	void	_select();
 	void	_setReplies();
+	void	_createComands();
 };
 
 
