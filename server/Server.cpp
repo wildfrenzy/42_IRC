@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 17:09:44 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 20:46:36 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ void Server::_setReplies() {
 	this->_replies["RPL_ENDOFNAMES"] = "366";
 	this->_replies["ERR_BADCHANNELKEY"] = "475";
 	this->_replies["ERR_CHANNELISFULL"] = "471";
+	this->_replies["ERR_UNKNOWNMODE"] = "472";
 	this->_replies["ERR_INVITEONLYCHAN"] = "473";
 	this->_replies["ERR_TOOMANYCHANNELS "] = "405";
 
@@ -254,6 +255,7 @@ void Server::_setReplies() {
 	this->_replies["ERR_USERNOTINCHANNEL"] = "441";
 	this->_replies["ERR_NOTONCHANNEL"] = "442";
 	this->_replies["ERR_USERONCHANNEL"] = "443";
+	this->_replies["ERR_NOPRIVILEGES"] = "481";
 	this->_replies["ERR_CHANOPRIVSNEEDED"] = "482";
 
 	this->_replies["ERR_USERSDONTMATCH"] = "502";

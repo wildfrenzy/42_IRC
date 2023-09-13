@@ -11,7 +11,6 @@ Nick::Nick(const Nick& other)
 
 Nick& Nick::operator=(const Nick& other)
 {
-    this->_tokens = other._tokens;
     return *this;
 }
 
@@ -50,6 +49,7 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 
     }
     who.setNickName(ni);
+    who.getServer()->reply(&who, who.getUserName(), ":Nickname set successed.");
 }
 
 /*In IRC (Internet Relay Chat), server implementations may have their own specific rules and restrictions regarding channel and nickname naming, but generally, 

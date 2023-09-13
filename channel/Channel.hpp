@@ -5,6 +5,8 @@
 #include "../server/Server.hpp"
 #include "../client/Client.hpp"
 
+class Client;
+
 class Channel
 {
     public:
@@ -12,26 +14,31 @@ class Channel
         ~Channel(void){};
         Channel(const Channel& other);
         Channel& operator=(const Channel& other);
-    
-        // void    addChannel(Client& who, std::vector<std::string> operator);
-        // void    deleteChannel(Client& who, std::vector<std::string> operator);
-    
-        // void    setKey(std::string key);
-        // void    setTopic(std::string topic);
+
         void    setInviteOnly(bool invite_only);
-        void    setUserLimit(size_t user_limit);
+        void    setUserLimit(size_t size);
+        void    setChannelName(std::string& channelName);
+        void    setKey(const std::string key);
+        void    setTopic(const std::string topic);
         std::string getKey(void);
         size_t  getUserLimit(void);
         bool    getInviteOnly(void);
+        std::string getChannelName(void);
+        bool    operatorRight(Client& c);
+        size_t  getMemberSize(void);
+        
+
+        
 
 
     private:
+        std::string _channelName;
         size_t  _user_limit;
         bool    _invite_only;
-        std::string _key;
-        std::string _topic;
-        std::set<Client*> _members;
-        std::set<Client*> _operators;
+        const std::string _key;
+        const std::string _topic;
+        std::set<Client*> _members; //todo
+        std::set<Client*> _operators;//todo
 };
 
 

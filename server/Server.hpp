@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 17:36:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/13 19:39:22 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ public:
 	std::vector <Client *> const &getClients() const;
 	std::map <std::string, Cmd *> &getCommands();
 	std::string const &getPass() const;
-//	std::map <std::string, Channel *> &getChannels();
+	std::map <std::string, Channel *> &getChannels();
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);

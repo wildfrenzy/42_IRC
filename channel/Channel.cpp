@@ -1,6 +1,6 @@
 #include "Channel.hpp"
 
-Channel::Channel(void): _user_limit(10000), _invite_only(false), _key("")
+Channel::Channel(void): _user_limit(10000), _invite_only(false), _key(NULL), _operators(NULL), _key(NULL), _topic(NULL)
 {
 }
 
@@ -35,7 +35,48 @@ std::string Channel::getKey(void)
     return this->_key;
 }
 
+void    Channel::setKey(const std::string key)
+[
+    this->_key = key;
+]
+
+void    Channel::setTopic(const std::string topic)
+{
+    this->_topic = topic;
+}
+
 bool    Channel::getInviteOnly(void)
 {
     return this->_invite_only;
+}
+
+void    Channel::setChannelName(std::string& channelName)
+{
+    this->_channelName = channelName;
+}
+
+std::string Channel::getChannelName(void)
+{
+    return this->_channelName;
+}
+
+bool    Channel::operatorRight(Client& c)
+{
+    if (this->_operator == NULL)
+        return true;
+    else
+    {
+        std::set<Client*>::iterator it;
+        for(it = this->_operators.begin(); it != this->_operators.end(); ++it)
+        {
+            if ((*it).getNickName() == c.getNickName())
+                return true;
+        }
+    }
+    return false;
+}
+
+size_t  Channel::getMemberSize(void)
+{
+    return this->_members.size();
 }
