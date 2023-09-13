@@ -52,6 +52,17 @@ public:
 	bool const &getAuthenticated() const;
 	void setAuthenticated();
 
+	std::string &getUserName() const;
+	void setUserName(std::string &un);
+
+	std::string &getModes() const;
+	void setModes(std::string &m);
+
+	std::string &getRealName() const;
+	void setRealName(std::string &rn);
+
+	//std::map <std::string, Channel *> &getUserChannels();
+
 	/**	other getters setters **/
 
 private:
@@ -62,6 +73,11 @@ private:
 	std::string _readBuff;
 	std::string _host;
 	std::string _nickName;
+	std::string _userName;
+	std::string _realName;
+	std::string _modes;
+
+	//std::map <std::string, Channel *>	_userChannels;
 
 	bool	_authenticated;
 

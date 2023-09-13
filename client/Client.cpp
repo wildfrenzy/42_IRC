@@ -60,19 +60,11 @@ void Client::callExecute(std::vector <std::string> args) {
 		cmd = this->_server->getCommands()[args[0]];
 		if (cmd)
 			cmd->execute(*this,args);
-		else //temporary
+		else
 		{
 			this->_server->reply(this, "ERR_UNKNOWNCOMMAND", args[0] + " :Unknown command");
-			/*std::string msg;
-			for (unsigned long i = 0; i < args.size(); ++i) {
-				msg.append(args[i]);
-			}
-			this->_server->reply(this->_server->getClients(), "", msg);*/
 		}
-		//args.erase(args.begin());
 	}
-	/*else
-		std::cout << "no args" << std::endl; //remove later*/
 }
 
 int Client::getFd() const {
@@ -125,3 +117,32 @@ void	Client::setNickName(const std::string& nickName)
 {
 	this->_nickName = nickName;
 }
+
+std::string &Client::getUserName() const {
+	return this->_userName;
+}
+
+void Client::setUserName(std::string &un) {
+	this->_userName = un;
+}
+
+std::string &Client::getModes() const {
+	return this->_modes;
+}
+
+void Client::setModes(std::string &m) {
+	this->_modes = m;
+}
+
+std::string &Client::getRealName() const {
+	return this->_realName;
+}
+
+void Client::setRealName(std::string &rn) {
+	this->_realName = rn;
+}
+
+/*
+std::map <std::string, Channel *> &Client::getUserChannels(){
+	return this->_userChannels;
+}*/

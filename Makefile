@@ -18,7 +18,8 @@ CC = c++
 
 NAME = irc
 
-SRC = main.cpp ./client/Client.cpp ./server/Server.cpp ./cmd/Cmd.cpp ./cmd/Nick.cpp ./commands/pass/Pass.cpp
+SRC = main.cpp ./client/Client.cpp ./server/Server.cpp ./cmd/Cmd.cpp ./cmd/Nick.cpp ./commands/pass/Pass.cpp \
+	./commands/user/User.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
