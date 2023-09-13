@@ -13,7 +13,6 @@
 #ifndef CMD_HPP
 #define CMD_HPP
 
-//#include "../server/Server.hpp"
 //#include "./../client/Client.hpp"
 #include <vector>
 #include <string>
@@ -24,22 +23,15 @@ class Cmd
 {
     public:
 		Cmd();
-        Cmd(void){};
-        ~Cmd(){};
+        ~Cmd();
         Cmd(const Cmd & other);
         Cmd& operator=(const Cmd& other);
         
         virtual void	execute(Client &who, std::vector<std::string> tokens) const = 0;
-     //   Server  *get_server(void);
-       // void    set_server(Server *s);
-    //    Client  &get_client(void);
-      //  void    cmdTokens(std::string& input);
-   //     void    PRIVMSG(std::vector<std::string> tokens);
+
     
     protected:
         std::vector<std::string> _tokens;
-      //  Server *_server;
-     //   Client &_client;
 };
 
 

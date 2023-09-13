@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "./../../cmd/Cmd.hpp"
-#include "./../../client/Client.hpp"
+//#include "./../../client/Client.hpp"
 
 class Cmd;
 class Client;

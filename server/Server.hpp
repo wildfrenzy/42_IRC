@@ -13,11 +13,14 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+// /connect -nocap -notls -rawlog ~/Code/IRC/myIRC/log.log localhost 6667 7
+
 #include "./../client/Client.hpp"
 #include "./../cmd/Cmd.hpp"
 #include "./../commands/pass/Pass.hpp"
-#include "./../commands/nick/Nick.hpp"
 #include "./../commands/user/User.hpp"
+#include "./../commands/nick/Nick.hpp"
+//#include "./../channel/Channel.hpp"
 
 #include <iostream>
 #include <vector>
@@ -51,6 +54,7 @@
 
 class Client;
 class Cmd;
+class Channel;
 
 class Server {
 public:

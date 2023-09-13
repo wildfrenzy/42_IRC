@@ -41,11 +41,15 @@ std::vector <std::string> Client::cmdTokens(std::string &input) {
 	while (pos != std::string::npos)
 	{
 		token = input.substr(0, pos);
+		if (token.find('\r') != std::string::npos)
+			token = token.substr(0, token.find('\r'));
 		tokens.push_back(token);
 		input.erase(0, pos + deli.size());
 		pos = input.find(deli);
 	}
-
+	/*token = *tokens.end();
+	if (token.find('\r') != std::string::npos)
+		token = token.substr(0, token.find('\r'));*/
 	std::cout << "Tokens check: ";
 	for (size_t i = 0; i < tokens.size(); ++i) {
 		std::cout << "[" << tokens[i] << "]";

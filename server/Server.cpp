@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 21:54:57 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/14 01:06:03 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,12 @@ void Server::_select() {
 				}
 				if (bytes <= 0) {
 					//clean everything about current client and close fd.
-					std::cout << RED "Connection to Client["
-						<< (this->_clients[i]->getNickName().empty() ? i : this->_clients[i]->getNickName())
-						<< "] closed during recv()" RES << std::endl;
+					std::cout << RED "Connection to Client[";
+					if (this->_clients[i]->getNickName().empty())
+						std::cout << i;
+					else
+						std::cout << this->_clients[i]->getNickName();
+					std::cout << "] closed during recv()" RES << std::endl;
 					return ;
 				}
 				else if (bytes > 0 && bytes < 10) {
@@ -128,9 +131,13 @@ void Server::_select() {
 					this->_clients[i]->getReadBuff().append(buf);
 				}
 
-				std::cout << YELLOW"CLIENT ["
-					<< (this->_clients[i]->getNickName().empty() ? i : this->_clients[i]->getNickName())
-					<< "]: " RES;
+				std::cout << YELLOW"CLIENT [";
+				if (this->_clients[i]->getNickName().empty())
+					std::cout << i;
+				else
+					std::cout << this->_clients[i]->getNickName();
+				std::cout << "] " RES << std::endl;
+
 				std::cout << this->_clients[i]->getReadBuff();
 
 
@@ -159,11 +166,11 @@ void Server::_select() {
 				continue ;
 			}
 			if (FD_ISSET(this->_clients[i]->getFd(), &w)){
-				send(this->_clients[i]->getFd(), "\x1b[1;93m", 7, 0); //YELLOW
+			//	send(this->_clients[i]->getFd(), "\x1b[1;93m", 7, 0); //YELLOW
 				bytes = send(this->_clients[i]->getFd(), this->_clients[i]->getWriteBuff().c_str(),
 							 this->_clients[i]->getWriteBuff().size(), 0);
-				send(this->_clients[i]->getFd(), "\n", 1, 0);
-				send(this->_clients[i]->getFd(), "\x1b[0m", 4, 0); //RES
+				//send(this->_clients[i]->getFd(), "\n", 1, 0);
+			//	send(this->_clients[i]->getFd(), "\x1b[0m", 4, 0); //RES
 
 				std::string wb;
 				if (bytes == this->_clients[i]->getWriteBuff().size()) {
@@ -185,9 +192,9 @@ void Server::_select() {
 	}
 }
 
-/*std::map <std::string, Channel *> &Server::getChannels() {
+std::map <std::string, Channel *> &Server::getChannels() {
 	return this->_channels;
-}*/
+}
 
 std::map<std::string, Cmd *> &Server::getCommands() {
 	return this->_commands;
@@ -205,7 +212,7 @@ void Server::reply(Client *who, std::string reply, std::string msg) {
 	std::string writeBuff = who->getWriteBuff();
 	//in case not everything was sent before
 
-	std::string message = ":irc server " + (reply.empty() ? "" : this->_replies[reply] + " ");
+	std::string message = ":irc_server " + (reply.empty() ? "" : this->_replies[reply] + " ");
 	if (!reply.empty())
 		message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
 	message += " " + msg + "\r\n";

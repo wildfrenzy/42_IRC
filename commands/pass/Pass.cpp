@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "Pass.hpp"
+#include "./../../client/Client.hpp"
 
 Pass::Pass() : Cmd() {}
 
@@ -46,4 +47,6 @@ void Pass::execute(Client &who, std::vector <std::string> cmd) const {
 		return;
 	}
 	who.setAuthenticated();
+	if (!who.getRealName().empty())
+		who.setRegistered();
 }

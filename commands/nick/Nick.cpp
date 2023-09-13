@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Nick.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/14 01:07:17 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/14 01:07:17 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Nick.hpp"
 
 Nick::Nick() : Cmd() {}
@@ -11,17 +23,18 @@ Nick::Nick(const Nick& other)
 
 Nick& Nick::operator=(const Nick& other)
 {
+	(void)other;
     return *this;
 }
 
 void Nick::execute(Client& who, std::vector<std::string> cmd) const
 {
-	if (!who.getAuthenticated()){
+	/*if (!who.getAuthenticated()){
 		who.getServer()->reply(&who,
 							   "ERR_NOTREGISTERED",
-							   ":You must authenticate with the server using PASS command first");
+							   ":You must authenticate with the server");
 		return;
-	}
+	}*/
 	if (cmd.size() < 2) {
 		who.getServer()->reply(&who,
 							   "ERR_NEEDMOREPARAMS",
@@ -49,7 +62,7 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 
     }
     who.setNickName(ni);
-    who.getServer()->reply(&who, who.getUserName(), ":Nickname set successed.");
+    who.getServer()->reply(&who, "", who.getUserName() + "Nickname set successfully.");
 }
 
 /*In IRC (Internet Relay Chat), server implementations may have their own specific rules and restrictions regarding channel and nickname naming, but generally, 

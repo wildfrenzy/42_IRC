@@ -12,62 +12,18 @@
 
 #include "Cmd.hpp"
 
-Cmd &Cmd::operator=(const Cmd &other) {
-	this->_tokens = other._tokens;
-	return *this;
-}
+Cmd::Cmd() {}
+
+Cmd::~Cmd() {}
 
 Cmd::Cmd(const Cmd &other) {
 	*this = other;
 }
 
-//void Cmd::execute(Client &who, std::vector <std::string> tokens) const {}
-
-/*void    Cmd::cmdTokens(std::string& input)
-{
-    std::string deli = " ";
-    std::vector<std::string> tokens;
-    std::string token;
-    size_t pos = 0;
-    input += " ";
-    pos = input.find(deli);
-    int i = 0;
-    while (pos != std::string::npos)
-    {
-        token = input.substr(0, pos);
-        tokens.push_back(token);
-        input.erase(0, pos + deli.size());
-        pos = input.find(deli);
-    }
-    if (tokens.empty())
-        throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
-    this->_tokens = tokens;
-    const std::string& firstToken = tokens.front();
-    for (size_t i = 0; i < firstToken.length(); ++i)
-    {
-        char c = firstToken[i];
-        if (!std::isupper(c)) {
-            throw std::invalid_argument("irc cmd: " + std::string(strerror(errno)));
-        }
-    }
-}*/
-
-/*
-Server* Cmd::get_server(void)
-{
-    return this->_server;
+Cmd &Cmd::operator=(const Cmd &other) {
+	this->_tokens = other._tokens;
+	return *this;
 }
-
-Client & Cmd::get_client(void)
-{
-    return this->_client;
-}
-
-void    Cmd::set_server(Server *s)
-{
-    this->_server = s;
-}
-*/
 
 /*
 
