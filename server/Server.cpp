@@ -258,6 +258,7 @@ void Server::_setReplies() {
 	this->_replies["RPL_ENDOFNAMES"] = "366";
 	this->_replies["ERR_BADCHANNELKEY"] = "475";
 	this->_replies["ERR_CHANNELISFULL"] = "471";
+	this->_replies["ERR_UNKNOWNMODE"] = "472";
 	this->_replies["ERR_INVITEONLYCHAN"] = "473";
 	this->_replies["ERR_TOOMANYCHANNELS "] = "405";
 
@@ -265,6 +266,7 @@ void Server::_setReplies() {
 	this->_replies["ERR_USERNOTINCHANNEL"] = "441";
 	this->_replies["ERR_NOTONCHANNEL"] = "442";
 	this->_replies["ERR_USERONCHANNEL"] = "443";
+	this->_replies["ERR_NOPRIVILEGES"] = "481";
 	this->_replies["ERR_CHANOPRIVSNEEDED"] = "482";
 
 	this->_replies["ERR_USERSDONTMATCH"] = "502";
