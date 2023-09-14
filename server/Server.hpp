@@ -20,7 +20,8 @@
 #include "./../commands/pass/Pass.hpp"
 #include "./../commands/user/User.hpp"
 #include "./../commands/nick/Nick.hpp"
-//#include "./../channel/Channel.hpp"
+
+#include "./../channel/Channel.hpp"
 
 #include <iostream>
 #include <vector>
