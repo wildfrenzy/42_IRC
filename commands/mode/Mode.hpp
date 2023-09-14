@@ -20,24 +20,24 @@ class   Mode: public Cmd
     
         void    execute(Client& who, std::vector<std::string> cmd) const;
         Channel* findChannel(Client& who, std::string channelName);
-        //void    addChannel(Client& who, std::vector<std::string> operator);
-        void    deleteChannel(Client& who, std::vector<std::string> cmd);
+        Client& findClient(Client& who, std::string nickName)
+
         void    setInviteOnly(void);
         void    unsetInviteOnly(void);
         void    setKey(const std::string key);
         void    unsetKey(void);
-        void    setTopic(const std::string topic);
-        void    unsetTopic(void);
+        void    setTopicRight(void);
+        void    unsetTopicRight(void);
         void    setUserLimit(size_t size);
         void    unsetUserLimit(void);
-        void    setUserPrivilege(Client& c); //todo
-        void    unsetUserPrivileg(Client& c); //todo
+        void    setUserPrivilege(Client& c);
+        void    unsetUserPrivileg(Client& c);
         void    plusmode(Client& who, std::vector<std::string> cmd);
         void    minusmode(Client& who, std::vector<std::string> cmd);
+        bool    thirdcmdcheck(std::string content);
 
     private:
         Channel*    _channel;
-        bool    thirdcmdcheck(std::string content);
 }
 
 
@@ -55,7 +55,7 @@ TO set the Channel Key:
 /MODE #example +k mysecretpassword
 
 To set the channel topic (used by channel operators):
-/MODE #example +t topic
+/MODE #example +t 
 
 To give/take channel operator privilege
 /MODE #channel +o Nickname

@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 21:55:46 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:37:08 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
+//unix timestamp
+#include <ctime>
+
 // colors
 #define BLUE "\x1b[1;36m"
 #define YELLOW "\x1b[1;93m"
@@ -72,6 +75,7 @@ public:
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
+	void	reply(Client *who, std::string msg, std::string channel, std::string nickname, std::time currentTime);
 
 private:
 	int				_mainFd;

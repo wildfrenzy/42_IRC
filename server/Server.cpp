@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/14 01:06:03 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/14 16:02:51 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,7 @@ void Server::_setReplies() {
 	this->_replies["ERR_UMODEUNKNOWNFLAG"] = "501";
 	this->_replies["RPL_CHANNELMODEIS"] = "324";
 	this->_replies["RPL_CREATIONTIME"] = "329";
+	//this->_replies["RPL_TOPIC"] = "332";
 
 	this->_replies["ERR_UNKNOWNCOMMAND"] = "421";
 
@@ -289,3 +290,8 @@ void Server::_setReplies() {
 	this->_replies[""] = "";*/
 
 }
+
+void	Server::reply(Client *who, std::string msg, std::string channelname, std::string nickname, std::time currentTime)
+{
+	std::cout << "<Client>" << " " << channelname << " " << nickname << " " << currentTime << std::endl;
+}//check!!!!

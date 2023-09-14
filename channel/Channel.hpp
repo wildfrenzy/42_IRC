@@ -20,25 +20,30 @@ class Channel
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
         void    setTopic(const std::string topic);
+        void    setTopicRight(bool topic_right);
         std::string getKey(void);
         size_t  getUserLimit(void);
         bool    getInviteOnly(void);
         std::string getChannelName(void);
         bool    operatorRight(Client& c);
         size_t  getMemberSize(void);
-        
-
-        
-
+        bool    getTopicRight(void);
+        std::string getTopic(void);
+        void    addOperator(Client& c);
+        void    deleteOperator(Client& c);
+        void    addMember(Client& C);
+        void    deleteOperator(Client& c);
+        void    broadcast(std::string& msg);
 
     private:
         std::string _channelName;
         size_t  _user_limit;
         bool    _invite_only;
+        bool    _topic_right;
         const std::string _key;
         const std::string _topic;
-        std::set<Client*> _members; //todo
-        std::set<Client*> _operators;//todo
+        std::vector<Client*> _members;
+        std::vector<Client*> _operators;
 };
 
 
