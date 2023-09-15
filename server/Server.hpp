@@ -13,13 +13,14 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-// /connect -nocap -notls -rawlog ~/Code/IRC/myIRC/log.log localhost 6667 7
+// /connect -nocap -notls -rawlog ~/Code/IRC/myIRC/log.log localhost 6667
 
 #include "./../client/Client.hpp"
 #include "./../cmd/Cmd.hpp"
 #include "./../commands/pass/Pass.hpp"
 #include "./../commands/user/User.hpp"
 #include "./../commands/nick/Nick.hpp"
+#include "./../commands/join/Join.hpp"
 
 #include "./../channel/Channel.hpp"
 
@@ -73,6 +74,7 @@ public:
 	std::map <std::string, Cmd *> &getCommands();
 	std::string const &getPass() const;
 	std::map <std::string, Channel *> &getChannels();
+	void addChannel(std::string name);
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);

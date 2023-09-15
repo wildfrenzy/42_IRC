@@ -208,6 +208,11 @@ std::vector<Client *> const &Server::getClients() const {
 	return this->_clients;
 }
 
+void Server::addChannel(std::string name) {
+	this->_channels[name] = new Channel();
+	std::cout << "New channel just appeared : " << name << std::endl;
+}
+
 void Server::reply(Client *who, std::string reply, std::string msg) {
 	std::string writeBuff = who->getWriteBuff();
 	//in case not everything was sent before
@@ -230,6 +235,7 @@ void Server::createComands() {
 	this->_commands["PASS"] = new Pass();
 	this->_commands["NICK"] = new Nick();
 	this->_commands["USER"] = new User();
+	this->_commands["JOIN"] = new Join();
 }
 
 void Server::_setReplies() {
@@ -268,6 +274,7 @@ void Server::_setReplies() {
 	this->_replies["ERR_UNKNOWNMODE"] = "472";
 	this->_replies["ERR_INVITEONLYCHAN"] = "473";
 	this->_replies["ERR_TOOMANYCHANNELS "] = "405";
+	this->_replies["ERR_BADCHANMASK"] = "476";
 
 	this->_replies["RPL_INVITING"] = "341";
 	this->_replies["ERR_USERNOTINCHANNEL"] = "441";

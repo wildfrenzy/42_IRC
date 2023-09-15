@@ -1,6 +1,6 @@
 #include "Channel.hpp"
 
-Channel::Channel(void): _user_limit(10000), _invite_only(false), _key(NULL), _operators(NULL), _topic(NULL), _topic_right(true)
+Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true)
 {
 }
 
@@ -98,7 +98,7 @@ std::string Channel::getTopic(void)
 
 void    Channel::addOperator(Client& c)
 {
-    this->_operators.pushback(&c);
+    this->_operators.push_back(&c);
 }
 
 void    Channel::deleteOperator(Client& c)
@@ -113,7 +113,7 @@ void    Channel::deleteOperator(Client& c)
 
 void    Channel::addMember(Client& c)
 {
-    this->_Members.pushback(&c);
+    this->_Members.push_back(&c);
 }
 
 void    Channel::deleteMembers(Client& c)
@@ -124,6 +124,11 @@ void    Channel::deleteMembers(Client& c)
             this->_Members.erase(it);
         return;
     }
+}
+
+std::vector<Client *> &Channel::getMembers()
+{
+	return this->_members;
 }
 
 void    Channel::broadcast(std::string& msg)

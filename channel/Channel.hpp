@@ -31,8 +31,8 @@ class Channel
         std::string getTopic(void);
         void    addOperator(Client& c);
         void    deleteOperator(Client& c);
-        void    addMember(Client& C);
-        void    deleteOperator(Client& c);
+        void    addMember(Client& c);
+		std::vector<Client*> &getMembers();
         void    broadcast(std::string& msg);
 
     private:

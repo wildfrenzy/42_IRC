@@ -31,6 +31,7 @@ Client &Client::operator=(Client &c) {
 	return *this;
 }
 
+//if there is no spaces in input string, we are probably in trouble :D [need to test]
 std::vector <std::string> Client::cmdTokens(std::string &input) {
 	std::string deli = " ";
 	std::vector<std::string> tokens;

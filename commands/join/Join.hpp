@@ -20,10 +20,12 @@ public:
 	~Join();
 
 	void execute(Client &who, std::vector<std::string> cmd) const;
+
 private:
 	Join(Join const &j);
 	Join &operator=(Join const &j);
-
+	void joined(Client &who, std::string channel) const;
+	bool validateChannelName(std::string channel) const;
 };
 
 
