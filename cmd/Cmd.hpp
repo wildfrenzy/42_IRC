@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:36 by yli               #+#    #+#             */
-/*   Updated: 2023/09/15 17:43:12 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/15 18:37:43 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #define CMD_HPP
 
 #include "./../client/Client.hpp"
-#include "./../channel/Channel.hpp"
+#include "./../server/Server.hpp"
 #include <vector>
 #include <string>
+#include <map>
 
 class Client;
 class Channel;
@@ -34,6 +35,5 @@ class Cmd
         Channel* findChannel(Client& who, std::string channelName) const;
         Client& findClient(Client& who, std::string nickName) const;
 };
-
 
 #endif

@@ -2,9 +2,8 @@
 #define CHANNEL_HPP
 
 #include <set>
-#include "../server/Server.hpp"
 #include "../client/Client.hpp"
-#include "./../bot/Bot.hpp"
+//#include "./../bot/Bot.hpp"
 
 class Client;
 class Server;

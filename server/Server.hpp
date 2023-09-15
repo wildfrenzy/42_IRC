@@ -3,10 +3,9 @@
 
 // /connect -nocap -notls -rawlog ~/Code/IRC/myIRC/log.log localhost 6667
 
-#include "./../client/Client.hpp"
-#include "./../cmd/Cmd.hpp"
-#include "./../bot/Bot.hpp"
-#include "./../cmd/Cmd.hpp"
+//#include "./../client/Client.hpp"
+//#include "./../cmd/Cmd.hpp"
+//#include "./../bot/Bot.hpp"
 #include "./../commands/pass/Pass.hpp"
 #include "./../commands/user/User.hpp"
 #include "./../commands/nick/Nick.hpp"
@@ -18,7 +17,7 @@
 #include "./../commands/kick/Kick.hpp"
 
 
-#include "./../channel/Channel.hpp"
+//#include "./../channel/Channel.hpp"
 
 #include <iostream>
 #include <vector>
@@ -93,7 +92,7 @@ private:
 	void	_select();
 	void	_setReplies();
 	void	_createComands();
-	Bot*	_bot;
+	//Bot*	_bot;
 };
 
 
