@@ -2,14 +2,15 @@
 #define MODE_HPP
 
 #include "./../../cmd/Cmd.hpp"
-#include "./../../channel/Channel.hpp"
-#include "./../../client/Client.hpp"
+// #include "./../../channel/Channel.hpp"
+// #include "./../../client/Client.hpp"
 
 class Client;
 class Cmd;
 class Channel;
-class Server;
 
+#include <iostream>
+#include <string>
 
 class   Mode: public Cmd
 {
@@ -20,8 +21,8 @@ class   Mode: public Cmd
         Mode& operator=(const Mode& other);
     
         virtual    void    execute(Client& who, std::vector<std::string> cmd) const;
-        Channel* findChannel(Client& who, std::string channelName) const;
-        Client& findClient(Client& who, std::string nickName) const;
+        //Channel* findChannel(Client& who, std::string channelName) const;
+        //Client& findClient(Client& who, std::string nickName) const;
 
         void    setInviteOnly(Channel*    channel) const;
         void    unsetInviteOnly(Channel*    channel) const;
@@ -35,7 +36,6 @@ class   Mode: public Cmd
         void    unsetUserPrivilege(Client& c, Channel*    channel)  const;
         void    plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
         void    minusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
-        bool    thirdcmdcheck(std::string content) const;
 };
 
 

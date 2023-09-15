@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 18:20:52 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 20:54:12 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:56:15 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Pass::Pass(const Pass &p) {
 }
 
 Pass &Pass::operator=(const Pass &p) {
-	this->_tokens = p._tokens;
+	//this->_tokens = p._tokens;
 	return *this;
 }
 

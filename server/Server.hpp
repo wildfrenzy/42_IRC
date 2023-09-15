@@ -1,21 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 14:49:03 by yli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
 // /connect -nocap -notls -rawlog ~/Code/IRC/myIRC/log.log localhost 6667
 
 #include "./../client/Client.hpp"
+#include "./../cmd/Cmd.hpp"
+#include "./../bot/Bot.hpp"
 #include "./../cmd/Cmd.hpp"
 #include "./../commands/pass/Pass.hpp"
 #include "./../commands/user/User.hpp"
@@ -64,8 +54,9 @@
 #define RES "\x1b[0m"
 
 class Client;
-class Cmd;
+//class Cmd;
 class Channel;
+//class Bot;
 
 class Server {
 public:
@@ -102,6 +93,7 @@ private:
 	void	_select();
 	void	_setReplies();
 	void	_createComands();
+	Bot*	_bot;
 };
 
 

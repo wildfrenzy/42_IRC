@@ -4,6 +4,7 @@
 #include <set>
 #include "../server/Server.hpp"
 #include "../client/Client.hpp"
+#include "./../bot/Bot.hpp"
 
 class Client;
 class Server;
@@ -36,7 +37,6 @@ class Channel
         void    addMember(Client& c);
 		std::vector<Client*> &getMembers();
         void    broadcast(Server * server, std::string& msg);
-        //std::vector<Client*>    getOperators(void);
         std::vector<Client*> &getOperators(void);
 
     private:

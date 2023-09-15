@@ -2,17 +2,15 @@
 #define TOPIC_HPP
 
 #include "./../../cmd/Cmd.hpp"
-#include "./../../channel/Channel.hpp"
-#include "./../../client/Client.hpp"
-#include "./../mode/Mode.hpp"
+// #include "./../../channel/Channel.hpp"
+// #include "./../../client/Client.hpp"
 #include <ctime>
 
 class Client;
 class Cmd;
 class Channel;
-class Mode;
 
-class Topic: /*public Cmd, */public Mode
+class Topic: public Cmd
 {
     public:
         Topic(void);

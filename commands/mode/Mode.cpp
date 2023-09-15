@@ -14,17 +14,17 @@ Mode& Mode::operator=(const Mode& other)
     return *this;
 }
 
-Channel* Mode::findChannel(Client& who, std::string channelName) const
-{
-    std::map<std::string, Channel *>::iterator it;
-    std::map<std::string, Channel *> channels = who.getServer()->getChannels();
-    for(it = channels.begin(); it != channels.end(); ++it)
-    {
-        if (it->first == channelName)
-            return it->second;
-    }
-    return NULL;
-}
+// Channel* Mode::findChannel(Client& who, std::string channelName) const
+// {
+//     std::map<std::string, Channel *>::iterator it;
+//     std::map<std::string, Channel *> channels = who.getServer()->getChannels();
+//     for(it = channels.begin(); it != channels.end(); ++it)
+//     {
+//         if (it->first == channelName)
+//             return it->second;
+//     }
+//     return NULL;
+// }
 
 void    Mode::setInviteOnly(Channel*    channel) const
 {
@@ -66,16 +66,17 @@ void    Mode::unsetUserLimit(Channel*    channel) const
     channel->setUserLimit(100000);
 }
 
-Client& Mode::findClient(Client& who, std::string nickName) const
-{
-    std::vector<Client*>::iterator it;
-    for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
-    {
-        if ((*it)->getNickName() == nickName);
-            return *(*it);
-    }
-    return *who.getServer()->getClients().front(); //set bot as first client !!!!
-}
+// Client& Mode::findClient(Client& who, std::string nickName) const
+// {
+//     std::vector<Client*>::const_iterator it;
+
+//     for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
+//     {
+//         if ((*it)->getNickName() == nickName)
+//             return *(*it);
+//     }
+//     return *who.getServer()->getClients().front(); //set bot as first client !!!!
+// }
 
 void    Mode::setUserPrivilege(Client& c, Channel*    channel) const
 {
@@ -87,17 +88,17 @@ void    Mode::unsetUserPrivilege(Client& c, Channel*    channel) const
     channel->deleteOperator(c);
 }
 
-bool    Mode::thirdcmdcheck(std::string cmd) const
-{
-    for(unsigned long i = 0; i < cmd.size(); ++i)
-    {
-        if (cmd[i] == '#' || cmd[i] == '&' || cmd[i] == '+' || cmd[i] == '@' 
-            || cmd[i] == '%' || cmd[i] == '/' || cmd[i] == '*' || cmd[i] == '?' ||
-            cmd[i] > 127 || cmd[i] <= 32)
-        return true;
-    }
-    return false;
-}
+// bool    Mode::thirdcmdcheck(std::string cmd) const
+// {
+//     for(unsigned long i = 0; i < cmd.size(); ++i)
+//     {
+//         if (cmd[i] == '#' || cmd[i] == '&' || cmd[i] == '+' || cmd[i] == '@' 
+//             || cmd[i] == '%' || cmd[i] == '/' || cmd[i] == '*' || cmd[i] == '?' ||
+//             cmd[i] > 127 || cmd[i] <= 32)
+//         return true;
+//     }
+//     return false;
+// }
 
 void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const
 {
@@ -114,7 +115,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         }
         if (cmd[2][1] == 't' )
         {
-            if(thirdcmdcheck(cmd[3]))
+            if(cmdcheck(cmd[3]))
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
@@ -126,7 +127,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         }
         if (cmd[2][1] == 'k' )
         {
-            if(thirdcmdcheck(cmd[3]))
+            if(cmdcheck(cmd[3]))
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
@@ -138,7 +139,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         }
         if (cmd[2][1] == 'l' )
         {
-            int i = std::stoi(cmd[3]);
+            int i = atoi(cmd[3].c_str());
             if (i <= 1)
             {
                 who.getServer()->reply(&who,
@@ -193,7 +194,7 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
     }
     if (cmd[2][1] == 'o' )
     {
-        if(cmd[3].empty() || thirdcmdcheck(cmd[3]))
+        if(cmd[3].empty() || cmdcheck(cmd[3]))
         {
             who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 15:00:50 by yli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Server.hpp"
 
 Server::Server(char *port, char *password){
@@ -70,6 +58,7 @@ short Server::validatePort(char *port) {
 }
 
 void Server::_select() {
+	//add a bot here!!!!
 	fd_set r, w; //read, write
 	int newfd, maxFd = this->_mainFd;
 	struct sockaddr_in address;
@@ -210,8 +199,12 @@ std::vector<Client *> const &Server::getClients() const {
 
 void Server::addChannel(std::string name) {
 	this->_channels[name] = new Channel();
+	// std::map<std::string, Channel*>::iterator it = this->_channels.find(name);
+	// Channel* c = it->second;
+	// c->addMembers(bot);
 	std::cout << "New channel just appeared : " << name << std::endl;
-}
+}//change logic later!!!!
+
 
 void Server::reply(Client *who, std::string reply, std::string msg) {
 	std::string writeBuff = who->getWriteBuff();
@@ -306,12 +299,30 @@ void Server::_setReplies() {
 
 void	Server::replyTime(Client *who, std::string msg, std::string channelname, std::string nickname, std::time_t currentTime)
 {
-	//std::cout << "<Client>" << " " << channelname << " " << nickname << " " << currentTime << std::endl;
-	std::string writeBuff = who->getWriteBuff();
-	std::string message = ":irc_server " + (reply.empty() ? "" : this->_replies[reply] + " ");
-	// if (!reply.empty())
-	// 	message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
-	message += " " + msg + " " + channelname + " " + nickname + " " + currentTime + "\r\n";
-	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
-	who->setWriteBuff(writeBuff.append(message));
+	std::tm*	timeInfo = std::localtime(&currentTime);
+	char buffer[80];
+	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
+	std::string strTime(buffer);
+	std::string message = "";
+	message += " " + channelname + " " + nickname + " " + strTime + "\r\n";
+	this->reply(who, msg, message);
 }//check!!!!
+
+
+// void Server::reply(Client *who, std::string reply, std::string msg) {
+// 	std::string writeBuff = who->getWriteBuff();
+// 	//in case not everything was sent before
+
+// 	std::string message = ":irc_server " + (reply.empty() ? "" : this->_replies[reply] + " ");
+// 	if (!reply.empty())
+// 		message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
+// 	message += " " + msg + "\r\n";
+// 	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
+// 	who->setWriteBuff(writeBuff.append(message));
+// }
+
+// void Server::reply(std::vector<Client *> clients, std::string reply, std::string msg) {
+// 	for (unsigned long i = 0; i < clients.size(); ++i) {
+// 		this->reply(clients[i], reply, msg);
+// 	}
+// }

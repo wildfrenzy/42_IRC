@@ -4,14 +4,12 @@
 #include "./../../cmd/Cmd.hpp"
 #include "./../../channel/Channel.hpp"
 #include "./../../client/Client.hpp"
-#include "./../topic/Topic.hpp"
 
 class Client;
 class Cmd;
 class Channel;
-class Mode;
 
-class Privmsg: /*public Cmd, */public Mode
+class Privmsg: public Cmd
 {
     public:
         Privmsg(void);

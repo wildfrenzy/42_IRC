@@ -1,6 +1,6 @@
 #include "Topic.hpp"
 
-Topic::Topic() : /*Cmd(), */Mode(){}
+Topic::Topic() :Cmd(){}
 
 Topic::~Topic() {}
 
@@ -60,7 +60,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
                         ":You're not channel operator");        
         return;
     }
-    if(thirdcmdcheck(cmd[2]))
+    if(cmdcheck(cmd[2]))
     {
         who.getServer()->reply(&who,
                             "ERR_UNKNOWNERROR",

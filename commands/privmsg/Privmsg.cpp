@@ -1,6 +1,6 @@
 #include "Privmsg.hpp"
 
-Privmsg::Privmsg(void): /*Cmd(), */Mode(){}
+Privmsg::Privmsg(void): Cmd(){}
 
 Privmsg::~Privmsg(void) {}
 
@@ -23,7 +23,7 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
                         "ERR_NOSUCHNICK",
                         ":No such nick/channel");
         return ;             
-    }
+    }   
     std::vector<std::string>::iterator it;
     for (it = cmd.begin() + 2; it < cmd.end(); ++it)
         channel->broadcast(who.getServer(), *it);
@@ -59,6 +59,13 @@ void    Privmsg::execute(Client& who, std::vector<std::string> cmd) const
 							   ":Not enough parameters");
 		return;
 	}
+    if (cmd[2][0] != ':')
+    {
+        who.getServer()->reply(&who,
+                            "ERR_UNKNOWNERROR",
+                            ":invalid content");
+        return;
+    }
     if (cmd[1][0] == '#')
         sendToChannel(who, cmd);
     else
