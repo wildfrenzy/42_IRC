@@ -1,9 +1,6 @@
-//
-// Created by Nadiia Maliarenko on 15.09.23.
-//
-
 #include "Kick.hpp"
 #include "./../../client/Client.hpp"
+#include <string>
 
 Kick::Kick() : Cmd(){}
 Kick::~Kick() {}
@@ -31,7 +28,7 @@ bool Kick::isMember(std::vector<Client *> members, std::string nick) const{
 	return false;
 }
 
-std::string cmdToStr(std::vector<std::string> cmd){
+std::string Kick::cmdToStr(std::vector<std::string> cmd) const{
 	std::string str;
 	for (size_t i = 3; i < cmd.size(); ++i) {
 		str.append(cmd[i]);
@@ -70,6 +67,6 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 	if (reason.find(':') != std::string::npos)
 		reason = reason.substr(reason.find(':'));
 	serv->reply(channels[cmd[1]]->getMembers(), "", "KICK " + cmd[1] + " " + cmd[2] + " " +
-		!reason.empty() ? reason : ":No reason specified" );
+		(!reason.empty() ? reason : ":No reason specified" ));
 	channels[cmd[1]]->deleteMembers(who);
 }

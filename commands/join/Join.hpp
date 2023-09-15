@@ -24,8 +24,9 @@ public:
 private:
 	Join(Join const &j);
 	Join &operator=(Join const &j);
-	void joined(Client &who, std::string channel) const;
+	void joined(Client &who, std::string channel, std::map <std::string, Channel *> &channels) const;
 	bool validateChannelName(std::string channel) const;
+	std::string cmdToStr(std::vector<std::string> cmd) const;
 };
 
 

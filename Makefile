@@ -6,7 +6,7 @@
 #    By: yli <yli@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/27 15:53:14 by nmaliare          #+#    #+#              #
-#    Updated: 2023/09/15 17:01:21 by yli              ###   ########.fr        #
+#    Updated: 2023/09/15 19:56:36 by yli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME = irc
 
 SRC = main.cpp ./client/Client.cpp ./server/Server.cpp ./cmd/Cmd.cpp \
 		./commands/pass/Pass.cpp ./commands/user/User.cpp ./commands/nick/Nick.cpp \
-		./commands/mode/Mode.cpp ./commands/invite/Invite.cpp ./commands/join/Join.cpp ./commands/kick/Kick.hpp \
+		./commands/mode/Mode.cpp ./commands/invite/Invite.cpp ./commands/join/Join.cpp ./commands/kick/Kick.cpp \
 		./commands/privmsg/Privmsg.cpp ./commands/topic/Topic.cpp \
 		./channel/Channel.cpp 
 

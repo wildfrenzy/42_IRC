@@ -1,8 +1,8 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-// /connect -nocap -notls -rawlog ~/Code/IRC/myIRC/log.log localhost 6667
-
+// /connect -nocap -notls  localhost 6667
+//-rawlog ~/Code/IRC/myIRC/log.log
 //#include "./../client/Client.hpp"
 //#include "./../cmd/Cmd.hpp"
 //#include "./../bot/Bot.hpp"
@@ -17,7 +17,7 @@
 #include "./../commands/kick/Kick.hpp"
 
 
-//#include "./../channel/Channel.hpp"
+#include "./../channel/Channel.hpp"
 
 #include <iostream>
 #include <vector>

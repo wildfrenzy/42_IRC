@@ -6,13 +6,14 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/15 18:35:10 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/15 20:16:34 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cmd.hpp"
-#include "./../channel/Channel.hpp"
-
+//#include "./../channel/Channel.hpp"
+// #include "./../server/Server.hpp"
+#include "./../client/Client.hpp"
 Cmd::Cmd() {}
 
 Cmd::~Cmd() {}

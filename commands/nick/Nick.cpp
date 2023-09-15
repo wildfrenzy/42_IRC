@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 01:07:17 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/14 01:07:17 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:17:15 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Nick.hpp"
-
+#include "./../../client/Client.hpp"
 Nick::Nick() : Cmd() {}
 
 Nick::~Nick() {}

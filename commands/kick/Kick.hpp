@@ -1,7 +1,3 @@
-//
-// Created by Nadiia Maliarenko on 15.09.23.
-//
-
 #ifndef KICK_HPP
 #define KICK_HPP
 
@@ -24,6 +20,7 @@ private:
 	Kick(Kick const &k);
 	Kick &operator=(Kick const &k);
 	bool isMember(std::vector<Client *> members, std::string nick) const;
+    std::string cmdToStr(std::vector<std::string> cmd) const;
 };
 
 #endif

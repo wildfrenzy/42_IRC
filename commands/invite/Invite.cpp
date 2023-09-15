@@ -21,12 +21,12 @@ bool Invite::isMember(std::vector<Client *> members, std::string nick) const{
 	return false;
 }
 
-Client &Invite::findClient(std::vector<Client *> clients, std::string nick) const {
-	for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it) {
-		if ((*it)->getNickName() == nick)
-			return *it;
-	}
-}
+// Client &Invite::findClient(std::vector<Client *> clients, std::string nick) const {
+// 	for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it) {
+// 		if ((*it)->getNickName() == nick)
+// 			return *it;
+// 	}
+// }
 
 // Command: INVITE
 // Parameters: <nickname> <channel>
@@ -53,8 +53,11 @@ void Invite::execute(Client &who, std::vector <std::string> cmd) const {
 		serv->reply(&who, "ERR_USERONCHANNEL", cmd[1] + " " + cmd[2] + " :is already on channel");
 		return;
 	}
-	Client &member = findClient(serv->getClients(), cmd[1]);
+	Client &member = findClient(who, cmd[1]);
 	channels[cmd[2]]->addMember(member);
 	serv->reply(&who, "RPL_INVITING", cmd[1] + " " + cmd[2]);
 	serv->reply(&member, "", "INVITE " + cmd[1] + " :" +cmd[2]);
 }
+
+
+// Client& findClient(Client& who, std::string nickName) const;

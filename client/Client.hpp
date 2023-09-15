@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 18:33:53 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/15 20:06:33 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "./../cmd/Cmd.hpp"
+#include "./../server/Server.hpp"
 
 class Server;
 class Cmd;

@@ -13,8 +13,8 @@ Join::~Join() {}
 std::string vecToUsersStr(std::vector<Client *> clients){
 	std::string str;
 	for (size_t i = 0; i < clients.size(); ++i) {
-		if (clients[i]->getModes().find('o') != clients[i]->getModes().end())
-			str.append("@");
+		//if (clients[i]->getModes().find('o') != clients[i]->getModes().end())
+		//	str.append("@");
 		str.append(clients[i]->getNickName());
 		if (i != clients.size() - 1)
 			str.append(" ");
@@ -22,7 +22,7 @@ std::string vecToUsersStr(std::vector<Client *> clients){
 	return str;
 }
 
-std::string cmdToStr(std::vector<std::string> cmd){
+std::string Join::cmdToStr(std::vector<std::string> cmd) const{
 	std::string str;
 	for (size_t i = 1; i < cmd.size(); ++i) {
 		str.append(cmd[i]);
@@ -62,10 +62,10 @@ void Join::joined(Client &who, std::string channel, std::map <std::string, Chann
 						  + who.getNickName() + " is joining the channel " + channel);
 
 	if (channels[channel]->getTopic().empty())
-		serv->reply(&who, "RPL_NOTOPIC", channel + " :No topic is set")
+		serv->reply(&who, "RPL_NOTOPIC", channel + " :No topic is set");
 	else
 		serv->reply(&who, "RPL_TOPIC", channel + " " + ":Welcome to the channel " +
-							channels[channel]->getTopic()) + "!";
+							channels[channel]->getTopic() + "!");
 	serv->reply(&who, "RPL_NAMREPLY", "= " + channel + " " + vecToUsersStr(members));
 	serv->reply(&who, "RPL_ENDOFNAMES", channel + " :End of user's list.");
 }

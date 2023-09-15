@@ -1,4 +1,5 @@
 #include "Topic.hpp"
+#include "./../../client/Client.hpp"
 
 Topic::Topic() :Cmd(){}
 
@@ -32,7 +33,7 @@ bool    Topic::checkOperatorRight(Client& who, Channel *c) const
 
 void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 {
-	if (who.getAuthenticated()){
+	if (!who.getAuthenticated()){
 		who.getServer()->reply(&who,
 										 "ERR_ALREADYREGISTERED",
 										 ":You may not reregister");

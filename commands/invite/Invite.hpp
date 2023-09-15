@@ -25,7 +25,7 @@ private:
 	Invite(Invite const &i);
 	Invite &operator=(Invite const &i);
 	bool isMember(std::vector<Client *> members, std::string nick) const;
-	Client &findClient(std::vector<Client *> clients, std::string nick) const;
+	//Client &findClient(std::vector<Client *> clients, std::string nick) const;
 };
 
 

@@ -220,7 +220,7 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
 
 void    Mode::execute(Client& who, std::vector<std::string> cmd) const
 {
-	if (who.getAuthenticated()){
+	if (!who.getAuthenticated()){
 		who.getServer()->reply(&who,
 										 "ERR_ALREADYREGISTERED",
 										 ":You may not reregister");
