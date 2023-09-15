@@ -75,6 +75,9 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 	if (cmd.size() < 2){
 		serv->reply(&who,"ERR_NEEDMOREPARAMS","JOIN :Not enough parameters");
 		return;
+	} else if (!who.getRegistered()) {
+		serv->reply(&who, "ERR_NOTREGISTERED", ":You must authenticate with the server.");
+		return;
 	}
 	cmd = split(cmdToStr(cmd),',');
 	std::vector<std::string> ch;

@@ -21,6 +21,7 @@
 #include "./../commands/user/User.hpp"
 #include "./../commands/nick/Nick.hpp"
 #include "./../commands/join/Join.hpp"
+#include "./../commands/kick/Kick.hpp"
 
 #include "./../channel/Channel.hpp"
 

@@ -236,6 +236,7 @@ void Server::createComands() {
 	this->_commands["NICK"] = new Nick();
 	this->_commands["USER"] = new User();
 	this->_commands["JOIN"] = new Join();
+	this->_commands["KICK"] = new Kick();
 }
 
 void Server::_setReplies() {
