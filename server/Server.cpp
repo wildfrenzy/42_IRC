@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/14 16:02:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/15 15:00:50 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,10 +233,14 @@ void Server::reply(std::vector<Client *> clients, std::string reply, std::string
 
 void Server::createComands() {
 	this->_commands["PASS"] = new Pass();
-	this->_commands["NICK"] = new Nick();
 	this->_commands["USER"] = new User();
+	this->_commands["NICK"] = new Nick();
 	this->_commands["JOIN"] = new Join();
 	this->_commands["KICK"] = new Kick();
+	this->_commands["INVITE"] = new Invite();
+	this->_commands["PRIVMSG"] = new Privmsg();
+	this->_commands["TOPIC"] = new Topic();
+	this->_commands["MODE"] = new Mode();
 }
 
 void Server::_setReplies() {
@@ -257,6 +261,7 @@ void Server::_setReplies() {
 	this->_replies["ERR_ERRONEUSNICKNAME"] = "432";
 	this->_replies["ERR_NICKNAMEINUSE"] = "433";
 
+	this->_replies["ERR_UNKNOWNERROR"] = "400";
 	this->_replies["ERR_NOSUCHNICK"] = "401";
 	this->_replies["ERR_NOSUCHCHANNEL"] = "403";
 	this->_replies["ERR_CANNOTSENDTOCHAN"] = "404";
@@ -299,7 +304,14 @@ void Server::_setReplies() {
 
 }
 
-void	Server::reply(Client *who, std::string msg, std::string channelname, std::string nickname, std::time currentTime)
+void	Server::replyTime(Client *who, std::string msg, std::string channelname, std::string nickname, std::time_t currentTime)
 {
-	std::cout << "<Client>" << " " << channelname << " " << nickname << " " << currentTime << std::endl;
+	//std::cout << "<Client>" << " " << channelname << " " << nickname << " " << currentTime << std::endl;
+	std::string writeBuff = who->getWriteBuff();
+	std::string message = ":irc_server " + (reply.empty() ? "" : this->_replies[reply] + " ");
+	// if (!reply.empty())
+	// 	message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
+	message += " " + msg + " " + channelname + " " + nickname + " " + currentTime + "\r\n";
+	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
+	who->setWriteBuff(writeBuff.append(message));
 }//check!!!!

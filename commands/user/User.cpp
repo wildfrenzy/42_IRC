@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:00:49 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/13 20:54:11 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/15 14:37:55 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ User::User(const User &u) {
 }
 
 User &User::operator=(const User &u) {
-	this->_tokens = u._tokens;
+	//this->_tokens = u._tokens;
 	return  *this;
 }

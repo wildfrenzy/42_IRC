@@ -62,14 +62,14 @@ std::string Channel::getChannelName(void)
 
 bool    Channel::operatorRight(Client& c)
 {
-    if (this->_operator == NULL)
+    if (this->_operators.empty())
         return true;
     else
     {
         std::vector<Client*>::iterator it;
         for(it = this->_operators.begin(); it != this->_operators.end(); ++it)
         {
-            if ((*it).getNickName() == c.getNickName())
+            if ((*it)->getNickName() == c.getNickName())
                 return true;
         }
     }
@@ -113,15 +113,15 @@ void    Channel::deleteOperator(Client& c)
 
 void    Channel::addMember(Client& c)
 {
-    this->_Members.push_back(&c);
+    this->_members.push_back(&c);
 }
 
 void    Channel::deleteMembers(Client& c)
 {
-    for (std::vector<Client*>::iterator it = this->_Members.begin(); it != this->_Members.end(); ++it)
+    for (std::vector<Client*>::iterator it = this->_members.begin(); it != this->_members.end(); ++it)
     {
         if (*it == &c)
-            this->_Members.erase(it);
+            this->_members.erase(it);
         return;
     }
 }
@@ -131,9 +131,12 @@ std::vector<Client *> &Channel::getMembers()
 	return this->_members;
 }
 
-void    Channel::broadcast(std::string& msg)
+void    Channel::broadcast(Server * server, std::string& msg)
 {
-    std::vector<Client*>::iterator it;
-    for (it = this->_members.begin(); it < this->_members.end(), ++it)
-        (*it)->setWriteBuff(msg);
+    server->reply(this->_members, "", msg);
+}
+
+std::vector<Client*> &Channel::getOperators(void)
+{
+    return this->_operators;
 }

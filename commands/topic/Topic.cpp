@@ -1,6 +1,6 @@
 #include "Topic.hpp"
 
-Topic::Topic() : Cmd(), Mode(){}
+Topic::Topic() : /*Cmd(), */Mode(){}
 
 Topic::~Topic() {}
 
@@ -14,21 +14,22 @@ Topic&  Topic::operator=(const Topic& other)
     return *this;
 }
 
-void    Topic::setTopic(const std::string topic)
+void    Topic::setTopic(const std::string topic, Channel *c) const
 {
-    this->_channel->setTopic(topic);
+    c->setTopic(topic);
 }
 
-bool    Topic::checkOperatorRight(Client& who)
+bool    Topic::checkOperatorRight(Client& who, Channel *c) const
 {
     std::vector<Client*>::iterator it;
-    for (it = this->_c->_operators.begin(); it != this->_c->_operators.end(); ++it)
+    for (it = c->getOperators().begin(); it != c->getOperators().end(); ++it)
     {
-        if (*it)->getNickName() == who.getNickName()
+        if ((*it)->getNickName() == who.getNickName())
             return true;
     }
-    return false
+    return false;
 }
+
 void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 {
 	if (who.getAuthenticated()){
@@ -45,16 +46,14 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 	}
     Channel *c = NULL;
     c = findChannel(who, cmd[1]);
-    if (c)
-        this->_channel = c;
-    else
+    if(!c)
     {
         who.getServer()->reply(&who,
                                 "ERR_NOSUCHCHANNEL",
 							   ":No such channel");
         return;   
     }
-    if (!this->_channel->getTopicRight() || !checkOperatorRight(who))
+    if (!c->getTopicRight() || !checkOperatorRight(who, c))
     {
         who.getServer()->reply(&who,
                         "ERR_CHANOPRIVSNEEDED",
@@ -63,17 +62,17 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
     }
     if(thirdcmdcheck(cmd[2]))
     {
-        // who.getServer()->reply(&who,
-        //                     "ERR_NEEDMOREPARAMS",
-        //                     ":Not enough parameters");     //can not find this error type   
+        who.getServer()->reply(&who,
+                            "ERR_UNKNOWNERROR",
+                            ":invalid topic");
         return;
     }
-    setTopic(cmd[2]);
+    setTopic(cmd[2], c);
     std::time_t currentTime;
     std::time(&currentTime);
-    who.getServer()->reply(&who,
-                        this->_c->getChannelName(),
-                        &who.getNickName(),
+    who.getServer()->replyTime(&who, "topic set successed: ",
+                        c->getChannelName(),
+                        who.getNickName(),
                         currentTime); 
 }
 

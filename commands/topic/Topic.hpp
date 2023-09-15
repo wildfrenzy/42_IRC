@@ -10,9 +10,9 @@
 class Client;
 class Cmd;
 class Channel;
-class Mode
+class Mode;
 
-class Topic : public Cmd, public Mode
+class Topic: /*public Cmd, */public Mode
 {
     public:
         Topic(void);
@@ -21,11 +21,9 @@ class Topic : public Cmd, public Mode
         Topic&  operator=(const Topic& other);
 
         void    execute(Client& who, std::vector<std::string> cmd) const;
-        void    setTopic(const std::string topic);
-        bool    checkOperatorRight(Client& who);
-    private:
-        Channel* _c;
-}
+        void    setTopic(const std::string topic, Channel *c) const;
+        bool    checkOperatorRight(Client& who, Channel *c) const;
+};
 
 
 

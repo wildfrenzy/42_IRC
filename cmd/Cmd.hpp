@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:36 by yli               #+#    #+#             */
-/*   Updated: 2023/09/13 18:08:50 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/15 14:15:46 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ class Cmd
         virtual void	execute(Client &who, std::vector<std::string> tokens) const = 0;
 
     
-    protected:
-        std::vector<std::string> _tokens;
+    // protected:
+    //     std::vector<std::string> _tokens;
 };
 
 

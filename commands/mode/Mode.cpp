@@ -1,6 +1,6 @@
 #include "Mode.hpp"
 
-Mode::Mode() : Cmd(){}
+Mode::Mode() : Cmd() {}
 
 Mode::~Mode() {}
 
@@ -14,79 +14,80 @@ Mode& Mode::operator=(const Mode& other)
     return *this;
 }
 
-Channel* Mode::findChannel(Client& who, std::string channelName)
+Channel* Mode::findChannel(Client& who, std::string channelName) const
 {
     std::map<std::string, Channel *>::iterator it;
     std::map<std::string, Channel *> channels = who.getServer()->getChannels();
     for(it = channels.begin(); it != channels.end(); ++it)
     {
         if (it->first == channelName)
-            return *(it->second);
+            return it->second;
     }
     return NULL;
 }
 
-void    Mode::setInviteOnly(void)
+void    Mode::setInviteOnly(Channel*    channel) const
 {
-    this->_channel->setInviteOnly(true);
+    channel->setInviteOnly(true);
 }
 
-void    Mode::unsetsetInviteOnly(void)
+void    Mode::unsetInviteOnly(Channel*    channel) const
 {
-    this->_channel->setInviteOnly(false);
+    channel->setInviteOnly(false);
 }
 
-void    Mode::setKey(const std::string key)
+void    Mode::setKey(const std::string key, Channel*    channel) const
 {
-    this->_channel->setKey(key);
+    channel->setKey(key);
 }
 
-void    Mode::unsetKey(void)
+void    Mode::unsetKey(Channel*    channel) const
 {
-    this->_channel->setKey(NULL);
+    channel->setKey(NULL);
 }
 
-void    Mode::setTopicRgiht(void)
+void    Mode::setTopicRight(Channel*    channel) const
 {
-    this->_channel->setTopicRight(true);
+    channel->setTopicRight(true);
 }
 
-void    Mode::unsetsetTopicRight(void)
+void    Mode::unsetTopicRight(Channel*    channel) const
 {
-    this->_channel->setTopicRight(false);
+    channel->setTopicRight(false);
 }
 
-void    Mode::setUserLimit(size_t size)
+void    Mode::setUserLimit(size_t size, Channel*    channel) const
 {
-    this->_channel->setUserLimit(size);
+    channel->setUserLimit(size);
 }
 
-void    Mode::unsetUserLimit(void)
+void    Mode::unsetUserLimit(Channel*    channel) const
 {
-    this->_channel->setUserLimit(100000);
+    channel->setUserLimit(100000);
 }
 
-Client& Mode::findClient(Client& who, std::string nickName)
+Client& Mode::findClient(Client& who, std::string nickName) const
 {
     std::vector<Client*>::iterator it;
-    for(it = who.getServer().getClient().begin(); it != who.getServer().getClient().end(); ++it)
+    for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
     {
-        if (*it)->getNickName() == nickName;
-        return it;
+        if ((*it)->getNickName() == nickName);
+            return *(*it);
     }
-    return NULL;
-}
-void    setUserPrivilege(Client& c)
-{
-    this->_channel->addOperator(c);
+    return *who.getServer()->getClients().front(); //set bot as first client !!!!
 }
 
-void    unsetUserPrivileg(Client& c)
+void    Mode::setUserPrivilege(Client& c, Channel*    channel) const
 {
-    this->_channel->deleteOperator(c);
+    channel->addOperator(c);
 }
 
-bool    Mode::thirdcmdcheck(std::string cmd)
+void    Mode::unsetUserPrivilege(Client& c, Channel*    channel) const
+{
+    channel->deleteOperator(c);
+}
+
+bool    Mode::thirdcmdcheck(std::string cmd) const
 {
     for(unsigned long i = 0; i < cmd.size(); ++i)
     {
@@ -98,116 +99,116 @@ bool    Mode::thirdcmdcheck(std::string cmd)
     return false;
 }
 
-void    Mode::plusmode(Client& who, std::vector<std::string> cmd)
+void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const
 {
     if (cmd[2][1] == 'i' )
-        setInviteOnly();
+        setInviteOnly(channel);
     if (cmd[2][1] == 'k' || cmd[2][1] == 'l' || cmd[2][1] == 'o')
     {
-        if (cmd[3] == NULL)
+        if (cmd[3].empty())
         {
             who.getServer()->reply(&who,
                                 "ERR_NEEDMOREPARAMS",
                                 ":Not enough parameters");
             return;            
         }
-    }
-    if (cmd[2][1] == 't' )
-    {
-        if(thirdcmdcheck(cmd[3]))
+        if (cmd[2][1] == 't' )
         {
-            who.getServer()->reply(&who,
-                                "ERR_UNKNOWNMODE",
-                            ":is unknown mode char to me");
+            if(thirdcmdcheck(cmd[3]))
+            {
+                who.getServer()->reply(&who,
+                                    "ERR_UNKNOWNMODE",
+                                ":is unknown mode char to me");
+                return;
+            }     
+            setTopicRight(channel);
             return;
-        }     
-        setTopicRight();
-        return;
-    }
-    if (cmd[2][1] == 'k' )
-    {
-        if(thirdcmdcheck(cmd[3]))
+        }
+        if (cmd[2][1] == 'k' )
         {
-            who.getServer()->reply(&who,
-                                "ERR_UNKNOWNMODE",
-                            ":is unknown mode char to me");
+            if(thirdcmdcheck(cmd[3]))
+            {
+                who.getServer()->reply(&who,
+                                    "ERR_UNKNOWNMODE",
+                                ":is unknown mode char to me");
+                return;
+            }        
+            setKey(cmd[3], channel);
             return;
-        }        
-        setKey(cmd[3]);
-        return;
-    }
-    if (cmd[2][1] == 'l' )
-    {
-        int i = std::stoi(cmd[3]);
-        if (i <= 1)
-        {
-            who.getServer()->reply(&who,
-                                "ERR_UNKNOWNMODE",
-							   ":is unknown mode char to me");
-            return;          
         }
-        setUserLimit((size_t)i);
-        return;
-    }
-    if (cmd[2][1] == 'o' )
-    {
-        Client* c = findClient(cmd[3])
-        if (!c)
+        if (cmd[2][1] == 'l' )
         {
-            who.getServer()->reply(&who,
-                            "ERR_NOSUCHNICK",
-                            ":No such nick/channel");
-            return ;    
+            int i = std::stoi(cmd[3]);
+            if (i <= 1)
+            {
+                who.getServer()->reply(&who,
+                                    "ERR_UNKNOWNMODE",
+                                ":is unknown mode char to me");
+                return;          
+            }
+            setUserLimit((size_t)i, channel);
+            return;
         }
-        setUserPrivilege(c);
-        return;
-    } 
+        if (cmd[2][1] == 'o' )
+        {
+            Client& c = findClient(who, cmd[3]);
+            if (c.getNickName() == who.getServer()->getClients().front()->getNickName())
+            {
+                who.getServer()->reply(&who,
+                                "ERR_NOSUCHNICK",
+                                ":No such nick/channel");
+                return ;    
+            }
+            setUserPrivilege(c, channel);
+            return;
+        }
+    }
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
                     ":is unknown mode char to me");
     return;
 }
 
-void    Mode::minusmode(Client& who, std::vector<std::string> cmd)
+void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const
 {
     if (cmd[2][1] == 'i' )
     {
-        unsetsetInviteOnly();
+        unsetInviteOnly(channel);
         return;
     }
     if (cmd[2][1] == 't' )
     {
-        unsetTopicRight();
+        unsetTopicRight(channel);
         return;
     }
     if (cmd[2][1] == 'k' )
     {
-        unsetKey();
+        unsetKey(channel);
         return;
     }   
     if (cmd[2][1] == 'l' )
     {
-        unsetsetUserLimit();
+        unsetUserLimit(channel);
         return;
     }
     if (cmd[2][1] == 'o' )
     {
-        if(cmd[3] == NULL || thirdcmdcheck(cmd[3]))
+        if(cmd[3].empty() || thirdcmdcheck(cmd[3]))
         {
             who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",
                             ":is unknown mode char to me");
             return;
         }
-        Client* c = findClient(cmd[3])
-        if (!c)
+        Client& c = findClient(who, cmd[3]);
+        if (c.getNickName() == who.getServer()->getClients().front()->getNickName())
         {
             who.getServer()->reply(&who,
                             "ERR_NOSUCHNICK",
                             ":No such nick/channel");
             return;    
         }
-        unsetUserPrivilege(c);
+        unsetUserPrivilege(c, channel);
         return;
     } 
     who.getServer()->reply(&who,
@@ -229,15 +230,14 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
 							   ":Not enough parameters");
 		return;
 	}
-    Channel *c = findChannel(who, cmd[1]);
-    if (!c)
+    Channel *channel = findChannel(who, cmd[1]);
+    if (!channel)
     {
         who.getServer()->reply(&who,
                                 "ERR_NOSUCHCHANNEL",
 							   ":No such channel");
         return;   
     }
-    this->_channel = c;
     if (cmd[2][0] != '+' || cmd[2][0] != '-' || cmd[2][2] != 0)
     {
         who.getServer()->reply(&who,
@@ -245,39 +245,14 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
 							   ":is unknown mode char to me");
         return;          
     }
-    if (this->_channel->operatorRight(who))
+    if (channel->operatorRight(who))
     {
         if (cmd[2][0] == '+')
-            plusmode(who, cmd);
+            plusmode(who, cmd, channel);
         else if (cmd[2][0] == '-')
-            minusmode(who, cmd);
+            minusmode(who, cmd, channel);
         return;
     }
-    // if (!this->_channel->operatorRight(who))
-    // {
-    //     if (cmd[2][1] == 't')
-    //     {
-    //         if (cmd[3] == NULL)
-    //         {
-    //             who.getServer()->reply(&who,
-    //                                 "ERR_NEEDMOREPARAMS",
-    //                                 ":Not enough parameters");          
-    //         }
-    //         if ((cmd[2][0] == '+'))
-    //         {
-    //             if(thirdcmdcheck(cmd[3]))
-    //             {
-    //                 who.getServer()->reply(&who,
-    //                                     "ERR_UNKNOWNMODE",
-    //                                 ":is unknown mode char to me");
-    //             }     
-    //             setTopic(cmd[3]);
-    //         }
-    //         if ((cmd[2][0] == '-'))
-    //             unsetTopic();
-    //         return;
-    //     }     
-    // }
     who.getServer()->reply(&who,
                         "ERR_NOPRIVILEGES",
                         ":Permission Denied- You're not an IRC operator");

@@ -18,7 +18,6 @@ class Nick: public Cmd
         void    execute(Client& who, std::vector<std::string> cmd) const;
     
     private:
-        std::string _reply(int err);
         Nick(const Nick& other);
         Nick& operator=(const Nick& other);
 };

@@ -1,6 +1,6 @@
 #include "Privmsg.hpp"
 
-Privmsg::Privmsg(void): Cmd(), Mode(){}
+Privmsg::Privmsg(void): /*Cmd(), */Mode(){}
 
 Privmsg::~Privmsg(void) {}
 
@@ -25,14 +25,14 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
         return ;             
     }
     std::vector<std::string>::iterator it;
-    for (it = cmd.begin() + 2; it < cmd.end(), ++it)
-        channel->broadcast(*it);
+    for (it = cmd.begin() + 2; it < cmd.end(); ++it)
+        channel->broadcast(who.getServer(), *it);
 }
 
 void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
 {
-    Client& client = findClient(who, cmd[1])
-    if (!client)
+    Client& client = findClient(who, cmd[1]);
+    if (client.getNickName() == who.getServer()->getClients().front()->getNickName())
     {
         who.getServer()->reply(&who,
                         "ERR_NOSUCHNICK",
@@ -40,7 +40,7 @@ void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
         return ;        
     }
     std::vector<std::string>::iterator it;
-    for (it = cmd.begin() + 2; it < cmd.end(), ++it)
+    for (it = cmd.begin() + 2; it < cmd.end(); ++it)
         client.setWriteBuff((*it));
 }
 

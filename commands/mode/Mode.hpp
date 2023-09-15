@@ -8,6 +8,7 @@
 class Client;
 class Cmd;
 class Channel;
+class Server;
 
 
 class   Mode: public Cmd
@@ -18,27 +19,24 @@ class   Mode: public Cmd
         Mode(const Mode& other);
         Mode& operator=(const Mode& other);
     
-        void    execute(Client& who, std::vector<std::string> cmd) const;
-        Channel* findChannel(Client& who, std::string channelName);
-        Client& findClient(Client& who, std::string nickName)
+        virtual    void    execute(Client& who, std::vector<std::string> cmd) const;
+        Channel* findChannel(Client& who, std::string channelName) const;
+        Client& findClient(Client& who, std::string nickName) const;
 
-        void    setInviteOnly(void);
-        void    unsetInviteOnly(void);
-        void    setKey(const std::string key);
-        void    unsetKey(void);
-        void    setTopicRight(void);
-        void    unsetTopicRight(void);
-        void    setUserLimit(size_t size);
-        void    unsetUserLimit(void);
-        void    setUserPrivilege(Client& c);
-        void    unsetUserPrivileg(Client& c);
-        void    plusmode(Client& who, std::vector<std::string> cmd);
-        void    minusmode(Client& who, std::vector<std::string> cmd);
-        bool    thirdcmdcheck(std::string content);
-
-    private:
-        Channel*    _channel;
-}
+        void    setInviteOnly(Channel*    channel) const;
+        void    unsetInviteOnly(Channel*    channel) const;
+        void    setKey(const std::string key, Channel*    channel) const;
+        void    unsetKey(Channel*    channel) const;
+        void    setTopicRight(Channel*    channel) const;
+        void    unsetTopicRight(Channel*    channel) const;
+        void    setUserLimit(size_t size, Channel*    channel) const;
+        void    unsetUserLimit(Channel*    channel) const;
+        void    setUserPrivilege(Client& c, Channel*    channel) const;
+        void    unsetUserPrivilege(Client& c, Channel*    channel)  const;
+        void    plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
+        void    minusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
+        bool    thirdcmdcheck(std::string content) const;
+};
 
 
 #endif

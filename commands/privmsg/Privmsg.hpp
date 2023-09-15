@@ -11,7 +11,7 @@ class Cmd;
 class Channel;
 class Mode;
 
-class Privmsg: public Cmd, public Mode
+class Privmsg: /*public Cmd, */public Mode
 {
     public:
         Privmsg(void);
@@ -22,9 +22,6 @@ class Privmsg: public Cmd, public Mode
         void    sendToClient(Client& who, std::vector<std::string> cmd) const;
         void    sendToChannel(Client& who, std::vector<std::string> cmd) const;
         void    execute(Client& who, std::vector<std::string> cmd) const;
-    
-    // private:
-    //     Channel* _c;
 };
 
 

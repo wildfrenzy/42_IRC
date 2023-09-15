@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 03:05:06 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/14 14:37:08 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/15 14:49:03 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,12 @@
 #include "./../commands/user/User.hpp"
 #include "./../commands/nick/Nick.hpp"
 #include "./../commands/join/Join.hpp"
+#include "./../commands/invite/Invite.hpp"
+#include "./../commands/privmsg/Privmsg.hpp"
+#include "./../commands/mode/Mode.hpp"
+#include "./../commands/topic/Topic.hpp"
 #include "./../commands/kick/Kick.hpp"
+
 
 #include "./../channel/Channel.hpp"
 
@@ -79,7 +84,7 @@ public:
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
-	void	reply(Client *who, std::string msg, std::string channel, std::string nickname, std::time currentTime);
+	void	replyTime(Client *who, std::string msg, std::string channel, std::string nickname, std::time_t currentTime);
 
 private:
 	int				_mainFd;
