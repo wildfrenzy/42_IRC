@@ -16,6 +16,11 @@
 User::User() : Cmd(){}
 User::~User() {}
 
+#define BLUE "\x1b[1;36m"
+#define YELLOW "\x1b[1;93m"
+#define RED "\x1b[1;31m"
+#define RES "\x1b[0m"
+
 // can we have users with same username ?
 // USER <username> 0 * :Real name
 void User::execute(Client &who, std::vector <std::string> cmd) const {
@@ -60,6 +65,7 @@ void User::execute(Client &who, std::vector <std::string> cmd) const {
 		who.setRealName(rn);
 	}
 	//who.setRegistered();
+	who.getServer()->reply(&who, "", YELLOW"[" + who.getUserName() + "]" + " Username set successfully." + RES);
 	if (who.getAuthenticated() && !who.getRegistered())
 		who.setRegistered();
 }

@@ -1,6 +1,7 @@
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
+#include <iostream>
 #include <set>
 #include "../client/Client.hpp"
 //#include "./../bot/Bot.hpp"
@@ -12,9 +13,8 @@ class Channel
 {
     public:
         Channel(void);
-        ~Channel(void){};
-        Channel(const Channel& other);
-        Channel& operator=(const Channel& other);
+        ~Channel(void);
+
 
         void    setInviteOnly(bool invite_only);
         void    setUserLimit(size_t size);
@@ -26,7 +26,7 @@ class Channel
         size_t  getUserLimit(void);
         bool    getInviteOnly(void);
         std::string getChannelName(void);
-        bool    operatorRight(Client& c);
+     //   bool    operatorRight(Client& c);
         size_t  getMemberSize(void);
         bool    getTopicRight(void);
         std::string getTopic(void);

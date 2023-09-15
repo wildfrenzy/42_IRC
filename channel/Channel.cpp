@@ -4,6 +4,8 @@ Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(tr
 {
 }
 
+Channel::~Channel() {}
+
 Channel::Channel(const Channel& other)
 {
     *this = other;
@@ -40,7 +42,7 @@ void    Channel::setKey(const std::string key)
     this->_key = key;
 }
 
-void    Channel::setTopic(const std::string topic)
+void    Channel::setTopic(std::string &topic)
 {
     this->_topic = topic;
 }
@@ -60,7 +62,7 @@ std::string Channel::getChannelName(void)
     return this->_channelName;
 }
 
-bool    Channel::operatorRight(Client& c)
+/*bool    Channel::operatorRight(Client& c)
 {
     if (this->_operators.empty())
         return true;
@@ -74,7 +76,7 @@ bool    Channel::operatorRight(Client& c)
         }
     }
     return false;
-}
+}*/
 
 size_t  Channel::getMemberSize(void)
 {
