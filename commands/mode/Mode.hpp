@@ -2,7 +2,6 @@
 #define MODE_HPP
 
 #include "./../../cmd/Cmd.hpp"
-// #include "./../../channel/Channel.hpp"
 // #include "./../../client/Client.hpp"
 
 class Client;

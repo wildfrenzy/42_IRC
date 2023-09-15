@@ -1,4 +1,5 @@
 #include "Mode.hpp"
+#include "./../../channel/Channel.hpp"
 
 Mode::Mode() : Cmd() {}
 
