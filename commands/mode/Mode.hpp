@@ -61,4 +61,21 @@ To give/take channel operator privilege
 #channel: Replace this with the name of the channel where you want to set the user limit.
 +l: This indicates that you are setting a user limit.
 limit: Replace this with the maximum number of users you want to allow in the channel.
+
+In IRC (Internet Relay Chat), if you send the command "/MODE #channelname" without specifying any mode changes or parameters, you typically won't receive an error. The IRC server will usually respond by showing you the current modes of the channel, including things like whether it's moderated (+m), invite-only (+i), or other channel-specific settings.
+
+Here's an example of what a response might look like:
+
+arduino
+Copy code
+[Server] MODE #channelname +tn
+In this example, the server is indicating that the channel "#channelname" has modes +t and +n set. The specific modes and their meanings can vary depending on the IRC network and channel configuration.
+
+If you intend to make specific mode changes, you would include the appropriate parameters after the "/MODE" command. For example:
+
+/MODE #channelname +o username would give operator status to the user with the username.
+/MODE #channelname +i would set the channel to invite-only mode.
+/MODE #channelname -m would remove the moderated mode.
+Make sure to follow the correct syntax and understand the channel's current modes and permissions to avoid unintended consequences.
+
 */

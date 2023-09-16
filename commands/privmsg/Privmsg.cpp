@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 03:16:19 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:47:06 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
         return ;        
     }
     std::vector<std::string>::iterator it;
+    // for (it = cmd.begin() + 2; it < cmd.end(); ++it)
+    //     client.setWriteBuff((*it));
     for (it = cmd.begin() + 2; it < cmd.end(); ++it)
-        client.setWriteBuff((*it));
+        client.getServer()->reply(&client, "", *it);    
 }
 
 

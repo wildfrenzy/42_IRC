@@ -15,7 +15,7 @@ Topic&  Topic::operator=(const Topic& other)
     return *this;
 }
 
-void    Topic::setTopic(const std::string topic, Channel *c) const
+void    Topic::setTopic(std::string& topic, Channel *c) const
 {
     c->setTopic(topic);
 }

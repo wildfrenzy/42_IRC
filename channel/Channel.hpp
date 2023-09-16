@@ -20,7 +20,7 @@ class Channel
         void    setUserLimit(size_t size);
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
-        void    setTopic(std::string topic);
+        void    setTopic(std::string& topic);
         void    setTopicRight(bool topic_right);
         std::string getKey(void);
         size_t  getUserLimit(void);

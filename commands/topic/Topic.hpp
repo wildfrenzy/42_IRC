@@ -19,7 +19,7 @@ class Topic: public Cmd
         Topic&  operator=(const Topic& other);
 
         void    execute(Client& who, std::vector<std::string> cmd) const;
-        void    setTopic(const std::string topic, Channel *c) const;
+        void    setTopic(std::string& topic, Channel *c) const;
         bool    checkOperatorRight(Client& who, Channel *c) const;
 };
 

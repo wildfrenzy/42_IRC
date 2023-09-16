@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 05:41:44 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:57:53 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void    Channel::setKey(const std::string key)
     this->_key = key;
 }
 
-void    Channel::setTopic(std::string topic)
+void    Channel::setTopic(std::string& topic)
 {
     this->_topic = topic;
 }
