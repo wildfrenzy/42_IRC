@@ -111,16 +111,24 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 			return;
 		}
 		if (channels.find(ch[0]) == channels.end()){
-			serv->addChannel(ch[0]);
+			std::cout << "channel added: " << ch[0] << std::endl;
+			serv->addChannel(ch[0]); //?
 		} else if ((!channels[ch[0]]->getKey().empty()) && (ch.size() != 2 || channels[ch[0]]->getKey() != ch[1])) {
 			serv->reply(&who, "ERR_BADCHANNELKEY", ch[0] + " :Cannot join channel (+k)");
 			return;
 		} else if (channels[ch[0]]->getInviteOnly()){
-			serv->reply(&who, "ERR_INVITEONLYCHAN", ch[0] + ":Cannot join channel (+i)");
+			serv->reply(&who, "ERR_INVITEONLYCHAN", ch[0] + " :Cannot join channel (+i)");
 			return;
 		} else if (channels[ch[0]]->getMemberSize() == channels[ch[0]]->getUserLimit()){
-			serv->reply(&who, "ERR_CHANNELISFULL", ch[0] + ":Cannot join channel (+l)");
+			serv->reply(&who, "ERR_CHANNELISFULL", ch[0] + " :Cannot join channel (+l)");
 			return;
+		}
+		std::vector<Client *> members = channels[ch[0]]->getMembers();
+		for (std::vector<Client *>::iterator jt = members.begin(); jt != members.end() ; ++jt) {
+			if (*jt == &who){
+				serv->reply(&who, "ERR_USERONCHANNEL", cmd[1] + " " + cmd[2] + " :is already on channel");
+				return;
+			}
 		}
 		channels[ch[0]]->addMember(who);
 		this->joined(who, ch[0], channels);
