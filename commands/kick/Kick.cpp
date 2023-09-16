@@ -59,6 +59,15 @@ Client *findHim(std::vector<Client *> clients, std::string nick) {
 	return cl;
 }
 
+Client *findNotHim(std::vector<Client *> clients, std::string nick) {
+	Client *cl = NULL;
+	for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it) {
+		if ((*it)->getNickName() != nick)
+			return *it;
+	}
+	return cl;
+}
+
 void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 	Server *serv = who.getServer();
 	std::map<std::string, Channel *> &channels = serv->getChannels();
@@ -73,7 +82,7 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 		serv->reply(&who, "ERR_NOSUCHCHANNEL", cmd[1] + " :No such channel");
 		return;
 	} else if (!channels[cmd[1]]->operatorRight(who)){
-		serv->reply(&who, "ERR_CHANOPRIVSNEEDED", cmd[1] + " :You're not channel operator");
+		serv->reply(&who, "ERR_CHANOPRIVSNEEDED", cmd[2] + " " + cmd[1] + " :You're not channel operator");
 		return;
 	} else if (!isMember(channels[cmd[1]]->getMembers(), cmd[2])){
 		serv->reply(&who, "ERR_USERNOTINCHANNEL", cmd[2] + " " + cmd[1] +
@@ -92,7 +101,16 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 
 	Client *found = findHim(channels[cmd[1]]->getMembers(), cmd[2]);
 	if (found)
+	{
+		if (channels.size() > 1){
+			Client *newOp = findNotHim(channels[cmd[1]]->getMembers(), cmd[2]);
+			channels[cmd[1]]->addOperator(*newOp);
+		}
 		channels[cmd[1]]->deleteMembers(found);
+		found = findHim(channels[cmd[1]]->getOperators(), cmd[2]);
+		if (found)
+			channels[cmd[1]]->deleteOperator(found);
+	}
 	else
 		std::cout << RED"not found"RES << std::endl;
 

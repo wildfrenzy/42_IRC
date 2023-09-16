@@ -24,7 +24,7 @@ Server::Server(char *port, char *password){
 
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
-	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int)))
+	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEPORT, &opt,sizeof(int))) //SO_REUSEADDR |
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 
 	fcntl(this->_mainFd, F_SETFL, O_NONBLOCK);
@@ -43,6 +43,7 @@ Server::Server(char *port, char *password){
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 
 	this->_select();
+	//how about sending same struct sockaddr_in address; and use it in select
 }
 
 Server::~Server() {
@@ -177,6 +178,7 @@ void Server::_select() {
 						rb = this->_clients[i]->getReadBuff();
 						rb = rb.substr(rb.find('\n') + 1);
 						this->_clients[i]->setReadBuff(rb);
+						std::cout << "TMP check:" << tmp  << ":" << std::endl;
 						this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(tmp));
 					}
 				//}

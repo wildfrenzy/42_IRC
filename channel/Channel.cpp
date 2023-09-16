@@ -125,7 +125,11 @@ void    Channel::deleteOperator(Client& c)
         return;
     }
 }
-
+void    Channel::deleteOperator(Client* c)
+{
+	std::cout << BLUE"deleting operator "RES << c->getNickName() << std::endl;
+	this->_operators.erase(std::find(this->_operators.begin(), this->_operators.end(), c));
+}
 void    Channel::addMember(Client& c)
 {
 	if (this->_members.size() < 1)
@@ -135,7 +139,7 @@ void    Channel::addMember(Client& c)
 
 void    Channel::deleteMembers(Client* c)
 {
-	std::cout << BLUE"deleting "RES << c->getNickName() << std::cout;
+	std::cout << BLUE"deleting member "RES << c->getNickName() << std::endl;
 	this->_members.erase(std::find(this->_members.begin(), this->_members.end(), c));
 }
 

@@ -32,6 +32,7 @@ class Channel
         std::string getTopic(void);
         void    addOperator(Client& c);
         void    deleteOperator(Client& c);
+		void    deleteOperator(Client* c);
 		void    deleteMembers(Client& c);
 		void    deleteMembers(Client* c);
         void    addMember(Client& c);

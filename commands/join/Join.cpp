@@ -123,13 +123,15 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 			serv->reply(&who, "ERR_CHANNELISFULL", ch[0] + " :Cannot join channel (+l)");
 			return;
 		}
+		std::cout << "check if on channel" << std::endl;
 		std::vector<Client *> members = channels[ch[0]]->getMembers();
 		for (std::vector<Client *>::iterator jt = members.begin(); jt != members.end() ; ++jt) {
 			if (*jt == &who){
-				serv->reply(&who, "ERR_USERONCHANNEL", cmd[1] + " " + cmd[2] + " :is already on channel");
+				serv->reply(&who, "ERR_USERONCHANNEL", who.getNickName() + " " + ch[0] + " :is already on channel");
 				return;
 			}
 		}
+		std::cout << "check if on channel end" << std::endl;
 		channels[ch[0]]->addMember(who);
 		this->joined(who, ch[0], channels);
 	}
