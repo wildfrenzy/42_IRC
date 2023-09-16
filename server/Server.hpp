@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 02:05:35 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 02:05:41 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
-// /connect -nocap -notls  localhost 6667
-//-rawlog ~/Code/IRC/myIRC/log.log
+// /connect -nocap -notls localhost 6667
+// /quote PASS pass
+
 //#include "./../client/Client.hpp"
 //#include "./../cmd/Cmd.hpp"
 //#include "./../bot/Bot.hpp"
@@ -73,6 +86,7 @@ public:
 	void addChannel(std::string name);
 
 	void	reply(Client *who, std::string reply, std::string msg);
+	void	replyNoServ(Client *who, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 	void	replyTime(Client *who, std::string msg, std::string channel, std::string nickname, std::time_t currentTime);
 

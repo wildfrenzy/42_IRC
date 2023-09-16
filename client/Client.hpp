@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 20:06:33 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/16 02:29:41 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ public:
 
 	std::string const &getModes() const;
 	void setModes(std::string &m);
+	void addModes(std::string m);
 
 	std::string const &getRealName() const;
 	void setRealName(std::string &rn);

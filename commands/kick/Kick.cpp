@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Kick.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 05:08:29 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 05:29:04 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Kick.hpp"
 #include "./../../client/Client.hpp"
 #include <string>
@@ -38,6 +50,15 @@ std::string Kick::cmdToStr(std::vector<std::string> cmd) const{
 	return str;
 }
 
+Client *findHim(std::vector<Client *> clients, std::string nick) {
+	Client *cl = NULL;
+	for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it) {
+		if ((*it)->getNickName() == nick)
+			return *it;
+	}
+	return cl;
+}
+
 void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 	Server *serv = who.getServer();
 	std::map<std::string, Channel *> &channels = serv->getChannels();
@@ -65,8 +86,20 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 
 	std::string reason = cmdToStr(cmd);
 	if (reason.find(':') != std::string::npos)
-		reason = reason.substr(reason.find(':'));
+		reason = reason.substr(reason.find(':') + 1);
 	serv->reply(channels[cmd[1]]->getMembers(), "", "KICK " + cmd[1] + " " + cmd[2] + " " +
 		(!reason.empty() ? reason : ":No reason specified" ));
-	channels[cmd[1]]->deleteMembers(who);
+
+	Client *found = findHim(channels[cmd[1]]->getMembers(), cmd[2]);
+	if (found)
+		channels[cmd[1]]->deleteMembers(found);
+	else
+		std::cout << RED"not found"RES << std::endl;
+
+	std::vector<Client*> members = channels[cmd[1]]->getMembers();
+	std::cout << "Members check after kick: " << std::endl;
+	for (std::vector<Client*>::iterator it = members.begin() ; it != members.end() ; ++it) {
+		std::cout << (*it)->getNickName() + " ";
+	}
+	std::cout  << std::endl;
 }

@@ -1,6 +1,14 @@
-//
-// Created by Nadiia Maliarenko on 15.09.23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Invite.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/15 03:35:02 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 03:55:21 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Invite.hpp"
 #include "./../../client/Client.hpp"
@@ -21,12 +29,14 @@ bool Invite::isMember(std::vector<Client *> members, std::string nick) const{
 	return false;
 }
 
-// Client &Invite::findClient(std::vector<Client *> clients, std::string nick) const {
-// 	for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it) {
-// 		if ((*it)->getNickName() == nick)
-// 			return *it;
-// 	}
-// }
+ Client &Invite::findClientt(std::vector<Client *> clients, std::string nick) const {
+	Client *cl = NULL;
+ 	for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it) {
+ 		if ((*it)->getNickName() == nick)
+ 			return **it;
+ 	}
+	 return *cl;
+ }
 
 // Command: INVITE
 // Parameters: <nickname> <channel>
@@ -52,12 +62,18 @@ void Invite::execute(Client &who, std::vector <std::string> cmd) const {
 	} else if (isMember(channels[cmd[2]]->getMembers(), cmd[1])){
 		serv->reply(&who, "ERR_USERONCHANNEL", cmd[1] + " " + cmd[2] + " :is already on channel");
 		return;
+	} else if (!isMember(serv->getClients(), cmd[1])){
+		serv->reply(&who, "ERR_NOSUCHNICK", cmd[1] + " :No such nick");
+		return;
 	}
-	Client &member = findClient(who, cmd[1]);
-	channels[cmd[2]]->addMember(member);
+	Client &member = findClientt(serv->getClients(), cmd[1]);
+	//Client &member = findClient(who, cmd[1]);
+
 	serv->reply(&who, "RPL_INVITING", cmd[1] + " " + cmd[2]);
 	serv->reply(&member, "", "INVITE " + cmd[1] + " :" +cmd[2]);
+
 }
 
+//channels[cmd[2]]->addMember(member); - apparently we don't add user to channel during invitation xD
 
 // Client& findClient(Client& who, std::string nickName) const;

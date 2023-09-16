@@ -20,19 +20,20 @@ class Channel
         void    setUserLimit(size_t size);
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
-        void    setTopic(const std::string topic);
+        void    setTopic(std::string topic);
         void    setTopicRight(bool topic_right);
         std::string getKey(void);
         size_t  getUserLimit(void);
         bool    getInviteOnly(void);
         std::string getChannelName(void);
-     //   bool    operatorRight(Client& c);
+        bool    operatorRight(Client& c);
         size_t  getMemberSize(void);
         bool    getTopicRight(void);
         std::string getTopic(void);
         void    addOperator(Client& c);
         void    deleteOperator(Client& c);
 		void    deleteMembers(Client& c);
+		void    deleteMembers(Client* c);
         void    addMember(Client& c);
 		std::vector<Client*> &getMembers();
         void    broadcast(Server * server, std::string& msg);
@@ -47,6 +48,8 @@ class Channel
         std::string _topic;
         std::vector<Client*> _members;
         std::vector<Client*> _operators;
+		Channel(const Channel& other);
+		Channel &operator=(const Channel& other);
 };
 
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Mode.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 01:37:14 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 01:38:47 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Mode.hpp"
 #include "./../../channel/Channel.hpp"
 
@@ -240,6 +252,15 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
 							   ":No such channel");
         return;   
     }
+	if (cmd.size() == 2){
+		std::string modes;
+		modes += channel->getInviteOnly() ? "i" : "";
+		modes += channel->getTopicRight() ? "t" : "";
+		modes += !channel->getKey().empty() ? "k" : "";
+		modes += channel->getUserLimit() < 10000 ? "l" : "";
+		who.getServer()->reply(&who,"", "MODE " + channel->getChannelName() + (!modes.empty() ? " +" + modes : ""));
+		return;
+	}
     if (cmd[2][0] != '+' || cmd[2][0] != '-' || cmd[2][2] != 0)
     {
         who.getServer()->reply(&who,

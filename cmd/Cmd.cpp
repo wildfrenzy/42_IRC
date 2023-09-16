@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/15 20:16:34 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/16 03:14:25 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ Channel* Cmd::findChannel(Client& who, std::string channelName) const
 Client& Cmd::findClient(Client& who, std::string nickName) const
 {
     std::vector<Client*>::const_iterator it;
-
+	//Client *cl = NULL;
     for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
     {
         if ((*it)->getNickName() == nickName)
             return *(*it);
     }
+	//return *cl; //this way it works, but u need to check on the output if its not null
     return *who.getServer()->getClients().front(); //set bot as first client !!!!
 }

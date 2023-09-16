@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 00:34:30 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 04:56:46 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Server.hpp"
+#include <unistd.h>
 
 Server::Server(char *port, char *password){
 	int opt = 1;
@@ -32,7 +45,22 @@ Server::Server(char *port, char *password){
 	this->_select();
 }
 
-Server::~Server() {}
+Server::~Server() {
+	close(_mainFd);
+	for (std::vector <Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
+		close((*it)->getFd());
+		delete *it;
+	}
+	for (std::map<std::string, Cmd *>::iterator it = _commands.begin(); it != _commands.end(); ++it) {
+		delete it->second;
+	}
+	for (std::map<std::string, Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
+		delete it->second;
+	}
+	_clients.clear();
+	_commands.clear();
+	_channels.clear();
+}
 
 Server::Server(const Server &s) {
 	(void)s;
@@ -58,7 +86,8 @@ short Server::validatePort(char *port) {
 }
 
 void Server::_select() {
-	//add a bot here!!!!
+	//add a bot here!!!! - no, bot is separate program.
+	// dont change this function
 	fd_set r, w; //read, write
 	int newfd, maxFd = this->_mainFd;
 	struct sockaddr_in address;
@@ -205,16 +234,23 @@ void Server::addChannel(std::string name) {
 	std::cout << "New channel just appeared : " << name << std::endl;
 }//change logic later!!!!
 
+void Server::replyNoServ(Client *who, std::string msg) {
+	std::string writeBuff = who->getWriteBuff();
+
+	std::string message = msg + "\r\n";
+	std::cout << BLUE"MESSAGE: "RES << message;
+	who->setWriteBuff(writeBuff.append(message));
+}
 
 void Server::reply(Client *who, std::string reply, std::string msg) {
 	std::string writeBuff = who->getWriteBuff();
 	//in case not everything was sent before
 
-	std::string message = ":irc_server " + (reply.empty() ? "" : this->_replies[reply] + " ");
+	std::string message = ":irc_server" + (reply.empty() ? "" : " " + this->_replies[reply] + " ");
 	if (!reply.empty())
 		message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
 	message += " " + msg + "\r\n";
-	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
+	std::cout << BLUE"MESSAGE: "RES << message;
 	who->setWriteBuff(writeBuff.append(message));
 }
 

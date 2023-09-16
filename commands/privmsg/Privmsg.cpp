@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Privmsg.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 03:16:19 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Privmsg.hpp"
 #include "./../../client/Client.hpp"
 
@@ -67,7 +79,7 @@ void    Privmsg::execute(Client& who, std::vector<std::string> cmd) const
                             ":invalid content");
         return;
     }
-    if (cmd[1][0] == '#')
+    if (cmd[1][0] == '#') //channl can start with '&' also
         sendToChannel(who, cmd);
     else
         sendToClient(who, cmd);

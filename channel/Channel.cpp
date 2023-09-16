@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Channel.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 05:41:44 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Channel.hpp"
+#include <algorithm>
 
 Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true)
 {
@@ -42,7 +55,7 @@ void    Channel::setKey(const std::string key)
     this->_key = key;
 }
 
-void    Channel::setTopic(std::string &topic)
+void    Channel::setTopic(std::string topic)
 {
     this->_topic = topic;
 }
@@ -62,7 +75,7 @@ std::string Channel::getChannelName(void)
     return this->_channelName;
 }
 
-/*bool    Channel::operatorRight(Client& c)
+bool    Channel::operatorRight(Client& c)
 {
     if (this->_operators.empty())
         return true;
@@ -76,7 +89,7 @@ std::string Channel::getChannelName(void)
         }
     }
     return false;
-}*/
+}
 
 size_t  Channel::getMemberSize(void)
 {
@@ -115,9 +128,19 @@ void    Channel::deleteOperator(Client& c)
 
 void    Channel::addMember(Client& c)
 {
+	if (this->_members.size() < 1)
+		this->_operators.push_back(&c);
     this->_members.push_back(&c);
 }
 
+void    Channel::deleteMembers(Client* c)
+{
+	std::cout << BLUE"deleting "RES << c->getNickName() << std::cout;
+	this->_members.erase(std::find(this->_members.begin(), this->_members.end(), c));
+}
+
+//this one didnt delete it >.<, we have to delete by pointer, not reference.
+// the one up works :)
 void    Channel::deleteMembers(Client& c)
 {
     for (std::vector<Client*>::iterator it = this->_members.begin(); it != this->_members.end(); ++it)

@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 01:07:17 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 20:17:15 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/16 04:27:03 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,20 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
     {
         if (who.getServer()->getClients()[i]->getNickName() == ni)
         {
-            who.getServer()->reply(&who, "ERR_NICKNAMEINUSE", ":Nickname is already in use");
+			size_t num = who.getServer()->getClients().size();
+			std::stringstream str;
+			str << num;
+			std::string result;
+			str >> result;
+			who.getServer()->replyNoServ(&who, ":irc_serv 433 " + ni + " user" + result + " :Nickname is already in use");
+            //who.getServer()->reply(&who, "ERR_NICKNAMEINUSE", ":Nickname is already in use");
             return;
         }
 
     }
+	std::cout << "test: " << ni << std::endl;
     who.setNickName(ni);
-    who.getServer()->reply(&who, "", who.getUserName() + "Nickname set successfully.");
+    who.getServer()->reply(&who, "", who.getUserName() + " Nickname set successfully.");
 }
 
 /*In IRC (Internet Relay Chat), server implementations may have their own specific rules and restrictions regarding channel and nickname naming, but generally, 

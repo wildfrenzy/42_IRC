@@ -6,12 +6,15 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 20:06:38 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/16 02:30:00 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 // #include "./../server/Server.hpp"
+
+#define YELLOW "\x1b[1;93m"
+#define RES "\x1b[0m"
 
 Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(""),
 		_authenticated(false), _registered(false){}
@@ -82,14 +85,14 @@ void Client::setRegistered() {
 	if (!this->_registered)
 	{
 		this->_registered = true;
-		std::string msg = ":Welcome to the IRC Network" + (!this->_nickName.empty() ? ", " + this->_nickName : ", new user") +
-				"[!" + this->_userName + "@" + this->_host + "]";
+		std::string msg = YELLOW"Welcome to the IRC Network" + (!this->_nickName.empty() ? ", " + this->_nickName : ", new user") +
+				"!" + this->_userName + "@" + this->_host + RES;
 		this->_server->reply(this, "RPL_WELCOME", msg);
 		this->_server->reply(this, "RPL_YOURHOST",
-							 ":Your host is irc server by nmaliare and yli, running version 1.0");
+							 YELLOW"Your host is irc server by nmaliare and yli, running version 1.0"RES);
 		this->_server->reply(this, "RPL_CREATED",
-							 ":This server was created on September 10, 2023");
-		this->_server->reply(this, "RPL_MYINFO", "irc server v1.0 itkol");
+							 YELLOW"This server was created on September 10, 2023"RES);
+		this->_server->reply(this, "RPL_MYINFO", YELLOW"irc server v1.0 itkol"RES);
 
 	}
 	else
@@ -161,6 +164,10 @@ std::string const &Client::getModes() const {
 
 void Client::setModes(std::string &m) {
 	this->_modes = m;
+}
+
+void Client::addModes(std::string m) {
+	this->_modes += m;
 }
 
 std::string const &Client::getRealName() const {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Join.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/16 01:13:22 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/16 02:48:44 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 //
 // Created by Nadiia Maliarenko on 14.09.23.
 //
@@ -5,16 +17,19 @@
 #include "Join.hpp"
 #include "./../../client/Client.hpp"
 #include <string>
+#include <algorithm>
 
 Join::Join() : Cmd(){}
 
 Join::~Join() {}
 
-std::string vecToUsersStr(std::vector<Client *> clients){
+std::string vecToUsersStr(std::vector<Client *> clients, Channel *cn){
 	std::string str;
 	for (size_t i = 0; i < clients.size(); ++i) {
-		//if (clients[i]->getModes().find('o') != clients[i]->getModes().end())
-		//	str.append("@");
+		if (std::find(cn->getOperators().begin(), cn->getOperators().end(), clients[i]) != cn->getOperators().end())
+			str.append("@");
+		/*if (clients[i]->getModes().find('o') != std::string::npos)
+			str.append("@");*/
 		str.append(clients[i]->getNickName());
 		if (i != clients.size() - 1)
 			str.append(" ");
@@ -58,16 +73,19 @@ void Join::joined(Client &who, std::string channel, std::map <std::string, Chann
 	Server *serv = who.getServer();
 	std::vector<Client *> members = channels[channel]->getMembers();
 
-	serv->reply(members, "", "JOIN " + channel + " "
-						  + who.getNickName() + " is joining the channel " + channel);
+	serv->replyNoServ(&who, ":irc_server NOTICE "
+							+ channel +
+							" :Welcome to " + channel + ", " + who.getNickName() +
+							"! Enjoy your stay.");
 
 	if (channels[channel]->getTopic().empty())
 		serv->reply(&who, "RPL_NOTOPIC", channel + " :No topic is set");
 	else
-		serv->reply(&who, "RPL_TOPIC", channel + " " + ":Welcome to the channel " +
+		serv->reply(&who, "RPL_TOPIC", channel + " :Channel topic is " +
 							channels[channel]->getTopic() + "!");
-	serv->reply(&who, "RPL_NAMREPLY", "= " + channel + " " + vecToUsersStr(members));
-	serv->reply(&who, "RPL_ENDOFNAMES", channel + " :End of user's list.");
+	//serv->reply(&who, "RPL_TOPICWHOTIME", channel + "TemporaryTest 16090246");
+	serv->reply(&who, "RPL_NAMREPLY",  "= " + channel + " :" + vecToUsersStr(members, channels[channel]));
+	serv->reply(&who, "RPL_ENDOFNAMES",  channel + " :End of user's list.");
 }
 
 void Join::execute(Client &who, std::vector <std::string> cmd) const {
@@ -82,7 +100,7 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 	cmd = split(cmdToStr(cmd),',');
 	std::vector<std::string> ch;
 	std::map<std::string, Channel *> &channels = serv->getChannels();
-	for (int i = 0; i < cmd.size(); ++i) {
+	for (size_t i = 0; i < cmd.size(); ++i) {
 		ch = split(cmd[i], ' ');
 		if (ch.size() < 1){
 			serv->reply(&who,"ERR_NEEDMOREPARAMS","JOIN :Not enough parameters");
