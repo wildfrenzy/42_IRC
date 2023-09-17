@@ -67,10 +67,12 @@ void Invite::execute(Client &who, std::vector <std::string> cmd) const {
 		return;
 	}
 	Client &member = findClientt(serv->getClients(), cmd[1]);
-	//Client &member = findClient(who, cmd[1]);
 
-	serv->reply(&who, "RPL_INVITING", cmd[1] + " " + cmd[2]);
-	serv->reply(&member, "", "INVITE " + cmd[1] + " :" +cmd[2]);
+	serv->replyNoServ(&who, ":" + who.getNickName() + "!" +
+		who.getUserName() + "@" + who.getHost() + " 341 " +  who.getNickName() + " " + cmd[1] + " " + cmd[2]);
+
+	serv->replyNoServ(&member, ":" + who.getNickName() + "!" +
+							who.getUserName() + "@" + who.getHost() + " INVITE " + cmd[1] + " " + cmd[2]);
 
 }
 

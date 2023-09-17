@@ -15,6 +15,7 @@
 
 // /connect -nocap -notls localhost 6667
 // /quote PASS pass
+// ctrl + n -> switch windows between main and chat
 
 //#include "./../client/Client.hpp"
 //#include "./../cmd/Cmd.hpp"
@@ -84,6 +85,7 @@ public:
 	std::string const &getPass() const;
 	std::map <std::string, Channel *> &getChannels();
 	void addChannel(std::string name);
+	void	deleteClient(Client *c);
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	replyNoServ(Client *who, std::string msg);

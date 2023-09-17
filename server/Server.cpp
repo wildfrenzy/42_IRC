@@ -92,6 +92,10 @@ void Server::_select() {
 	fd_set r, w; //read, write
 	int newfd, maxFd = this->_mainFd;
 	struct sockaddr_in address;
+	address.sin_family = AF_INET;
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(this->_port);
+
 	int clientnum = 0, addrlen = sizeof(address);
 
 	char buf[11];
@@ -132,7 +136,7 @@ void Server::_select() {
 			if (FD_ISSET(this->_clients[i]->getFd(), &r)){
 				while ((bytes = recv(this->_clients[i]->getFd(), buf, 10, 0)) == 10) {
 					buf[bytes] = 0;
-					this->_clients[i]->getReadBuff().append(buf); //_readBuff.append(buf);
+					this->_clients[i]->getReadBuff().append(buf);
 					bzero(buf, 10);
 				}
 				if (bytes <= 0) {
@@ -143,7 +147,10 @@ void Server::_select() {
 					else
 						std::cout << this->_clients[i]->getNickName();
 					std::cout << "] closed during recv()" RES << std::endl;
-					return ;
+					close(this->_clients[i]->getFd());
+					deleteClient(this->_clients[i]);
+					clientnum--;
+					break ;
 				}
 				else if (bytes > 0 && bytes < 10) {
 					buf[bytes] = 0;
@@ -157,41 +164,21 @@ void Server::_select() {
 					std::cout << this->_clients[i]->getNickName();
 				std::cout << "] " RES << std::endl;
 
-				std::cout << this->_clients[i]->getReadBuff();
-
-
-			//	std::string message = this->_clients[i]->getReadBuff();
-			//	this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(message));
-
-				//TODO Here add :
-				// parse command
-				// exec command and write result in _write buff
-
-				//TODO remove later everything till line 136(before continue):
-				// temporary sending to all clients everything:
-				//if (this->_clients[i]->getWriteBuff().empty())
-				//{
-					//std::cout << "istringstream..." << std::endl;
-					std::istringstream stream(this->_clients[i]->getReadBuff());
-					std::string rb;
-					while (std::getline(stream, tmp)) {
-						rb = this->_clients[i]->getReadBuff();
-						rb = rb.substr(rb.find('\n') + 1);
-						this->_clients[i]->setReadBuff(rb);
-						std::cout << "TMP check:" << tmp  << ":" << std::endl;
-						this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(tmp));
-					}
-				//}
-
+				// executing commands
+				std::istringstream stream(this->_clients[i]->getReadBuff());
+				std::string rb;
+				while (std::getline(stream, tmp)) {
+					rb = this->_clients[i]->getReadBuff();
+					rb = rb.substr(rb.find('\n') + 1);
+					this->_clients[i]->setReadBuff(rb);
+					//std::cout << "TMP check:" << tmp  << ":" << std::endl;
+					this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(tmp));
+				}
 				continue ;
 			}
 			if (FD_ISSET(this->_clients[i]->getFd(), &w)){
-			//	send(this->_clients[i]->getFd(), "\x1b[1;93m", 7, 0); //YELLOW
 				bytes = send(this->_clients[i]->getFd(), this->_clients[i]->getWriteBuff().c_str(),
 							 this->_clients[i]->getWriteBuff().size(), 0);
-				//send(this->_clients[i]->getFd(), "\n", 1, 0);
-			//	send(this->_clients[i]->getFd(), "\x1b[0m", 4, 0); //RES
-
 				std::string wb;
 				if (bytes == this->_clients[i]->getWriteBuff().size()) {
 					this->_clients[i]->getWriteBuff().clear();
@@ -204,12 +191,25 @@ void Server::_select() {
 				}
 				else if (bytes <= 0) {
 					//clean everything about current client and close fd.
+					close(this->_clients[i]->getFd());
+					deleteClient(this->_clients[i]);
 					std::cout << RED "Connection to Client["<< i << "] closed during send()" RES << std::endl;
-					return ;
+					clientnum--;
+					break ;
 				}
 			}
 		}
 	}
+}
+
+void Server::deleteClient(Client *c) {
+	std::map <std::string, Channel *>::iterator i;
+	for (i = _channels.begin() ; i != _channels.end() ; ++i) {
+		(*i).second->deleteOperator(c);
+		(*i).second->deleteMembers(c);
+	}
+	this->_clients.erase(std::find(this->_clients.begin(),
+								   this->_clients.end(), c));
 }
 
 std::map <std::string, Channel *> &Server::getChannels() {

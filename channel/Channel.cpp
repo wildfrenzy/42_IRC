@@ -127,8 +127,13 @@ void    Channel::deleteOperator(Client& c)
 }
 void    Channel::deleteOperator(Client* c)
 {
-	std::cout << BLUE"deleting operator "RES << c->getNickName() << std::endl;
-	this->_operators.erase(std::find(this->_operators.begin(), this->_operators.end(), c));
+	std::vector <Client *>::iterator i = std::find(this->_operators.begin(),
+													 this->_operators.end(), c);
+	if (i != this->_operators.end()){
+		std::cout << BLUE"deleting " + _channelName + " operator "RES << c->getNickName() << std::endl;
+		this->_operators.erase(i);
+	}
+
 }
 void    Channel::addMember(Client& c)
 {
@@ -139,8 +144,11 @@ void    Channel::addMember(Client& c)
 
 void    Channel::deleteMembers(Client* c)
 {
-	std::cout << BLUE"deleting member "RES << c->getNickName() << std::endl;
-	this->_members.erase(std::find(this->_members.begin(), this->_members.end(), c));
+	std::vector <Client *>::iterator i = std::find(this->_members.begin(), this->_members.end(), c);
+	if (i != this->_members.end()){
+		std::cout << BLUE"deleting "  + _channelName + " member "RES << c->getNickName() << std::endl;
+		this->_members.erase(i);
+	}
 }
 
 //this one didnt delete it >.<, we have to delete by pointer, not reference.
