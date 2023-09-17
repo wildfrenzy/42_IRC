@@ -23,6 +23,7 @@ Cmd::Cmd(const Cmd &other) {
 }
 
 Cmd &Cmd::operator=(const Cmd &other) {
+	(void)other;
 	return *this;
 }
 

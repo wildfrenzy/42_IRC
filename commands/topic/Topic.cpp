@@ -12,6 +12,7 @@ Topic::Topic(const Topic& other)
 
 Topic&  Topic::operator=(const Topic& other)
 {
+	(void)other;
     return *this;
 }
 

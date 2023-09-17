@@ -22,7 +22,7 @@ Pass::Pass(const Pass &p) {
 }
 
 Pass &Pass::operator=(const Pass &p) {
-	//this->_tokens = p._tokens;
+	(void) p;
 	return *this;
 }
 

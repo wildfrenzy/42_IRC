@@ -24,6 +24,7 @@ Privmsg::Privmsg(const Privmsg& other)
 
 Privmsg& Privmsg::operator=(const Privmsg& other)
 {
+	(void)other;
     return *this;
 }
 

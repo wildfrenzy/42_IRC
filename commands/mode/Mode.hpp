@@ -16,8 +16,6 @@ class   Mode: public Cmd
     public:
         Mode(void);
         ~Mode(void);
-        Mode(const Mode& other);
-        Mode& operator=(const Mode& other);
     
         virtual    void    execute(Client& who, std::vector<std::string> cmd) const;
         //Channel* findChannel(Client& who, std::string channelName) const;
@@ -35,6 +33,9 @@ class   Mode: public Cmd
         void    unsetUserPrivilege(Client& c, Channel*    channel)  const;
         void    plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
         void    minusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
+	private:
+		Mode(const Mode& other);
+		Mode& operator=(const Mode& other);
 };
 
 

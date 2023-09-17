@@ -24,6 +24,7 @@ Mode::Mode(const Mode& other)
 
 Mode& Mode::operator=(const Mode& other)
 {
+	(void)other;
     return *this;
 }
 

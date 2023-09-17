@@ -15,12 +15,13 @@ class Topic: public Cmd
     public:
         Topic(void);
         ~Topic(void);
-        Topic(const Topic& other);
-        Topic&  operator=(const Topic& other);
 
         void    execute(Client& who, std::vector<std::string> cmd) const;
         void    setTopic(std::string& topic, Channel *c) const;
         bool    checkOperatorRight(Client& who, Channel *c) const;
+	private:
+		Topic(const Topic& other);
+		Topic&  operator=(const Topic& other);
 };
 
 

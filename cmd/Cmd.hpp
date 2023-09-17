@@ -26,13 +26,14 @@ class Cmd
     public:
 		Cmd();
         virtual ~Cmd();
-        Cmd(const Cmd & other);
-        Cmd& operator=(const Cmd& other);
         
         virtual void	execute(Client &who, std::vector<std::string> tokens) const = 0;
         bool    cmdcheck(std::string cmd) const;
         Channel* findChannel(Client& who, std::string channelName) const;
         Client& findClient(Client& who, std::string nickName) const;
+	private:
+	Cmd(const Cmd & other);
+	Cmd& operator=(const Cmd& other);
 };
 
 #endif
