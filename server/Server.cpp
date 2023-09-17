@@ -272,6 +272,7 @@ void Server::createComands() {
 	this->_commands["PRIVMSG"] = new Privmsg();
 	this->_commands["TOPIC"] = new Topic();
 	this->_commands["MODE"] = new Mode();
+	this->_commands["PING"] = new Ping();
 }
 
 void Server::_setReplies() {
@@ -325,11 +326,11 @@ void Server::_setReplies() {
 	this->_replies["ERR_UMODEUNKNOWNFLAG"] = "501";
 	this->_replies["RPL_CHANNELMODEIS"] = "324";
 	this->_replies["RPL_CREATIONTIME"] = "329";
-	//this->_replies["RPL_TOPIC"] = "332";
 
+	this->_replies["ERR_NOORIGIN"] = "409";
 	this->_replies["ERR_UNKNOWNCOMMAND"] = "421";
 
-/*	this->_replies[""] = "";
+/*	this->_replies["ERR_NOORIGIN"] = "409";
 	this->_replies[""] = "";
 	this->_replies[""] = "";*/
 

@@ -29,6 +29,7 @@
 #include "./../commands/mode/Mode.hpp"
 #include "./../commands/topic/Topic.hpp"
 #include "./../commands/kick/Kick.hpp"
+#include "./../commands/ping/Ping.hpp"
 
 
 #include "./../channel/Channel.hpp"
