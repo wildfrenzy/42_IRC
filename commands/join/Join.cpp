@@ -77,7 +77,11 @@ void Join::joined(Client &who, std::string channel, std::map <std::string, Chann
 							+ channel +
 							" :Welcome to " + channel + ", " + who.getNickName() +
 							"! Enjoy your stay.");
-
+	for (std::vector<Client *>::iterator it = members.begin(); it != members.end() ; ++it) {
+		if ((*it)->getNickName() != who.getNickName())
+			serv->replyNoServ((*it), ":" + who.getNickName() + "!" +
+				who.getUserName() + "@" + who.getHost() + " JOIN " + channel);
+	}
 	if (channels[channel]->getTopic().empty())
 		serv->reply(&who, "RPL_NOTOPIC", channel + " :No topic is set");
 	else
@@ -86,6 +90,7 @@ void Join::joined(Client &who, std::string channel, std::map <std::string, Chann
 	//serv->reply(&who, "RPL_TOPICWHOTIME", channel + "TemporaryTest 16090246");
 	serv->reply(&who, "RPL_NAMREPLY",  "= " + channel + " :" + vecToUsersStr(members, channels[channel]));
 	serv->reply(&who, "RPL_ENDOFNAMES",  channel + " :End of user's list.");
+	
 }
 
 void Join::execute(Client &who, std::vector <std::string> cmd) const {
@@ -123,7 +128,7 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 			serv->reply(&who, "ERR_CHANNELISFULL", ch[0] + " :Cannot join channel (+l)");
 			return;
 		}
-		std::cout << "check if on channel" << std::endl;
+		//std::cout << "check if on channel" << std::endl;
 		std::vector<Client *> members = channels[ch[0]]->getMembers();
 		for (std::vector<Client *>::iterator jt = members.begin(); jt != members.end() ; ++jt) {
 			if (*jt == &who){
@@ -131,7 +136,7 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 				return;
 			}
 		}
-		std::cout << "check if on channel end" << std::endl;
+		//std::cout << "check if on channel end" << std::endl;
 		channels[ch[0]]->addMember(who);
 		this->joined(who, ch[0], channels);
 	}
