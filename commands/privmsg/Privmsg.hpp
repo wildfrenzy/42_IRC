@@ -23,7 +23,11 @@ class Privmsg: public Cmd
 		Privmsg& operator=(const Privmsg& other);
 };
 
-
-
-
 #endif
+
+//   :Angel PRIVMSG Wiz :Hello are you receiving this message ?
+//                                   ; Message from Angel to Wiz.
+
+//   :dan!~h@localhost PRIVMSG #coolpeople :Hi everyone!
+//                                   ; Message from dan to the channel
+//                                   #coolpeople

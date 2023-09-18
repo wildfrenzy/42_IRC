@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 15:05:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 16:36:43 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 
 Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true)
 {
-}
-
-Channel::Channel(std::string name): _user_limit(10000), _invite_only(false), _topic_right(true)
-{
-    setChannelName(name);
 }
 
 Channel::~Channel() {}
@@ -178,7 +173,7 @@ std::vector<Client *> &Channel::getMembers()
 	return this->_members;
 }
 
-void    Channel::broadcast(Server * server, std::string& msg)
+void    Channel::broadcast(Server * server, std::string msg)
 {
     server->reply(this->_members, "", msg);
 }

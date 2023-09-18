@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 13:59:25 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 16:47:36 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ Privmsg& Privmsg::operator=(const Privmsg& other)
     return *this;
 }
 
+//   :dan!~h@localhost PRIVMSG #coolpeople :Hi everyone!
+//                                   ; Message from dan to the channel
+//                                   #coolpeople
+
 void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
 {
     Channel*    channel = findChannel(who, cmd[1]);
@@ -35,14 +39,21 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
     {
         who.getServer()->reply(&who,
                         "ERR_NOSUCHNICK",
-                        ":No such nick/channel");
+                        ":No such channel");
         return ;             
-    }   
-    std::vector<std::string>::iterator it;
-    for (it = cmd.begin() + 2; it < cmd.end(); ++it)
-        channel->broadcast(who.getServer(), *it);
+    }
+    std::string sub = cmd[2].substr(1);
+    int size = cmd.size();
+    for (int i = 3; i < size; ++i)
+    {
+        sub += " ";
+        sub += cmd[i];
+    }
+    channel->broadcast(who.getServer(), who.getNickName() + " PRIVMSG " + cmd[1] + " :" + sub);
 }
 
+//   :Angel PRIVMSG Wiz :Hello are you receiving this message ?
+//                                   ; Message from Angel to Wiz.
 void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
 {
     Client& client = findClient(who, cmd[1]);
@@ -50,14 +61,17 @@ void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
     {
         who.getServer()->reply(&who,
                         "ERR_NOSUCHNICK",
-                        ":No such nick/channel");
+                        ":No such nick");
         return ;        
     }
-    std::vector<std::string>::iterator it;
-    // for (it = cmd.begin() + 2; it < cmd.end(); ++it)
-    //     client.setWriteBuff((*it));
-    for (it = cmd.begin() + 2; it < cmd.end(); ++it)
-        client.getServer()->reply(&client, "", *it);    
+    std::string sub = cmd[2].substr(1);
+    int size = cmd.size();
+    for (int i = 3; i < size; ++i)
+    {
+        sub += " ";
+        sub += cmd[i];
+    }
+    client.getServer()->reply(&client, "", who.getNickName() + " PRIVMSG " + client.getNickName() + " :" + sub);
 }
 
 

@@ -117,8 +117,6 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
     }
 }
 
-// this->_replies["RPL_TOPIC"] = "332"
-
 //RPL_TOPIC (332) 
 //  "<client> <channel> :<topic>"
 //Sent to a client when joining the <channel> to inform them of the current topic of the channel.
