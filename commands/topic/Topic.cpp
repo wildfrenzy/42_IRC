@@ -37,16 +37,16 @@ void    Topic::unsetTopic(Channel *c) const
     c->unsetTopic();
 }
 
-void    Topic::checkTopic(Client& who, Channel *c) const
+void    Topic::checkTopic(Client& who, Channel *c, std::string channelName) const
 {
     if (c->getTopic() == "")
         who.getServer()->reply(&who,
                         "RPL_TOPIC",
-                        who.getNickName() + " " + c->getChannelName() + " : no topic");
+                        " " + channelName + " : no topic");
     else
         who.getServer()->reply(&who,
                         "RPL_TOPIC",
-                        who.getNickName() + " " + c->getChannelName() + " : " + c->getTopic());
+                        " " + channelName + " : " + c->getTopic());
 }
 
 void    Topic::execute(Client& who, std::vector<std::string> cmd) const
@@ -72,16 +72,16 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 							   ":No such channel");
         return;   
     }
+    if (cmd.size() == 2)
+    {
+        checkTopic(who, c, cmd[1]);
+        return;
+    }
     if (!c->getTopicRight() || !checkOperatorRight(who, c))
     {
         who.getServer()->reply(&who,
                         "ERR_CHANOPRIVSNEEDED",
                         ":You're not channel operator");        
-        return;
-    }
-    if (cmd.size() == 2)
-    {
-        checkTopic(who, c);
         return;
     }
     if(cmdcheck(cmd[2]) || cmd[2][0] != ':')
@@ -104,7 +104,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
         std::time_t currentTime;
         std::time(&currentTime);
         who.getServer()->replyTime(&who, "RPL_TOPICWHOTIME",
-                            c->getChannelName(),
+                            cmd[1],
                             who.getNickName(),
                             currentTime);
     }
@@ -113,7 +113,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
         unsetTopic(c);
         who.getServer()->reply(&who,
                             "RPL_TOPIC",
-                            who.getNickName() + " " + c->getChannelName() + " : topic unset");
+                            " " + cmd[1] + " : topic unset");
     }
 }
 

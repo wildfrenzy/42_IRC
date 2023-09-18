@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 00:34:30 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 16:22:06 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 17:48:30 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,8 +228,17 @@ std::vector<Client *> const &Server::getClients() const {
 	return this->_clients;
 }
 
+
+// Channel* c1 = new Channel();
+//     Channel* c2 = new Channel();
+//     channelMap["channel1"] = c1;
+
 void Server::addChannel(std::string name) {
-	this->_channels[name] = new Channel();
+	//this->_channels[name] = new Channel();
+	Channel* c = new Channel();
+	this->_channels[name] = c;
+	c->setChannelName(name);
+	
 	// std::map<std::string, Channel*>::iterator it = this->_channels.find(name);
 	// Channel* c = it->second;
 	// c->addMembers(bot);

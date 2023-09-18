@@ -20,7 +20,7 @@ class Topic: public Cmd
         void    setTopic(std::string& topic, Channel *c) const;
         bool    checkOperatorRight(Client& who, Channel *c) const;
         void    unsetTopic(Channel *c) const;
-        void    checkTopic(Client& who, Channel *c) const;
+        void    checkTopic(Client& who, Channel *c, std::string channelName) const;
 	private:
 		Topic(const Topic& other);
 		Topic&  operator=(const Topic& other);
