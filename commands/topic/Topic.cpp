@@ -32,6 +32,23 @@ bool    Topic::checkOperatorRight(Client& who, Channel *c) const
     return false;
 }
 
+void    Topic::unsetTopic(Channel *c) const
+{
+    c->unsetTopic();
+}
+
+void    Topic::checkTopic(Client& who, Channel *c) const
+{
+    if (c->getTopic() == "")
+        who.getServer()->reply(&who,
+                        "RPL_TOPIC",
+                        who.getNickName() + " " + c->getChannelName() + " : no topic");
+    else
+        who.getServer()->reply(&who,
+                        "RPL_TOPIC",
+                        who.getNickName() + " " + c->getChannelName() + " : " + c->getTopic());
+}
+
 void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 {
 	if (!who.getAuthenticated()){
@@ -40,7 +57,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 										 ":You may not reregister");
 		return;
 	}
-	if (cmd.size() < 2) {
+	if (cmd.size() < 1) {
 		who.getServer()->reply(&who,
 							   "ERR_NEEDMOREPARAMS",
 							   ":Not enough parameters");
@@ -62,21 +79,45 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
                         ":You're not channel operator");        
         return;
     }
-    if(cmdcheck(cmd[2]))
+    if (cmd.size() == 2)
+    {
+        checkTopic(who, c);
+        return;
+    }
+    if(cmdcheck(cmd[2]) || cmd[2][0] != ':')
     {
         who.getServer()->reply(&who,
                             "ERR_UNKNOWNERROR",
                             ":invalid topic");
         return;
     }
-    setTopic(cmd[2], c);
-    std::time_t currentTime;
-    std::time(&currentTime);
-    who.getServer()->replyTime(&who, "topic set successed: ",
-                        c->getChannelName(),
-                        who.getNickName(),
-                        currentTime); 
+    if (cmd[2].size() != 1)
+    {
+        std::string sub = cmd[2].substr(1);
+        int size = cmd.size();
+        for (int i = 3; i < size; ++i)
+        {
+            sub += " ";
+            sub += cmd[i];
+        }
+        setTopic(sub, c);
+        std::time_t currentTime;
+        std::time(&currentTime);
+        who.getServer()->replyTime(&who, "RPL_TOPICWHOTIME",
+                            c->getChannelName(),
+                            who.getNickName(),
+                            currentTime);
+    }
+    else
+    {
+        unsetTopic(c);
+        who.getServer()->reply(&who,
+                            "RPL_TOPIC",
+                            who.getNickName() + " " + c->getChannelName() + " : topic unset");
+    }
 }
+
+// this->_replies["RPL_TOPIC"] = "332"
 
 //RPL_TOPIC (332) 
 //  "<client> <channel> :<topic>"

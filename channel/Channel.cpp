@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 12:57:53 by user             ###   ########.fr       */
+/*   Updated: 2023/09/18 15:05:51 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true)
 {
+}
+
+Channel::Channel(std::string name): _user_limit(10000), _invite_only(false), _topic_right(true)
+{
+    setChannelName(name);
 }
 
 Channel::~Channel() {}
@@ -109,6 +114,11 @@ bool    Channel::getTopicRight(void)
 std::string Channel::getTopic(void)
 {
     return this->_topic;
+}
+
+void    Channel::unsetTopic(void)
+{
+    this->_topic = "";
 }
 
 void    Channel::addOperator(Client& c)

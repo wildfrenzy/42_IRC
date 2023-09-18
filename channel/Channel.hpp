@@ -13,6 +13,7 @@ class Channel
 {
     public:
         Channel(void);
+        Channel(std::string name);
         ~Channel(void);
 
 
@@ -21,6 +22,7 @@ class Channel
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
         void    setTopic(std::string& topic);
+        void    unsetTopic(void);
         void    setTopicRight(bool topic_right);
         std::string getKey(void);
         size_t  getUserLimit(void);

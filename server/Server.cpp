@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 00:34:30 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 13:53:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 15:45:05 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ std::vector<Client *> const &Server::getClients() const {
 }
 
 void Server::addChannel(std::string name) {
-	this->_channels[name] = new Channel();
+	this->_channels[name] = new Channel(name);
 	// std::map<std::string, Channel*>::iterator it = this->_channels.find(name);
 	// Channel* c = it->second;
 	// c->addMembers(bot);
@@ -343,25 +343,6 @@ void	Server::replyTime(Client *who, std::string msg, std::string channelname, st
 	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
 	std::string strTime(buffer);
 	std::string message = "";
-	message += " " + channelname + " " + nickname + " " + strTime + "\r\n";
+	message += " " + msg + " " + channelname + " " + nickname + " " + strTime;
 	this->reply(who, msg, message);
-}//check!!!!
-
-
-// void Server::reply(Client *who, std::string reply, std::string msg) {
-// 	std::string writeBuff = who->getWriteBuff();
-// 	//in case not everything was sent before
-
-// 	std::string message = ":irc_server " + (reply.empty() ? "" : this->_replies[reply] + " ");
-// 	if (!reply.empty())
-// 		message += who->getNickName().empty() ? "[noNickname]" :  who->getNickName();
-// 	message += " " + msg + "\r\n";
-// 	std::cout << BLUE"MESSAGE: "RES << message << std::endl;
-// 	who->setWriteBuff(writeBuff.append(message));
-// }
-
-// void Server::reply(std::vector<Client *> clients, std::string reply, std::string msg) {
-// 	for (unsigned long i = 0; i < clients.size(); ++i) {
-// 		this->reply(clients[i], reply, msg);
-// 	}
-// }
+}

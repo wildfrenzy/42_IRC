@@ -19,6 +19,8 @@ class Topic: public Cmd
         void    execute(Client& who, std::vector<std::string> cmd) const;
         void    setTopic(std::string& topic, Channel *c) const;
         bool    checkOperatorRight(Client& who, Channel *c) const;
+        void    unsetTopic(Channel *c) const;
+        void    checkTopic(Client& who, Channel *c) const;
 	private:
 		Topic(const Topic& other);
 		Topic&  operator=(const Topic& other);
@@ -27,3 +29,10 @@ class Topic: public Cmd
 
 
 #endif
+
+//   TOPIC #test :New topic          ; Setting the topic on "#test" to
+//                                   "New topic".
+
+//   TOPIC #test :                   ; Clearing the topic on "#test"
+
+//   TOPIC #test                     ; Checking the topic for "#test"
