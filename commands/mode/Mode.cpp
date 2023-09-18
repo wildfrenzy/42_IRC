@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 01:38:47 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/18 17:06:35 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,6 @@ void    Mode::unsetUserLimit(Channel*    channel) const
     channel->setUserLimit(100000);
 }
 
-// Client& Mode::findClient(Client& who, std::string nickName) const
-// {
-//     std::vector<Client*>::const_iterator it;
-
-//     for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
-//     {
-//         if ((*it)->getNickName() == nickName)
-//             return *(*it);
-//     }
-//     return *who.getServer()->getClients().front(); //set bot as first client !!!!
-// }
-
 void    Mode::setUserPrivilege(Client& c, Channel*    channel) const
 {
     channel->addOperator(c);
@@ -101,18 +89,6 @@ void    Mode::unsetUserPrivilege(Client& c, Channel*    channel) const
 {
     channel->deleteOperator(c);
 }
-
-// bool    Mode::thirdcmdcheck(std::string cmd) const
-// {
-//     for(unsigned long i = 0; i < cmd.size(); ++i)
-//     {
-//         if (cmd[i] == '#' || cmd[i] == '&' || cmd[i] == '+' || cmd[i] == '@' 
-//             || cmd[i] == '%' || cmd[i] == '/' || cmd[i] == '*' || cmd[i] == '?' ||
-//             cmd[i] > 127 || cmd[i] <= 32)
-//         return true;
-//     }
-//     return false;
-// }
 
 void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const
 {
@@ -166,15 +142,15 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         }
         if (cmd[2][1] == 'o' )
         {
-            Client& c = findClient(who, cmd[3]);
-            if (c.getNickName() == who.getServer()->getClients().front()->getNickName())
+            Client* c = findClient(who, cmd[3]);
+            if (c == NULL)
             {
                 who.getServer()->reply(&who,
                                 "ERR_NOSUCHNICK",
                                 ":No such nick/channel");
                 return ;    
             }
-            setUserPrivilege(c, channel);
+            setUserPrivilege(*c, channel);
             return;
         }
     }
@@ -215,15 +191,15 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
                             ":is unknown mode char to me");
             return;
         }
-        Client& c = findClient(who, cmd[3]);
-        if (c.getNickName() == who.getServer()->getClients().front()->getNickName())
+        Client* c = findClient(who, cmd[3]);
+        if (c == NULL)
         {
             who.getServer()->reply(&who,
                             "ERR_NOSUCHNICK",
                             ":No such nick/channel");
             return;    
         }
-        unsetUserPrivilege(c, channel);
+        unsetUserPrivilege(*c, channel);
         return;
     } 
     who.getServer()->reply(&who,

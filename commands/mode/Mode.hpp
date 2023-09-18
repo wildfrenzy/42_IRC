@@ -18,8 +18,6 @@ class   Mode: public Cmd
         ~Mode(void);
     
         virtual    void    execute(Client& who, std::vector<std::string> cmd) const;
-        //Channel* findChannel(Client& who, std::string channelName) const;
-        //Client& findClient(Client& who, std::string nickName) const;
 
         void    setInviteOnly(Channel*    channel) const;
         void    unsetInviteOnly(Channel*    channel) const;

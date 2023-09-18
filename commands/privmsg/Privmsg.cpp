@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 16:47:36 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 17:16:51 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
 //                                   ; Message from Angel to Wiz.
 void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
 {
-    Client& client = findClient(who, cmd[1]);
-    if (client.getNickName() == who.getServer()->getClients().front()->getNickName())
+    Client* client = findClient(who, cmd[1]);
+    if (client == NULL)
     {
         who.getServer()->reply(&who,
                         "ERR_NOSUCHNICK",
@@ -71,7 +71,7 @@ void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
         sub += " ";
         sub += cmd[i];
     }
-    client.getServer()->reply(&client, "", who.getNickName() + " PRIVMSG " + client.getNickName() + " :" + sub);
+    client->getServer()->replyNoServ(client, who.getNickName() + " PRIVMSG " + client->getNickName() + " :" + sub);
 }
 
 
@@ -101,11 +101,3 @@ void    Privmsg::execute(Client& who, std::vector<std::string> cmd) const
     else
         sendToClient(who, cmd);
 }
-
-
-
-// two clients in same channel
-// PRIVMSG #FI :hello2
-
-// YY client will receive
-// :!QQ@localhost PRIVMSG #FI :hello

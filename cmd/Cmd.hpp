@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:36 by yli               #+#    #+#             */
-/*   Updated: 2023/09/15 20:16:29 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 17:03:20 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class Cmd
         virtual void	execute(Client &who, std::vector<std::string> tokens) const = 0;
         bool    cmdcheck(std::string cmd) const;
         Channel* findChannel(Client& who, std::string channelName) const;
-        Client& findClient(Client& who, std::string nickName) const;
+        Client* findClient(Client& who, std::string nickName) const;
 	private:
 	Cmd(const Cmd & other);
 	Cmd& operator=(const Cmd& other);
