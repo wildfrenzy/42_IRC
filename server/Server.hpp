@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:05:35 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 02:05:41 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/18 13:54:12 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@
 #include <sstream>
 #include <map>
 #include <string.h>
+
+//std::find
+#include  <algorithm>
 
 //socket
 #include <sys/types.h>
