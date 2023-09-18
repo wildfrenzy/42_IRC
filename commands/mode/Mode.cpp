@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 17:06:35 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 18:08:42 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me");
+                                ":is unknown mode char to me1");
                 return;
             }     
             setTopicRight(channel);
@@ -121,10 +121,13 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me");
+                                ":is unknown mode char to me2");
                 return;
-            }        
+            }   
             setKey(cmd[3], channel);
+            who.getServer()->reply(&who,
+                                "RPL_CHANNELMODEIS",
+                            cmd[1] + " " + cmd[2] + " " + cmd[3]);
             return;
         }
         if (cmd[2][1] == 'l' )
@@ -134,7 +137,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me");
+                                ":is unknown mode char to me3");
                 return;          
             }
             setUserLimit((size_t)i, channel);
@@ -156,7 +159,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
     }
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    ":is unknown mode char to me");
+                    ":is unknown mode char to me4");
     return;
 }
 
@@ -188,7 +191,7 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
         {
             who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",
-                            ":is unknown mode char to me");
+                            ":is unknown mode char to me5");
             return;
         }
         Client* c = findClient(who, cmd[3]);
@@ -204,7 +207,7 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
     } 
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    ":is unknown mode char to me");
+                    ":is unknown mode char to me6");
 }
 
 void    Mode::execute(Client& who, std::vector<std::string> cmd) const
@@ -238,11 +241,11 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
 		who.getServer()->reply(&who,"", "MODE " + channel->getChannelName() + (!modes.empty() ? " +" + modes : ""));
 		return;
 	}
-    if (cmd[2][0] != '+' || cmd[2][0] != '-' || cmd[2][2] != 0)
+    if ((cmd[2][0] == '+' || cmd[2][0] == '-') && cmd[2][2] != 0)
     {
         who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",
-							   ":is unknown mode char to me");
+							   ":is unknown mode char to me0");
         return;          
     }
     if (channel->operatorRight(who))
