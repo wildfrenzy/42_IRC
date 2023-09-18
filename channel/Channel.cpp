@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 16:36:43 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 23:41:17 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,12 @@ std::vector<Client *> &Channel::getMembers()
 	return this->_members;
 }
 
-void    Channel::broadcast(Server * server, std::string msg)
+void	Channel::broadcast(Server* server, Client* c, std::string msg)
 {
-    server->reply(this->_members, "", msg);
+	std::vector <Client *> broadcast = this->_members;
+	std::vector<Client*>::iterator it = std::find(broadcast.begin(), broadcast.end(), c);
+	broadcast.erase(it);
+	server->replyNoServ(broadcast, msg);
 }
 
 std::vector<Client*> &Channel::getOperators(void)

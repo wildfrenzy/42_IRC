@@ -39,7 +39,8 @@ class Channel
 		void    deleteMembers(Client* c);
         void    addMember(Client& c);
 		std::vector<Client*> &getMembers();
-        void    broadcast(Server * server, std::string msg);
+       // void    broadcast(Server * server, std::string msg);
+		void    broadcast(Server* server, Client* c, std::string msg);
         std::vector<Client*> &getOperators(void);
 
     private:

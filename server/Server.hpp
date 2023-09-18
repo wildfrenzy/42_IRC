@@ -93,8 +93,9 @@ public:
 
 	void	reply(Client *who, std::string reply, std::string msg);
 	void	replyNoServ(Client *who, std::string msg);
+	void	replyNoServ(std::vector<Client *> clients, std::string msg);
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
-	void	replyTime(Client *who, std::string msg, std::string channel, std::string nickname, std::time_t currentTime);
+	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
 private:
 	int				_mainFd;

@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 17:16:51 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/18 20:53:36 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
         sub += " ";
         sub += cmd[i];
     }
-    channel->broadcast(who.getServer(), who.getNickName() + " PRIVMSG " + cmd[1] + " :" + sub);
+	//:Sender!sender@server.com PRIVMSG #example :Hello, this is a channel message.
+    channel->broadcast(who.getServer(), &who,":" + who.getNickName() + "!" +
+		who.getUserName() + "@" + who.getHost() + " PRIVMSG " + cmd[1] + " :" + sub);
 }
 
 //   :Angel PRIVMSG Wiz :Hello are you receiving this message ?
@@ -71,7 +73,7 @@ void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
         sub += " ";
         sub += cmd[i];
     }
-    client->getServer()->replyNoServ(client, who.getNickName() + " PRIVMSG " + client->getNickName() + " :" + sub);
+    client->getServer()->replyNoServ(client, ":" + who.getNickName() + " PRIVMSG " + client->getNickName() + " :" + sub);
 }
 
 

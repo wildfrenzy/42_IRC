@@ -24,7 +24,7 @@ Server::Server(char *port, char *password){
 
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
-	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEPORT, &opt,sizeof(int))) //SO_REUSEADDR |
+	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int))) //SO_REUSEADDR |
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 
 	fcntl(this->_mainFd, F_SETFL, O_NONBLOCK);
@@ -271,6 +271,12 @@ void Server::reply(std::vector<Client *> clients, std::string reply, std::string
 	}
 }
 
+void Server::replyNoServ(std::vector<Client *> clients, std::string msg) {
+	for (unsigned long i = 0; i < clients.size(); ++i) {
+		this->replyNoServ(clients[i], msg);
+	}
+}
+
 void Server::createComands() {
 	this->_commands["PASS"] = new Pass();
 	this->_commands["USER"] = new User();
@@ -339,19 +345,23 @@ void Server::_setReplies() {
 	this->_replies["ERR_NOORIGIN"] = "409";
 	this->_replies["ERR_UNKNOWNCOMMAND"] = "421";
 
-/*	this->_replies["ERR_NOORIGIN"] = "409";
+/*	this->_replies[""] = "";
 	this->_replies[""] = "";
 	this->_replies[""] = "";*/
 
 }
 
-void	Server::replyTime(Client *who, std::string msg, std::string channelname, std::string nickname, std::time_t currentTime)
+void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channelname)
 {
-	std::tm*	timeInfo = std::localtime(&currentTime);
-	char buffer[80];
-	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
+	//std::tm*	timeInfo = std::localtime(&currentTime);
+	//char buffer[80];
+	char buffer[20];
+
+	std::time_t now = std::time(0);
+	std::strftime(buffer, sizeof(buffer), "%s", std::localtime(&now));
+//	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
 	std::string strTime(buffer);
-	std::string message = "";
-	message += " " + msg + " " + channelname + " " + nickname + " " + strTime;
-	this->reply(who, msg, message);
+	std::string message;
+	message += channelname + " " + who->getNickName() + "!" + who->getUserName() + "@" + who->getHost() + " " + strTime;
+	this->reply(clients, msg, message);
 }

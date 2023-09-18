@@ -42,11 +42,11 @@ void    Topic::checkTopic(Client& who, Channel *c, std::string channelName) cons
     if (c->getTopic() == "")
         who.getServer()->reply(&who,
                         "RPL_TOPIC",
-                        " " + channelName + " : no topic");
+                        " " + channelName + " :no topic");
     else
         who.getServer()->reply(&who,
                         "RPL_TOPIC",
-                        " " + channelName + " : " + c->getTopic());
+                        " " + channelName + " :" + c->getTopic());
 }
 
 void    Topic::execute(Client& who, std::vector<std::string> cmd) const
@@ -101,19 +101,16 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
             sub += cmd[i];
         }
         setTopic(sub, c);
-        std::time_t currentTime;
-        std::time(&currentTime);
-        who.getServer()->replyTime(&who, "RPL_TOPICWHOTIME",
-                            cmd[1],
-                            who.getNickName(),
-                            currentTime);
+        who.getServer()->replyTime(&who, c->getMembers(),"RPL_TOPICWHOTIME",
+                            cmd[1]);
     }
     else
     {
         unsetTopic(c);
+		//change this reply
         who.getServer()->reply(&who,
                             "RPL_TOPIC",
-                            " " + cmd[1] + " : topic unset");
+                            " " + cmd[1] + " :topic unset");
     }
 }
 
