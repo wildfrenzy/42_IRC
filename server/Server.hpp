@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:05:35 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 13:54:12 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/19 20:53:39 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 //#include "./../client/Client.hpp"
 //#include "./../cmd/Cmd.hpp"
-//#include "./../bot/Bot.hpp"
+#include "./../bot/Bot.hpp"
 #include "./../commands/pass/Pass.hpp"
 #include "./../commands/user/User.hpp"
 #include "./../commands/nick/Nick.hpp"

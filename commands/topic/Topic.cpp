@@ -109,7 +109,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 		//change this reply
         who.getServer()->reply(&who,
                             "RPL_TOPIC",
-                            " " + cmd[1] + " :topic unset");
+                            " " + cmd[1] + " :No topic is set");
     }
 }
 

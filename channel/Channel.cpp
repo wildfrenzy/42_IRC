@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 23:41:17 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/19 20:57:08 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,64 @@ void    Channel::deleteOperator(Client* c)
 	}
 
 }
+bool    Channel::belongToGroup(Client& who, std::vector<Client*> group)
+{
+    for (std::vector<Client*>::iterator it = group.begin(); it != group.end(); ++it)
+    {
+        if ((*it)->getNickName() == who.getNickName())
+            return true;
+    }
+    return false;
+}
+
+bool    Channel::addMemberCheck(Client& c, Client& who)
+{   
+    if (getInviteOnly())
+    {
+        if (!belongToGroup(who, this->_operators))
+        {
+            who.getServer()->reply(&who,
+                        "ERR_NOPRIVILEGES",
+                        this->getChannelName() + " :Permission Denied- You're not an IRC operator");
+            return false;
+        }  
+    }
+    else
+    {
+        if (!belongToGroup(who, this->_members))
+        who.getServer()->replyNoServ(&who,
+                            "442 " +this->getChannelName() + " :You're not on that channel");
+            return false;
+    }
+    if (belongToGroup(c, this->_members))
+    {
+        who.getServer()->replyNoServ(&who,
+                            "443 " + c.getNickName() + " " +this->getChannelName() + " :is already on channel");
+        return false;
+    }
+    return true;   
+}
+
 void    Channel::addMember(Client& c)
 {
 	if (this->_members.size() < 1)
 		this->_operators.push_back(&c);
     this->_members.push_back(&c);
+}
+
+void    Channel::addInvitee(Client& c)
+{
+    this->_invitee.push_back(&c);
+}
+
+void    Channel::addInvitee(Client* c)
+{
+    this->_invitee.push_back(c);
+}
+
+std::vector<Client*> Channel::getInvitee(void)
+{
+    return this->_invitee;
 }
 
 void    Channel::deleteMembers(Client* c)
@@ -166,6 +219,33 @@ void    Channel::deleteMembers(Client& c)
             this->_members.erase(it);
         return;
     }
+}
+
+void    Channel::deleteInvitee(Client* c)
+{
+	std::vector <Client *>::iterator i = std::find(this->_invitee.begin(), this->_invitee.end(), c);
+	if (i != this->_invitee.end()){
+		std::cout << BLUE"deleting "  + _channelName + " invitee "RES << c->getNickName() << std::endl;
+		this->_invitee.erase(i);
+        return ;
+	}
+}
+
+void    Channel::deleteInvitee(Client& c)
+{
+    for (std::vector<Client*>::iterator it = this->_invitee.begin(); it != this->_invitee.end(); ++it)
+    {
+        if (*it == &c)
+            this->_invitee.erase(it);
+        return;
+    }
+}
+
+void    Channel::resetInvitee(void)
+{
+    for (std::vector<Client*>::iterator it = this->_invitee.begin(); it != this->_invitee.end(); ++it)
+        delete *it;
+    this->_invitee.clear();
 }
 
 std::vector<Client *> &Channel::getMembers()

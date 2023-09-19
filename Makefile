@@ -6,7 +6,7 @@
 #    By: yli <yli@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/27 15:53:14 by nmaliare          #+#    #+#              #
-#    Updated: 2023/09/15 19:56:36 by yli              ###   ########.fr        #
+#    Updated: 2023/09/19 20:57:47 by yli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRC = main.cpp ./client/Client.cpp ./server/Server.cpp ./cmd/Cmd.cpp \
 		./commands/pass/Pass.cpp ./commands/user/User.cpp ./commands/nick/Nick.cpp \
 		./commands/mode/Mode.cpp ./commands/invite/Invite.cpp ./commands/join/Join.cpp ./commands/kick/Kick.cpp \
 		./commands/privmsg/Privmsg.cpp ./commands/topic/Topic.cpp \
-		./channel/Channel.cpp  ./commands/ping/Ping.cpp
+		./channel/Channel.cpp  ./commands/ping/Ping.cpp \
+		./bot/Bot.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

@@ -38,8 +38,15 @@ class Channel
 		void    deleteMembers(Client& c);
 		void    deleteMembers(Client* c);
         void    addMember(Client& c);
+        std::vector<Client*> getInvitee(void);
+        void    addInvitee(Client& c);
+        void    addInvitee(Client* c);
+        void    deleteInvitee(Client& c);
+        void    deleteInvitee(Client* c);
+        void    resetInvitee(void);
+        bool    belongToGroup(Client& who, std::vector<Client*> group);
+        bool    addMemberCheck(Client& c, Client& who);
 		std::vector<Client*> &getMembers();
-       // void    broadcast(Server * server, std::string msg);
 		void    broadcast(Server* server, Client* c, std::string msg);
         std::vector<Client*> &getOperators(void);
 
@@ -52,6 +59,7 @@ class Channel
         std::string _topic;
         std::vector<Client*> _members;
         std::vector<Client*> _operators;
+        std::vector<Client*> _invitee;
 		Channel(const Channel& other);
 		Channel &operator=(const Channel& other);
 };

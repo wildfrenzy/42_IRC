@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 00:34:30 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 17:48:30 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/19 20:53:10 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,7 @@ void Server::createComands() {
 	this->_commands["TOPIC"] = new Topic();
 	this->_commands["MODE"] = new Mode();
 	this->_commands["PING"] = new Ping();
+	this->_commands["BOT"] = new Bot();
 }
 
 void Server::_setReplies() {
