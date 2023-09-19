@@ -72,11 +72,11 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 	Server *serv = who.getServer();
 	std::map<std::string, Channel *> &channels = serv->getChannels();
 
-	if (cmd.size() < 3){
-		serv->reply(&who,"ERR_NEEDMOREPARAMS","KICK :Not enough parameters");
-		return;
-	} else if (!who.getRegistered()) {
+	if (!who.getRegistered()) {
 		serv->reply(&who, "ERR_NOTREGISTERED", ":You must authenticate with the server.");
+		return;
+	} else if (cmd.size() < 3) {
+		serv->reply(&who, "ERR_NEEDMOREPARAMS", "KICK :Not enough parameters");
 		return;
 	} else if (channels.find(cmd[1]) == channels.end()){
 		serv->reply(&who, "ERR_NOSUCHCHANNEL", cmd[1] + " :No such channel");

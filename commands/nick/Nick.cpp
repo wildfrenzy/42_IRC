@@ -70,6 +70,8 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 	std::cout << "test: " << ni << std::endl;
     who.setNickName(ni);
     who.getServer()->reply(&who, "", who.getUserName() + " Nickname set successfully.");
+	if (who.getAuthenticated() && !who.getRegistered())
+		who.setRegistered();
 }
 
 /*In IRC (Internet Relay Chat), server implementations may have their own specific rules and restrictions regarding channel and nickname naming, but generally, 

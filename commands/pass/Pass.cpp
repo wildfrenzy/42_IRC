@@ -47,6 +47,6 @@ void Pass::execute(Client &who, std::vector <std::string> cmd) const {
 		return;
 	}
 	who.setAuthenticated();
-	if (!who.getRealName().empty())
+	if (!who.getRealName().empty() && !who.getNickName().empty() && !who.getUserName().empty())
 		who.setRegistered();
 }

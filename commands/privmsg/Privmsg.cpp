@@ -79,10 +79,9 @@ void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
 
 void    Privmsg::execute(Client& who, std::vector<std::string> cmd) const
 {
-	if (!who.getAuthenticated()){
-		who.getServer()->reply(&who,
-										 "ERR_ALREADYREGISTERED",
-										 ":You may not reregister");
+	if (!who.getRegistered()) {
+		who.getServer()->reply(&who, "ERR_NOTREGISTERED",
+							   ":You must authenticate with the server.");
 		return;
 	}
 	if (cmd.size() < 2) {

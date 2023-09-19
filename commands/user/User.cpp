@@ -58,7 +58,7 @@ void User::execute(Client &who, std::vector <std::string> cmd) const {
 		who.setRealName(rn);
 	}
 	who.getServer()->reply(&who, "", YELLOW"[" + who.getUserName() + "]" + " Username set successfully." + RES);
-	if (who.getAuthenticated() && !who.getRegistered())
+	if (who.getAuthenticated() && !who.getRegistered() && !who.getNickName().empty())
 		who.setRegistered();
 }
 

@@ -51,10 +51,9 @@ void    Topic::checkTopic(Client& who, Channel *c, std::string channelName) cons
 
 void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 {
-	if (!who.getAuthenticated()){
-		who.getServer()->reply(&who,
-										 "ERR_ALREADYREGISTERED",
-										 ":You may not reregister");
+	if (!who.getRegistered()) {
+		who.getServer()->reply(&who, "ERR_NOTREGISTERED",
+							   ":You must authenticate with the server.");
 		return;
 	}
 	if (cmd.size() < 1) {

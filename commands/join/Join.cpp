@@ -95,11 +95,12 @@ void Join::joined(Client &who, std::string channel, std::map <std::string, Chann
 
 void Join::execute(Client &who, std::vector <std::string> cmd) const {
 	Server *serv = who.getServer();
-	if (cmd.size() < 2){
-		serv->reply(&who,"ERR_NEEDMOREPARAMS","JOIN :Not enough parameters");
+	if (!who.getRegistered()) {
+		serv->reply(&who, "ERR_NOTREGISTERED",
+							   ":You must authenticate with the server.");
 		return;
-	} else if (!who.getRegistered()) {
-		serv->reply(&who, "ERR_NOTREGISTERED", ":You must authenticate with the server.");
+	}else if (cmd.size() < 2){
+		serv->reply(&who,"ERR_NEEDMOREPARAMS","JOIN :Not enough parameters");
 		return;
 	}
 	cmd = split(cmdToStr(cmd),',');
