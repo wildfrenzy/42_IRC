@@ -6,6 +6,7 @@
 
 class Cmd;
 class Client;
+class Channel;
 
 class Bot : public Cmd
 {
@@ -17,9 +18,9 @@ class Bot : public Cmd
 
         std::string    answerTime(void) const;
         std::string    drawanimals(std::string str) const;
+        void	addToAllChannel(Client &bot, Client& who) const;
         void    execute(Client &who, std::vector<std::string> cmd) const;    
 };
-
 
 #endif
 

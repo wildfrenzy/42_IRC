@@ -1,6 +1,6 @@
 #include "Bot.hpp"
 #include "./../client/Client.hpp"
-
+#include "./../channel/Channel.hpp"
 
 Bot::Bot()	:Cmd() {}
 
@@ -96,7 +96,7 @@ std::string    Bot::drawanimals(std::string str) const
     "  /\\     ,/ \\      ;:::::;     ;	\n"
     ".:. \\:..|    :     ; '.--|     ;	\n"
    "::.  :''  `-.,,;     ;'   ;     ;	\n"
-".-'. _.'\\      / `;      \\,__:      \\\n"
+".-'. _.'\\      / `;      \\,__:       \n"
 "`---'    `----'   ;      /    \\,.,,,/	\n";	
 	return msg;
 	}
@@ -112,8 +112,19 @@ std::string    Bot::drawanimals(std::string str) const
 	return ("please type cat/dog/bird");
 }
 
+void	Bot::addToAllChannel(Client &bot, Client& who) const
+{
+	std::map<std::string, Channel *> tmp = who.getServer()->getChannels();
+	for (std::map<std::string, Channel *>::iterator it = tmp.begin(); it != tmp.end(); ++it)
+	{
+		it->second->addMember(bot);
+		it->second->addOperator(bot);
+	}
+}
+
 void    Bot::execute(Client &who, std::vector<std::string> cmd) const
 {
+
 	if (cmd[1] == "time")
 	{
 		std::string msg = answerTime();
