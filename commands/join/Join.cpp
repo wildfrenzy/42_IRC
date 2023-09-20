@@ -126,7 +126,8 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 			}
 		}
 		//std::cout << "check if on channel end" << std::endl;
-		if (cmdcheck(cmd[1]))
+		std::string sub = cmd[1].substr(1);
+		if (cmdcheck(sub))
 		{
 			who.getServer()->reply(&who,
 								"RPL_CHANNELMODEIS",
