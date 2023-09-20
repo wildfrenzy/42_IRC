@@ -126,6 +126,13 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 			}
 		}
 		//std::cout << "check if on channel end" << std::endl;
+		if (cmdcheck(cmd[1]))
+		{
+			who.getServer()->reply(&who,
+								"RPL_CHANNELMODEIS",
+								" :Invalid channel name");
+			return;
+		}
 		channels[ch[0]]->addMember(who);
 		this->joined(who, ch[0], channels);
 	}
