@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/16 02:05:35 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/19 20:53:39 by yli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
@@ -73,7 +61,7 @@
 class Client;
 //class Cmd;
 class Channel;
-//class Bot;
+class Bot;
 
 class Server {
 public:
@@ -97,6 +85,9 @@ public:
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
+	void    setBot(void);
+	Bot* getBot(void);
+
 private:
 	int				_mainFd;
 	short			_port;
@@ -113,7 +104,7 @@ private:
 	void	_select();
 	void	_setReplies();
 	void	_createComands();
-	//Bot*	_bot;
+	Bot*	_bot;
 };
 
 

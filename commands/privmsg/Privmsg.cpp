@@ -6,12 +6,13 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 20:53:36 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/20 21:22:02 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Privmsg.hpp"
 #include "./../../client/Client.hpp"
+//#include "./../../bot/Bot.hpp"
 
 Privmsg::Privmsg(void): Cmd(){}
 
@@ -54,10 +55,13 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
 		who.getUserName() + "@" + who.getHost() + " PRIVMSG " + cmd[1] + " :" + sub);
 }
 
-//   :Angel PRIVMSG Wiz :Hello are you receiving this message ?
-//                                   ; Message from Angel to Wiz.
 void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
 {
+    if (cmd[1] == "bot")
+    {
+        who.getServer()->getBot()->botexecute(who, cmd);
+        return;
+    }
     Client* client = findClient(who, cmd[1]);
     if (client == NULL)
     {

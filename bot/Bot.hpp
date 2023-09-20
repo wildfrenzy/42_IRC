@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:54:53 by yli               #+#    #+#             */
-/*   Updated: 2023/09/20 18:54:54 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/20 21:32:45 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class Cmd;
 class Client;
 class Channel;
 
-class Bot : public Cmd
+class Bot
 {
     public:
         Bot(void);
@@ -30,8 +30,8 @@ class Bot : public Cmd
 
         std::string    answerTime(void) const;
         std::string    drawanimals(std::string str) const;
-        void	addToAllChannel(Client &bot, Client& who) const;
-        void    execute(Client &who, std::vector<std::string> cmd) const;    
+        //void	addToAllChannel(Client &bot, Client& who) const;
+        void    botexecute(Client &who, std::vector<std::string> cmd) const;
 };
 
 #endif

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/16 00:34:30 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/20 18:58:35 by yli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Server.hpp"
 #include <unistd.h>
 
@@ -58,6 +46,7 @@ Server::~Server() {
 	for (std::map<std::string, Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
 		delete it->second;
 	}
+	delete this->_bot;
 	_clients.clear();
 	_commands.clear();
 	_channels.clear();
@@ -87,8 +76,6 @@ short Server::validatePort(char *port) {
 }
 
 void Server::_select() {
-	//add a bot here!!!! - no, bot is separate program.
-	// dont change this function
 	fd_set r, w; //read, write
 	int newfd, maxFd = this->_mainFd;
 	struct sockaddr_in address;
@@ -288,7 +275,7 @@ void Server::createComands() {
 	this->_commands["TOPIC"] = new Topic();
 	this->_commands["MODE"] = new Mode();
 	this->_commands["PING"] = new Ping();
-	this->_commands["BOT"] = new Bot();
+	//this->_commands["BOT"] = new Bot();
 }
 
 void Server::_setReplies() {
@@ -362,4 +349,14 @@ void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string m
 	std::string message;
 	message += channelname + " " + who->getNickName() + "!" + who->getUserName() + "@" + who->getHost() + " " + strTime;
 	this->reply(clients, msg, message);
+}
+
+void    Server::setBot(void)
+{
+	this->_bot = new Bot();
+}
+	
+Bot* Server::getBot(void)
+{
+	return this->_bot;
 }

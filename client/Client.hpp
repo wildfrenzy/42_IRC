@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 02:29:41 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/20 21:15:16 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,16 @@
 
 #include "./../cmd/Cmd.hpp"
 #include "./../server/Server.hpp"
+#include  "./../bot/Bot.hpp"
 
 class Server;
 class Cmd;
+class Bot;
 
 class Client {
 public:
 	Client(int fd, Server *s);
+	Client(void);
 	Client(Client &c);
 	~Client();
 

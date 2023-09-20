@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:54:59 by yli               #+#    #+#             */
-/*   Updated: 2023/09/20 18:55:00 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/20 21:43:32 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "./../client/Client.hpp"
 #include "./../channel/Channel.hpp"
 
-Bot::Bot()	:Cmd() {}
+Bot::Bot() {}
 
 Bot::~Bot() {}
 
@@ -26,12 +26,14 @@ Bot& Bot::operator=(const Bot& other)
 	return *this;
 }
 
+
+
 std::string    Bot::answerTime() const
 {
-	char buffer[20];
+	char buffer[80];
 
 	std::time_t now = std::time(0);
-	std::strftime(buffer, sizeof(buffer), "%s", std::localtime(&now));
+	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
 	std::string strTime(buffer);
 	return ("The time is now " + strTime);
 }
@@ -47,14 +49,14 @@ std::string    Bot::drawanimals(std::string str) const
    ".........;;m/;;;;/mmmmmm/;;;;\\m...................... \n"
    "..........;;;m;;mmmm;;mmmm;;mmmmm;;m...................... \n"
    "..........;;;;;mmmnnnmmmmmmmmmmnnnmmm\\.................... \n"
-   ".........  ;;;;n/#####\nmmmmn/#####\nm\\................. \n"
+   ".........  ;;;;n/#####\\nmmmn/#####\\nm\\................. \n"
    ".......     ;;;;n##...##nmmmmn##...##nmmmm\\............. \n"
    "....        ;;;n#.....|nmmmmn#.....#nmmmmm,l......... \n"
-   "..          mmmn\\.../nmmmmmmn\\.../nmmmm,m,lll..... \n"
+   "..          /mmmn\\.../nmmmmmmn\\.../nmmmm,m,lll..... \n"
    "           /mmmmmmmmmmmmmmmmmmmmmmmmmmm,mmmm,llll.. \n"
-   "       /mmmmmmmmmmmmmmmmmmmmmmm\nmmmn/mmmmmmm,lll/ \n"
+   "       /mmmmmmmmmmmmmmmmmmmmmm\\nmmmn/mmmmmmm,lll/ \n"
    "    /mmmmm/..........\\mmmmmmmmmnnmnnmmmmmmmmm,ll \n"
-   "   mmmmmm|...........|mmmmmmmmmmmmmmmmmmmmmmmm,ll \n"
+   "   /mmmmmm|...........|mmmmmmmmmmmmmmmmmmmmmmmm,ll \n"
    "   \\mmmmm\\......./mmmmmmmmmmmmmmmmmmmmmmmmm,llo \n"
    "     \\mmmmm\\.../mmmmmmmmmmmmmmmmmmmmmmmm,lloo \n"
    "       \\mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm,ll/oooo \n"
@@ -112,10 +114,10 @@ std::string    Bot::drawanimals(std::string str) const
 "`---'    `----'   ;      /    \\,.,,,/	\n";	
 	return msg;
 	}
-	if (str == "tiger")
+	if (str == "bird")
 	{
 		std::string msg = 
-" /\\_/\\	\n"
+"  /\\_/\\	\n"
 " ((@v@))	\n"
 " ():::()	\n"
 "  VV-VV	\n";
@@ -124,31 +126,46 @@ std::string    Bot::drawanimals(std::string str) const
 	return ("please type cat/dog/bird");
 }
 
-void	Bot::addToAllChannel(Client &bot, Client& who) const
-{
-	std::map<std::string, Channel *> tmp = who.getServer()->getChannels();
-	for (std::map<std::string, Channel *>::iterator it = tmp.begin(); it != tmp.end(); ++it)
-	{
-		it->second->addMember(bot);
-		it->second->addOperator(bot);
-	}
-}
+// void	Bot::addToAllChannel(Client &bot, Client& who) const
+// {
+// 	std::map<std::string, Channel *> tmp = who.getServer()->getChannels();
+// 	for (std::map<std::string, Channel *>::iterator it = tmp.begin(); it != tmp.end(); ++it)
+// 	{
+// 		it->second->addMember(bot);
+// 		it->second->addOperator(bot);
+// 	}
+// }
 
-void    Bot::execute(Client &who, std::vector<std::string> cmd) const
+void    Bot::botexecute(Client &who, std::vector<std::string> cmd) const
 {
-
-	if (cmd[1] == "time")
+  std::string sub = cmd[2].substr(1);
+	if (sub == "time")
 	{
 		std::string msg = answerTime();
  		who.getServer()->replyNoServ(&who, msg);
                 return;
 	}
-	if (cmd[1] == "draw" && cmd[2] == "a")
+	if (sub == "draw" && cmd[3] == "a")
 	{
-		std::string msg = drawanimals(cmd[3]);
+		std::string msg = drawanimals(cmd[4]);
  		who.getServer()->replyNoServ(&who, msg);
                 return;		
 	}
 	who.getServer()->replyNoServ(&who, "I don't support this cmd");
 			return;	
 }
+
+// Client* Bot::getClient(void)
+// {
+//   return this->_bot;
+// }
+
+// void    Bot::setClient(void)
+// {
+// 	std::string bot = "bot";
+// 	this->_bot = new Client();
+// 	this->_bot->setRealName(bot);
+// 	this->_bot->setUserName(bot);
+// 	this->_bot->setNickName(bot);
+// 	this->_bot->setHost("127.0.0.1");
+// }

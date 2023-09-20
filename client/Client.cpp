@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 02:30:00 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/20 21:26:18 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 
 Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(""),
 		_authenticated(false), _registered(false){}
+
+
+Client::Client(): _fd(),_nickName(""),_authenticated(true), _registered(true){}
 
 Client::~Client() {}
 
