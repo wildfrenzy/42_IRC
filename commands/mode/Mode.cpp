@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/18 18:08:42 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/20 18:52:45 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,6 @@ Mode& Mode::operator=(const Mode& other)
     return *this;
 }
 
-// Channel* Mode::findChannel(Client& who, std::string channelName) const
-// {
-//     std::map<std::string, Channel *>::iterator it;
-//     std::map<std::string, Channel *> channels = who.getServer()->getChannels();
-//     for(it = channels.begin(); it != channels.end(); ++it)
-//     {
-//         if (it->first == channelName)
-//             return it->second;
-//     }
-//     return NULL;
-// }
-
 void    Mode::setInviteOnly(Channel*    channel) const
 {
     channel->setInviteOnly(true);
@@ -57,7 +45,7 @@ void    Mode::setKey(const std::string key, Channel*    channel) const
 
 void    Mode::unsetKey(Channel*    channel) const
 {
-    channel->setKey(NULL);
+    channel->setKey("");
 }
 
 void    Mode::setTopicRight(Channel*    channel) const
@@ -93,26 +81,28 @@ void    Mode::unsetUserPrivilege(Client& c, Channel*    channel) const
 void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const
 {
     if (cmd[2][1] == 'i' )
-        setInviteOnly(channel);
-    if (cmd[2][1] == 'k' || cmd[2][1] == 'l' || cmd[2][1] == 'o')
     {
-        if (cmd[3].empty())
+        setInviteOnly(channel);
+        who.getServer()->reply(&who,
+                            "RPL_CHANNELMODEIS",
+                            cmd[1] + " " + cmd[2]);            
+        return; 
+    }
+    if (cmd[2][1] == 'k' || cmd[2][1] == 'l' || cmd[2][1] == 'o' || cmd[2][1] == 't')
+    {
+        if (cmd[3].empty() && (cmd[2][1] == 'k' || cmd[2][1] == 'l' || cmd[2][1] == 'o'))
         {
             who.getServer()->reply(&who,
                                 "ERR_NEEDMOREPARAMS",
                                 ":Not enough parameters");
             return;            
         }
-        if (cmd[2][1] == 't' )
-        {
-            if(cmdcheck(cmd[3]))
-            {
-                who.getServer()->reply(&who,
-                                    "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me1");
-                return;
-            }     
+        if (cmd[2][1] == 't')
+        {   
             setTopicRight(channel);
+            who.getServer()->reply(&who,
+                                "RPL_CHANNELMODEIS",
+                                cmd[1] + " " + cmd[2]);            
             return;
         }
         if (cmd[2][1] == 'k' )
@@ -121,7 +111,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me2");
+                                ":is unknown mode char to me");
                 return;
             }   
             setKey(cmd[3], channel);
@@ -133,14 +123,17 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         if (cmd[2][1] == 'l' )
         {
             int i = atoi(cmd[3].c_str());
-            if (i <= 1)
+            if (i < 1)
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me3");
+                                ":is unknown mode char to me");
                 return;          
             }
             setUserLimit((size_t)i, channel);
+            who.getServer()->reply(&who,
+                                "RPL_CHANNELMODEIS",
+                            cmd[1] + " " + cmd[2] + " " + cmd[3]);
             return;
         }
         if (cmd[2][1] == 'o' )
@@ -154,12 +147,15 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
                 return ;    
             }
             setUserPrivilege(*c, channel);
+            who.getServer()->reply(&who,
+                                "RPL_CHANNELMODEIS",
+                            cmd[1] + " " + cmd[2] + " " + cmd[3]);
             return;
         }
     }
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    ":is unknown mode char to me4");
+                    ":is unknown mode char to me");
     return;
 }
 
@@ -168,30 +164,42 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
     if (cmd[2][1] == 'i' )
     {
         unsetInviteOnly(channel);
+        who.getServer()->reply(&who,
+                            "RPL_CHANNELMODEIS",
+                            cmd[1] + " " + cmd[2]);   
         return;
     }
     if (cmd[2][1] == 't' )
     {
         unsetTopicRight(channel);
+        who.getServer()->reply(&who,
+                            "RPL_CHANNELMODEIS",
+                        cmd[1] + " " + cmd[2]);        
         return;
     }
     if (cmd[2][1] == 'k' )
     {
         unsetKey(channel);
+        who.getServer()->reply(&who,
+                            "RPL_CHANNELMODEIS",
+                        cmd[1] + " " + cmd[2]);  
         return;
     }   
     if (cmd[2][1] == 'l' )
     {
         unsetUserLimit(channel);
+        who.getServer()->reply(&who,
+                            "RPL_CHANNELMODEIS",
+                        cmd[1] + " " + cmd[2]);  
         return;
     }
     if (cmd[2][1] == 'o' )
     {
-        if(cmd[3].empty() || cmdcheck(cmd[3]))
+        if(cmd[3].empty())
         {
             who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",
-                            ":is unknown mode char to me5");
+                            ":is unknown mode char to me");
             return;
         }
         Client* c = findClient(who, cmd[3]);
@@ -199,15 +207,18 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
         {
             who.getServer()->reply(&who,
                             "ERR_NOSUCHNICK",
-                            ":No such nick/channel");
+                            ":No such nick");
             return;    
         }
         unsetUserPrivilege(*c, channel);
+        who.getServer()->reply(&who,
+                            "RPL_CHANNELMODEIS",
+                        cmd[1] + " " + cmd[2] + " " + cmd[3]);  
         return;
     } 
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    ":is unknown mode char to me6");
+                    ":is unknown mode char to me");
 }
 
 void    Mode::execute(Client& who, std::vector<std::string> cmd) const
@@ -244,7 +255,7 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
     {
         who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",
-							   ":is unknown mode char to me0");
+							   ":is unknown mode char to me");
         return;          
     }
     if (channel->operatorRight(who))

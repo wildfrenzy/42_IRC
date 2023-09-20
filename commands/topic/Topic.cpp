@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Topic.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 18:53:35 by yli               #+#    #+#             */
+/*   Updated: 2023/09/20 18:53:36 by yli              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Topic.hpp"
 #include "./../../client/Client.hpp"
 
@@ -71,12 +83,19 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
 							   ":No such channel");
         return;   
     }
+    if (!c->belongToGroup(who, c->getMembers()))
+    {
+        who.getServer()->reply(&who,
+                                "ERR_NOTONCHANNEL",
+							   cmd[1] + " :You're not on that channel");
+        return; 
+    }
     if (cmd.size() == 2)
     {
         checkTopic(who, c, cmd[1]);
         return;
     }
-    if (!c->getTopicRight() || !checkOperatorRight(who, c))
+    if (c->getTopicRight() && !checkOperatorRight(who, c))
     {
         who.getServer()->reply(&who,
                         "ERR_CHANOPRIVSNEEDED",
@@ -106,10 +125,9 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
     else
     {
         unsetTopic(c);
-		//change this reply
         who.getServer()->reply(&who,
                             "RPL_TOPIC",
-                            " " + cmd[1] + " :No topic is set");
+                            cmd[0] + " " + cmd[1] + " " + cmd[2]);
     }
 }
 

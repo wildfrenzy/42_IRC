@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Channel.hpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 18:54:42 by yli               #+#    #+#             */
+/*   Updated: 2023/09/20 18:54:43 by yli              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
@@ -21,10 +33,10 @@ class Channel
         void    setUserLimit(size_t size);
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
+        std::string getKey(void);
         void    setTopic(std::string& topic);
         void    unsetTopic(void);
         void    setTopicRight(bool topic_right);
-        std::string getKey(void);
         size_t  getUserLimit(void);
         bool    getInviteOnly(void);
         std::string getChannelName(void);

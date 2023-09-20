@@ -6,14 +6,14 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/19 20:57:08 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/20 18:06:30 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 #include <algorithm>
 
-Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true)
+Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true), _key("")
 {
 }
 
@@ -45,6 +45,7 @@ size_t  Channel::getUserLimit(void)
 {
     return this->_user_limit;
 }
+
 std::string Channel::getKey(void)
 {
     return this->_key;
@@ -127,8 +128,12 @@ void    Channel::deleteOperator(Client& c)
     {
         if (*it == &c)
             this->_operators.erase(it);
-        return;
     }
+    if (this->_operators.size() == 0 && this->_members.size() != 0)
+    {
+        Client* tmp = this->_members[0];
+        this->_operators.push_back(tmp);
+    }   
 }
 void    Channel::deleteOperator(Client* c)
 {
@@ -138,7 +143,11 @@ void    Channel::deleteOperator(Client* c)
 		std::cout << BLUE"deleting " + _channelName + " operator "RES << c->getNickName() << std::endl;
 		this->_operators.erase(i);
 	}
-
+    if (this->_operators.size() == 0 && this->_members.size() != 0)
+    {
+        Client* tmp = this->_members[0];
+        this->_operators.push_back(tmp);
+    } 
 }
 bool    Channel::belongToGroup(Client& who, std::vector<Client*> group)
 {

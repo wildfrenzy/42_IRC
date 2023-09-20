@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 00:34:30 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/19 20:53:10 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/20 17:19:01 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,12 +355,12 @@ void Server::_setReplies() {
 void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channelname)
 {
 	//std::tm*	timeInfo = std::localtime(&currentTime);
-	//char buffer[80];
-	char buffer[20];
+	char buffer[80];
+	//char buffer[20];
 
 	std::time_t now = std::time(0);
 	std::strftime(buffer, sizeof(buffer), "%s", std::localtime(&now));
-//	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
+	//std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
 	std::string strTime(buffer);
 	std::string message;
 	message += channelname + " " + who->getNickName() + "!" + who->getUserName() + "@" + who->getHost() + " " + strTime;
