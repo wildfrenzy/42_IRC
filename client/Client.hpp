@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:35:42 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/20 21:15:16 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/22 16:53:42 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ public:
 
 	bool const &getRegistered() const;
 	void setRegistered();
+
+	void setServer(Server* server);
+	void setFd(int fd);
 
 	//std::map <std::string, Channel *> &getUserChannels();
 

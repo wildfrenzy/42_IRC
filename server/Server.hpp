@@ -59,7 +59,6 @@
 #define RES "\x1b[0m"
 
 class Client;
-//class Cmd;
 class Channel;
 class Bot;
 
@@ -86,7 +85,10 @@ public:
 	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
 	void    setBot(void);
-	Bot* getBot(void);
+	Bot*	getBot(void);
+
+	bool	isPrintable(char c);
+	bool	checkPassword(std::string pw);
 
 private:
 	int				_mainFd;

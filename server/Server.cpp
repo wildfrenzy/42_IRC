@@ -5,8 +5,9 @@ Server::Server(char *port, char *password){
 	int opt = 1;
 
 	this->_port = this->validatePort(port);
+	if (!checkPassword(password))
+		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 	this->_password = password;
-
 	this->createComands();
 	this->_setReplies();
 
@@ -31,6 +32,7 @@ Server::Server(char *port, char *password){
 		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 
 	this->_select();
+	setBot();
 	//how about sending same struct sockaddr_in address; and use it in select
 }
 
@@ -70,10 +72,12 @@ Server &Server::operator=(const Server &s) {
 short Server::validatePort(char *port) {
 	char *end;
 	short p = static_cast <short>(std::strtol(port, &end, 10));
-//TODO	add better validation!
-// and throw exception on error.
+	if (p <= 1023)
+		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
 	return p;
-}
+}//check later!!!
+// c4b11c3% ./irc 1022 7
+// irc server: Success
 
 void Server::_select() {
 	fd_set r, w; //read, write
@@ -221,16 +225,11 @@ std::vector<Client *> const &Server::getClients() const {
 //     channelMap["channel1"] = c1;
 
 void Server::addChannel(std::string name) {
-	//this->_channels[name] = new Channel();
 	Channel* c = new Channel();
 	this->_channels[name] = c;
 	c->setChannelName(name);
-	
-	// std::map<std::string, Channel*>::iterator it = this->_channels.find(name);
-	// Channel* c = it->second;
-	// c->addMembers(bot);
 	std::cout << "New channel just appeared : " << name << std::endl;
-}//change logic later!!!!
+}
 
 void Server::replyNoServ(Client *who, std::string msg) {
 	std::string writeBuff = who->getWriteBuff();
@@ -275,7 +274,6 @@ void Server::createComands() {
 	this->_commands["TOPIC"] = new Topic();
 	this->_commands["MODE"] = new Mode();
 	this->_commands["PING"] = new Ping();
-	//this->_commands["BOT"] = new Bot();
 }
 
 void Server::_setReplies() {
@@ -354,9 +352,27 @@ void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string m
 void    Server::setBot(void)
 {
 	this->_bot = new Bot();
+	// this->_clients.push_back(this->_bot->getClient());
+	// this->_bot->getClient()->setServer(this);
+	// std::cout << "hello" << _bot->getClient()->getNickName() << std::endl; 
 }
 	
 Bot* Server::getBot(void)
 {
 	return this->_bot;
+}
+
+bool	Server::isPrintable(char c)
+{
+	return (c > 32 && c <= 126);
+}
+
+bool	Server::checkPassword(std::string pw)
+{
+	for (std::string::const_iterator it = pw.begin(); it != pw.end(); ++it)
+	{
+		if (!isPrintable(*it))
+			return false;
+	}
+	return true;
 }

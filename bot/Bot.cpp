@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:54:59 by yli               #+#    #+#             */
-/*   Updated: 2023/09/20 21:43:32 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/22 17:14:13 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 #include "./../client/Client.hpp"
 #include "./../channel/Channel.hpp"
 
-Bot::Bot() {}
+Bot::Bot()
+{
+  //setClient();
+}
 
-Bot::~Bot() {}
+Bot::~Bot()
+{
+  //delete this->_bot;
+}
 
 Bot::Bot(const Bot& other) {(void) other;}
 
@@ -25,6 +31,29 @@ Bot& Bot::operator=(const Bot& other)
 	(void) other;
 	return *this;
 }
+
+
+// Client* Bot::getClient(void)
+// {
+//   return this->_bot;
+// }
+
+// void    Bot::setClient(void)
+// {
+//   int pipefd[2];
+// 	srand(std::time(NULL));
+// 	if (pipe2(pipefd, O_NONBLOCK))
+// 		throw Bot::PipeErrorException();
+// 	std::string bot = "bot";
+// 	this->_bot = new Client();
+// 	this->_bot->setRealName(bot);
+// 	this->_bot->setUserName(bot);
+// 	this->_bot->setNickName(bot);
+// 	this->_bot->setHost("127.0.0.1");
+//   this->_bot->setFd(pipefd[0]);
+//   this->_pipe_fd = pipefd[1];
+//   std::cout << "-----------client in bot created!-------" << std::endl;
+// }
 
 
 
@@ -154,18 +183,3 @@ void    Bot::botexecute(Client &who, std::vector<std::string> cmd) const
 	who.getServer()->replyNoServ(&who, "I don't support this cmd");
 			return;	
 }
-
-// Client* Bot::getClient(void)
-// {
-//   return this->_bot;
-// }
-
-// void    Bot::setClient(void)
-// {
-// 	std::string bot = "bot";
-// 	this->_bot = new Client();
-// 	this->_bot->setRealName(bot);
-// 	this->_bot->setUserName(bot);
-// 	this->_bot->setNickName(bot);
-// 	this->_bot->setHost("127.0.0.1");
-// }
