@@ -29,12 +29,6 @@ Nick& Nick::operator=(const Nick& other)
 
 void Nick::execute(Client& who, std::vector<std::string> cmd) const
 {
-	/*if (!who.getAuthenticated()){
-		who.getServer()->reply(&who,
-							   "ERR_NOTREGISTERED",
-							   ":You must authenticate with the server");
-		return;
-	}*/
 	if (cmd.size() < 2) {
 		who.getServer()->reply(&who,
 							   "ERR_NEEDMOREPARAMS",
@@ -62,15 +56,12 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 			std::string result;
 			str >> result;
 			who.getServer()->replyNoServ(&who, ":irc_serv 433 " + ni + " user" + result + " :Nickname is already in use");
-            //who.getServer()->reply(&who, "ERR_NICKNAMEINUSE", ":Nickname is already in use");
-            return;
-        }
-
-    }
-	std::cout << "test: " << ni << std::endl;
-    who.setNickName(ni);
-    who.getServer()->reply(&who, "", who.getUserName() + " Nickname set successfully.");
-	if (who.getAuthenticated() && !who.getRegistered())
+			return;
+		}
+	}
+	who.setNickName(ni);
+	who.getServer()->reply(&who, "", YELLOW"[" + who.getNickName()  + "]" + " Nickname set successfully." + RES);
+	if (who.getAuthenticated() && !who.getRegistered() && !who.getUserName().empty())
 		who.setRegistered();
 }
 
