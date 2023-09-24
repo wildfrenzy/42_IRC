@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 01:07:17 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/16 04:27:03 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/24 20:01:13 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ Nick::~Nick() {}
 
 Nick::Nick(const Nick& other)
 {
-    *this = other;
+	*this = other;
 }
 
 Nick& Nick::operator=(const Nick& other)
 {
 	(void)other;
-    return *this;
+	return *this;
 }
 
 void Nick::execute(Client& who, std::vector<std::string> cmd) const
@@ -35,21 +35,17 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 							   ":Not enough parameters");
 		return;
 	}
-    std::string ni = cmd[1];
-    for(unsigned long i = 0; i < ni.size(); ++i)
-    {
-        if (ni[i] == '#' || ni[i] == '&' || ni[i] == '+' || ni[i] == '@' 
-            || ni[i] == '%' || ni[i] == '/' || ni[i] == '*' || ni[i] == '?' ||
-			ni[i] > 127 || ni[i] <= 32)
-        {
-            who.getServer()->reply(&who, "ERR_ERRONEUSNICKNAME", ":Erroneous nickname");
-            return;
-        }
-    }
-    for(unsigned long i = 0 ; i < who.getServer()->getClients().size(); ++i)
-    {
-        if (who.getServer()->getClients()[i]->getNickName() == ni)
-        {
+	std::string ni = cmd[1];
+	for(unsigned long i = 0; i < ni.size(); ++i)
+	{
+		if (!std::isalnum(ni[i])){
+			who.getServer()->reply(&who, "ERR_ERRONEUSNICKNAME", ":Erroneous nickname");
+			return;
+		}
+	}
+	for(unsigned long i = 0 ; i < who.getServer()->getClients().size(); ++i)
+	{
+		if (who.getServer()->getClients()[i]->getNickName() == ni){
 			size_t num = who.getServer()->getClients().size();
 			std::stringstream str;
 			str << num;
@@ -59,8 +55,13 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 			return;
 		}
 	}
+	if (!who.getNickName().empty()){
+		who.getServer()->replyNoServ(&who, ":" + who.getNickName() + "!" + who.getUserName() + "@" + who.getHost() +
+			" NICK " + ni);
+	} else
+		who.getServer()->reply(&who, "", YELLOW"[" + ni  + "]" + " Nickname set successfully." + RES);
+
 	who.setNickName(ni);
-	who.getServer()->reply(&who, "", YELLOW"[" + who.getNickName()  + "]" + " Nickname set successfully." + RES);
 	if (who.getAuthenticated() && !who.getRegistered() && !who.getUserName().empty())
 		who.setRegistered();
 }
