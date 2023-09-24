@@ -1,11 +1,17 @@
-//
-// Created by Nadiia Maliarenko on 14.09.23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Join.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/14 14:35:19 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/25 01:14:44 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Join.hpp"
 #include "./../../client/Client.hpp"
-#include <string>
-#include <algorithm>
 
 Join::Join() : Cmd(){}
 
@@ -16,8 +22,6 @@ std::string vecToUsersStr(std::vector<Client *> clients, Channel *cn){
 	for (size_t i = 0; i < clients.size(); ++i) {
 		if (std::find(cn->getOperators().begin(), cn->getOperators().end(), clients[i]) != cn->getOperators().end())
 			str.append("@");
-		/*if (clients[i]->getModes().find('o') != std::string::npos)
-			str.append("@");*/
 		str.append(clients[i]->getNickName());
 		if (i != clients.size() - 1)
 			str.append(" ");
@@ -75,7 +79,6 @@ void Join::joined(Client &who, std::string channel, std::map <std::string, Chann
 	else
 		serv->reply(&who, "RPL_TOPIC", channel + " :Channel topic is " +
 							channels[channel]->getTopic() + "!");
-	//serv->reply(&who, "RPL_TOPICWHOTIME", channel + "TemporaryTest 16090246");
 	serv->reply(&who, "RPL_NAMREPLY",  "= " + channel + " :" + vecToUsersStr(members, channels[channel]));
 	serv->reply(&who, "RPL_ENDOFNAMES",  channel + " :End of user's list.");
 	
@@ -105,19 +108,17 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 			return;
 		}
 		if (channels.find(ch[0]) == channels.end()){
-			std::cout << "channel added: " << ch[0] << std::endl;
-			serv->addChannel(ch[0]); //?
+			serv->addChannel(ch[0]);
 		} else if ((!channels[ch[0]]->getKey().empty()) && (ch.size() != 2 || channels[ch[0]]->getKey() != ch[1])) {
 			serv->reply(&who, "ERR_BADCHANNELKEY", ch[0] + " :Cannot join channel (+k)");
 			return;
-		} else if (channels[ch[0]]->getInviteOnly()){
+		} else if (channels[ch[0]]->getInviteOnly()){ //add check if user is invited
 			serv->reply(&who, "ERR_INVITEONLYCHAN", ch[0] + " :Cannot join channel (+i)");
 			return;
 		} else if (channels[ch[0]]->getMemberSize() == channels[ch[0]]->getUserLimit()){
 			serv->reply(&who, "ERR_CHANNELISFULL", ch[0] + " :Cannot join channel (+l)");
 			return;
 		}
-		//std::cout << "check if on channel" << std::endl;
 		std::vector<Client *> members = channels[ch[0]]->getMembers();
 		for (std::vector<Client *>::iterator jt = members.begin(); jt != members.end() ; ++jt) {
 			if (*jt == &who){
@@ -125,16 +126,16 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 				return;
 			}
 		}
-		//std::cout << "check if on channel end" << std::endl;
-		std::string sub = cmd[1].substr(1);
-		if (cmdcheck(sub))
-		{
-			who.getServer()->reply(&who,
-								"RPL_CHANNELMODEIS",
-								" :Invalid channel name");
-			return;
-		}
 		channels[ch[0]]->addMember(who);
 		this->joined(who, ch[0], channels);
 	}
+}
+
+Join &Join::operator=(const Join &j) {
+	(void)j;
+	return *this;
+}
+
+Join::Join(const Join &j) {
+	(void)j;
 }
