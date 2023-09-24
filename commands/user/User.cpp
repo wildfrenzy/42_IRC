@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:00:49 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/15 14:37:55 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/24 19:10:24 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,11 @@
 User::User() : Cmd(){}
 User::~User() {}
 
-#define BLUE "\x1b[1;36m"
 #define YELLOW "\x1b[1;93m"
-#define RED "\x1b[1;31m"
 #define RES "\x1b[0m"
 
-// can we have users with same username ?
 // USER <username> 0 * :Real name
 void User::execute(Client &who, std::vector <std::string> cmd) const {
-	/*if (!who.getAuthenticated()) {
-		who.getServer()->reply(&who,
-							   "ERR_NOTREGISTERED",
-							   ":You must authenticate with the server.");
-		return;
-	}*/
 	if (who.getRegistered()) {
 		who.getServer()->reply(&who,
 							   "ERR_ALREADYREGISTERED",
@@ -42,9 +33,6 @@ void User::execute(Client &who, std::vector <std::string> cmd) const {
 							   "USER :Not enough parameters");
 		return;
 	}
-	//This error code is used to indicate that
-	// a client's command is missing required parameters or is incorrectly formatted.
-	//todo: add better validation of arguments
 	who.setUserName(cmd[1]);
 	std::string rn;
 	if (cmd[4][0] != ':')
@@ -62,12 +50,11 @@ void User::execute(Client &who, std::vector <std::string> cmd) const {
 		who.setRegistered();
 }
 
-
 User::User(const User &u) {
 	*this = u;
 }
 
 User &User::operator=(const User &u) {
 	(void)u;
-	return  *this;
+	return *this;
 }

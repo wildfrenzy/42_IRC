@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 03:09:51 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/20 21:22:02 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/24 23:59:08 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,12 @@ void    Privmsg::sendToChannel(Client& who, std::vector<std::string> cmd) const
 
 void    Privmsg::sendToClient(Client& who, std::vector<std::string> cmd) const
 {
-    if (cmd[1] == "bot")
+/*   bot cannot be inside of private message command!
+ * if (cmd[1] == "bot")
     {
         who.getServer()->getBot()->botexecute(who, cmd);
         return;
-    }
+    }*/
     Client* client = findClient(who, cmd[1]);
     if (client == NULL)
     {
@@ -88,7 +89,7 @@ void    Privmsg::execute(Client& who, std::vector<std::string> cmd) const
 							   ":You must authenticate with the server.");
 		return;
 	}
-	if (cmd.size() < 2) {
+	if (cmd.size() <= 2) {
 		who.getServer()->reply(&who,
 							   "ERR_NEEDMOREPARAMS",
 							   ":Not enough parameters");

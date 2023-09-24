@@ -325,6 +325,7 @@ void Server::_setReplies() {
 	this->_replies["ERR_INVITEONLYCHAN"] = "473";
 	this->_replies["ERR_TOOMANYCHANNELS "] = "405";
 	this->_replies["ERR_BADCHANMASK"] = "476";
+	this->_replies["RPL_CHANNELMODEIS"] = "324";
 
 	this->_replies["RPL_INVITING"] = "341";
 	this->_replies["ERR_USERNOTINCHANNEL"] = "441";

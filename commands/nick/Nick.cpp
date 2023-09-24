@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 01:07:17 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/24 20:01:13 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/09/24 23:46:56 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void Nick::execute(Client& who, std::vector<std::string> cmd) const
 	std::string ni = cmd[1];
 	for(unsigned long i = 0; i < ni.size(); ++i)
 	{
-		if (!std::isalnum(ni[i])){
+		if (!std::isalnum(ni[i]) && ni[i] != '_'){
 			who.getServer()->reply(&who, "ERR_ERRONEUSNICKNAME", ":Erroneous nickname");
 			return;
 		}

@@ -248,7 +248,7 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
 		modes += channel->getTopicRight() ? "t" : "";
 		modes += !channel->getKey().empty() ? "k" : "";
 		modes += channel->getUserLimit() < 10000 ? "l" : "";
-		who.getServer()->reply(&who,"", "MODE " + channel->getChannelName() + (!modes.empty() ? " +" + modes : ""));
+		who.getServer()->reply(&who,"RPL_CHANNELMODEIS", channel->getChannelName() + (!modes.empty() ? " +" + modes : ""));
 		return;
 	}
     if ((cmd[2][0] == '+' || cmd[2][0] == '-') && cmd[2][2] != 0)
