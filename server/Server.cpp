@@ -1,20 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/24 16:31:20 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/09/24 16:31:20 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Server.hpp"
 #include <unistd.h>
+#include <climits>
+#include <stdint.h>
 
 Server::Server(char *port, char *password){
 	int opt = 1;
 
 	this->_port = this->validatePort(port);
-	if (!checkPassword(password))
-		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
-	this->_password = password;
-	this->createComands();
-	this->_setReplies();
+	this->_password = this->checkPassword(password);
 
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
-	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int))) //SO_REUSEADDR |
-		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
+		throw std::runtime_error("irc server socket: " + std::string(strerror(errno)));
+	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int)))
+		throw std::runtime_error("irc server setsockopt: " + std::string(strerror(errno)));
 
 	fcntl(this->_mainFd, F_SETFL, O_NONBLOCK);
 
@@ -26,18 +36,19 @@ Server::Server(char *port, char *password){
 	std::cout << BLUE"PORT: "RES << this->_port << std::endl;
 
 	if (bind(this->_mainFd, (struct sockaddr *) &address, sizeof(address)) < 0)
-		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
+		throw std::runtime_error("irc server bind: " + std::string(strerror(errno)));
 
 	if (listen(this->_mainFd, 16) < 0)
-		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
+		throw std::runtime_error("irc server listen: " + std::string(strerror(errno)));
 
-	this->_select();
+	this->_createCommands();
+	this->_setReplies();
 	setBot();
-	//how about sending same struct sockaddr_in address; and use it in select
+	this->_select();
 }
 
-Server::~Server() {
-	close(_mainFd);
+void	Server::cleaner()
+{
 	for (std::vector <Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
 		close((*it)->getFd());
 		delete *it;
@@ -52,6 +63,13 @@ Server::~Server() {
 	_clients.clear();
 	_commands.clear();
 	_channels.clear();
+	if (close(_mainFd) == -1){
+		throw std::runtime_error("irc server close: " + std::string(strerror(errno)));
+	}
+}
+
+Server::~Server() {
+	cleaner();
 }
 
 Server::Server(const Server &s) {
@@ -69,15 +87,16 @@ Server &Server::operator=(const Server &s) {
 	return *this;
 }
 
-short Server::validatePort(char *port) {
+uint16_t Server::validatePort(char *port) {
 	char *end;
-	short p = static_cast <short>(std::strtol(port, &end, 10));
+	long pp = std::strtol(port, &end, 10);
+	if (pp > UINT16_MAX || pp < 0)
+		throw std::runtime_error("irc server: Ports must be unsigned 16-bit integers (0-65535)");
+	uint16_t p = static_cast <uint16_t>(pp);
 	if (p <= 1023)
-		throw std::runtime_error("irc server: " + std::string(strerror(errno)));
+		throw std::runtime_error("irc server: Port numbers from 0 to 1023 are reserved for common TCP/IP applications");
 	return p;
-}//check later!!!
-// c4b11c3% ./irc 1022 7
-// irc server: Success
+}
 
 void Server::_select() {
 	fd_set r, w; //read, write
@@ -91,7 +110,7 @@ void Server::_select() {
 
 	char buf[11];
 	size_t bytes;
-	std::string tmp; //remove later after we implement commands and responses
+	std::string tmp;
 
 	while (42)
 	{
@@ -107,8 +126,10 @@ void Server::_select() {
 				FD_SET(this->_clients[i]->getFd(), &w);
 			}
 		}
-		if (select(maxFd + 1, &r, &w, 0, 0) == -1)
-			throw std::runtime_error("irc server: " + std::string(strerror(errno)));
+		if (select(maxFd + 1, &r, &w, 0, 0) == -1){
+			cleaner();
+			throw std::runtime_error("irc server select: " + std::string(strerror(errno)));
+		}
 
 		if (FD_ISSET(this->_mainFd, &r)){
 			if ((newfd = accept(this->_mainFd,(struct sockaddr *) &address,
@@ -131,7 +152,6 @@ void Server::_select() {
 					bzero(buf, 10);
 				}
 				if (bytes <= 0) {
-					//clean everything about current client and close fd.
 					std::cout << RED "Connection to Client[";
 					if (this->_clients[i]->getNickName().empty())
 						std::cout << i;
@@ -162,7 +182,6 @@ void Server::_select() {
 					rb = this->_clients[i]->getReadBuff();
 					rb = rb.substr(rb.find('\n') + 1);
 					this->_clients[i]->setReadBuff(rb);
-					//std::cout << "TMP check:" << tmp  << ":" << std::endl;
 					this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(tmp));
 				}
 				continue ;
@@ -181,7 +200,6 @@ void Server::_select() {
 					this->_clients[i]->setWriteBuff(wb);
 				}
 				else if (bytes <= 0) {
-					//clean everything about current client and close fd.
 					close(this->_clients[i]->getFd());
 					deleteClient(this->_clients[i]);
 					std::cout << RED "Connection to Client["<< i << "] closed during send()" RES << std::endl;
@@ -219,15 +237,9 @@ std::vector<Client *> const &Server::getClients() const {
 	return this->_clients;
 }
 
-
-// Channel* c1 = new Channel();
-//     Channel* c2 = new Channel();
-//     channelMap["channel1"] = c1;
-
 void Server::addChannel(std::string name) {
-	Channel* c = new Channel();
-	this->_channels[name] = c;
-	c->setChannelName(name);
+	this->_channels[name] = new Channel();
+	this->_channels[name]->setChannelName(name);
 	std::cout << "New channel just appeared : " << name << std::endl;
 }
 
@@ -241,7 +253,6 @@ void Server::replyNoServ(Client *who, std::string msg) {
 
 void Server::reply(Client *who, std::string reply, std::string msg) {
 	std::string writeBuff = who->getWriteBuff();
-	//in case not everything was sent before
 
 	std::string message = ":irc_server" + (reply.empty() ? "" : " " + this->_replies[reply] + " ");
 	if (!reply.empty())
@@ -263,7 +274,7 @@ void Server::replyNoServ(std::vector<Client *> clients, std::string msg) {
 	}
 }
 
-void Server::createComands() {
+void Server::_createCommands() {
 	this->_commands["PASS"] = new Pass();
 	this->_commands["USER"] = new User();
 	this->_commands["NICK"] = new Nick();
@@ -362,17 +373,13 @@ Bot* Server::getBot(void)
 	return this->_bot;
 }
 
-bool	Server::isPrintable(char c)
+std::string const	Server::checkPassword(char *pass)
 {
-	return (c > 32 && c <= 126);
-}
-
-bool	Server::checkPassword(std::string pw)
-{
+	std::string const pw = pass;
 	for (std::string::const_iterator it = pw.begin(); it != pw.end(); ++it)
 	{
-		if (!isPrintable(*it))
-			return false;
+		if (!std::isprint(*it))
+			throw std::runtime_error("irc server: Password must include only printable characters");
 	}
-	return true;
+	return pw;
 }

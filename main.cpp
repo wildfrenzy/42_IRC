@@ -14,18 +14,17 @@
 #include <stdexcept>
 #include <exception>
 
-
 int main(int ac, char *av[]) {
-	Server *server = NULL;
+	//Server *server = NULL;
 	if (ac < 3) {
 		std::cout << RED"USAGE: ./irc <port> <pass>"RES << std::endl;
 		return 0;
 	}
 	try {
-		//Server server(av[1], av[2]);
-		server = new Server(av[1], av[2]);
+		Server server(av[1], av[2]);
+		//server = new Server(av[1], av[2]);
 	} catch (std::exception const &e) {
 		std::cout << e.what() << std::endl;
 	}
-	delete server;
+	//delete server;
 }

@@ -67,15 +67,14 @@ public:
 	Server(char *port, char *password);
 	~Server();
 
-	short	validatePort(char *port);
-	void	createComands();
-
+	uint16_t	validatePort(char *port);
+	std::string	const checkPassword(char *pass);
 
 	std::vector <Client *> const &getClients() const;
 	std::map <std::string, Cmd *> &getCommands();
 	std::string const &getPass() const;
 	std::map <std::string, Channel *> &getChannels();
-	void addChannel(std::string name);
+	void	addChannel(std::string name);
 	void	deleteClient(Client *c);
 
 	void	reply(Client *who, std::string reply, std::string msg);
@@ -84,15 +83,13 @@ public:
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
-	void    setBot(void);
+	void	setBot(void);
 	Bot*	getBot(void);
-
-	bool	isPrintable(char c);
-	bool	checkPassword(std::string pw);
+	void	cleaner();
 
 private:
 	int				_mainFd;
-	short			_port;
+	uint16_t		_port;
 	std::string		_password;
 
 	std::vector <Client *>				_clients;
@@ -105,7 +102,7 @@ private:
 
 	void	_select();
 	void	_setReplies();
-	void	_createComands();
+	void	_createCommands();
 	Bot*	_bot;
 };
 

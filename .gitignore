@@ -7,4 +7,4 @@ irc_server.cpp
 .vscode/*
 log.log
 test
-.sh
+*.sh
