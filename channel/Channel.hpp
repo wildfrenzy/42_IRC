@@ -14,8 +14,9 @@
 #define CHANNEL_HPP
 
 #include <iostream>
-#include <set>
 #include "../client/Client.hpp"
+#include <string>
+#include <vector>
 //#include "./../bot/Bot.hpp"
 
 class Client;
@@ -24,9 +25,8 @@ class Server;
 class Channel
 {
     public:
-        Channel(void);
-        Channel(std::string name);
-        ~Channel(void);
+        Channel();
+        ~Channel();
 
 
         void    setInviteOnly(bool invite_only);
@@ -47,15 +47,12 @@ class Channel
         void    addOperator(Client& c);
         void    deleteOperator(Client& c);
 		void    deleteOperator(Client* c);
-		void    deleteMembers(Client& c);
 		void    deleteMembers(Client* c);
         void    addMember(Client& c);
-        std::vector<Client*> getInvitee(void);
-        void    addInvitee(Client& c);
+        std::vector<Client*> &getInvitee();
         void    addInvitee(Client* c);
-        void    deleteInvitee(Client& c);
-        void    deleteInvitee(Client* c);
-        void    resetInvitee(void);
+        void    removeInvitee(Client* c);
+        void    resetInvitee();
         bool    belongToGroup(Client& who, std::vector<Client*> group);
         bool    addMemberCheck(Client& c, Client& who);
 		std::vector<Client*> &getMembers();

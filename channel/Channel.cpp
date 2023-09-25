@@ -13,15 +13,14 @@
 #include "Channel.hpp"
 #include <algorithm>
 
-Channel::Channel(void): _user_limit(10000), _invite_only(false), _topic_right(true), _key("")
-{
-}
+Channel::Channel(): _user_limit(10000), _invite_only(false), _topic_right(true), _key("")
+{}
 
 Channel::~Channel() {}
 
 Channel::Channel(const Channel& other)
 {
-    *this = other;
+	(void)other;
 }
 
 Channel& Channel::operator=(const Channel& other)
@@ -78,7 +77,7 @@ std::string Channel::getChannelName(void)
 
 bool    Channel::operatorRight(Client& c)
 {
-    if (this->_operators.empty())
+    if (this->_operators.empty()) //?
         return true;
     else
     {
@@ -142,12 +141,12 @@ void    Channel::deleteOperator(Client* c)
 	if (i != this->_operators.end()){
 		std::cout << BLUE"deleting " + _channelName + " operator "RES << c->getNickName() << std::endl;
 		this->_operators.erase(i);
+		if (this->_operators.empty() && !this->_members.empty())
+		{
+			Client* tmp = this->_members[0];
+			this->_operators.push_back(tmp);
+		}
 	}
-    if (this->_operators.size() == 0 && this->_members.size() != 0)
-    {
-        Client* tmp = this->_members[0];
-        this->_operators.push_back(tmp);
-    } 
 }
 bool    Channel::belongToGroup(Client& who, std::vector<Client*> group)
 {
@@ -189,22 +188,24 @@ bool    Channel::addMemberCheck(Client& c, Client& who)
 
 void    Channel::addMember(Client& c)
 {
-	if (this->_members.size() < 1)
+	if (this->_members.empty())
 		this->_operators.push_back(&c);
     this->_members.push_back(&c);
 }
 
-void    Channel::addInvitee(Client& c)
+/*void    Channel::addInvitee(Client& c)
 {
     this->_invitee.push_back(&c);
-}
+}*/
 
 void    Channel::addInvitee(Client* c)
 {
-    this->_invitee.push_back(c);
+	std::vector <Client *>::iterator i = std::find(this->_invitee.begin(), this->_invitee.end(), c);
+	if (i == this->_invitee.end())
+		this->_invitee.push_back(c);
 }
 
-std::vector<Client*> Channel::getInvitee(void)
+std::vector<Client*> &Channel::getInvitee()
 {
     return this->_invitee;
 }
@@ -220,7 +221,7 @@ void    Channel::deleteMembers(Client* c)
 
 //this one didnt delete it >.<, we have to delete by pointer, not reference.
 // the one up works :)
-void    Channel::deleteMembers(Client& c)
+/*void    Channel::deleteMembers(Client& c)
 {
     for (std::vector<Client*>::iterator it = this->_members.begin(); it != this->_members.end(); ++it)
     {
@@ -228,19 +229,16 @@ void    Channel::deleteMembers(Client& c)
             this->_members.erase(it);
         return;
     }
-}
+}*/
 
-void    Channel::deleteInvitee(Client* c)
+void	Channel::removeInvitee(Client* c)
 {
 	std::vector <Client *>::iterator i = std::find(this->_invitee.begin(), this->_invitee.end(), c);
-	if (i != this->_invitee.end()){
-		std::cout << BLUE"deleting "  + _channelName + " invitee "RES << c->getNickName() << std::endl;
+	if (i != this->_invitee.end())
 		this->_invitee.erase(i);
-        return ;
-	}
 }
 
-void    Channel::deleteInvitee(Client& c)
+/*void    Channel::deleteInvitee(Client& c)
 {
     for (std::vector<Client*>::iterator it = this->_invitee.begin(); it != this->_invitee.end(); ++it)
     {
@@ -248,13 +246,11 @@ void    Channel::deleteInvitee(Client& c)
             this->_invitee.erase(it);
         return;
     }
-}
+}*/
 
-void    Channel::resetInvitee(void)
+void	Channel::resetInvitee()
 {
-    for (std::vector<Client*>::iterator it = this->_invitee.begin(); it != this->_invitee.end(); ++it)
-        delete *it;
-    this->_invitee.clear();
+	this->_invitee.clear();
 }
 
 std::vector<Client *> &Channel::getMembers()

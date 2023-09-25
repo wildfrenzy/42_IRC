@@ -110,14 +110,19 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 		found = findHim(channels[cmd[1]]->getOperators(), cmd[2]);
 		if (found)
 			channels[cmd[1]]->deleteOperator(found);
+		found = findHim(channels[cmd[1]]->getInvitee(), cmd[2]);
+		if (found)
+			channels[cmd[1]]->removeInvitee(found);
 	}
 	else
 		std::cout << RED"not found"RES << std::endl;
 
+/*
 	std::vector<Client*> members = channels[cmd[1]]->getMembers();
 	std::cout << "Members check after kick: " << std::endl;
 	for (std::vector<Client*>::iterator it = members.begin() ; it != members.end() ; ++it) {
 		std::cout << (*it)->getNickName() + " ";
 	}
 	std::cout  << std::endl;
+*/
 }

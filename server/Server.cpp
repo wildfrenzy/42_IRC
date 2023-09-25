@@ -23,7 +23,7 @@ Server::Server(char *port, char *password){
 
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		throw std::runtime_error("irc server socket: " + std::string(strerror(errno)));
-	if (setsockopt(this->_mainFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int)))
+	if (setsockopt(this->_mainFd, SOL_SOCKET,  SO_REUSEPORT, &opt,sizeof(int))) // SO_REUSEADDR |
 		throw std::runtime_error("irc server setsockopt: " + std::string(strerror(errno)));
 
 	fcntl(this->_mainFd, F_SETFL, O_NONBLOCK);
@@ -43,7 +43,7 @@ Server::Server(char *port, char *password){
 
 	this->_createCommands();
 	this->_setReplies();
-	setBot();
+	this->_bot = new Bot();
 	this->_select();
 }
 
@@ -192,7 +192,7 @@ void Server::_select() {
 				std::string wb;
 				if (bytes == this->_clients[i]->getWriteBuff().size()) {
 					this->_clients[i]->getWriteBuff().clear();
-					this->_clients[i]->getReadBuff().clear(); //temporary
+					this->_clients[i]->getReadBuff().clear();
 				}
 				else if (bytes != this->_clients[i]->getWriteBuff().size() && bytes > 0) {
 					wb = this->_clients[i]->getWriteBuff();
@@ -216,6 +216,7 @@ void Server::deleteClient(Client *c) {
 	for (i = _channels.begin() ; i != _channels.end() ; ++i) {
 		(*i).second->deleteOperator(c);
 		(*i).second->deleteMembers(c);
+		(*i).second->removeInvitee(c);
 	}
 	this->_clients.erase(std::find(this->_clients.begin(),
 								   this->_clients.end(), c));
@@ -361,20 +362,20 @@ void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string m
 	this->reply(clients, msg, message);
 }
 
-void    Server::setBot(void)
+/*void    Server::setBot(void)
 {
 	this->_bot = new Bot();
 	// this->_clients.push_back(this->_bot->getClient());
 	// this->_bot->getClient()->setServer(this);
 	// std::cout << "hello" << _bot->getClient()->getNickName() << std::endl; 
-}
+}*/
 	
 Bot* Server::getBot(void)
 {
 	return this->_bot;
 }
 
-std::string const	Server::checkPassword(char *pass)
+std::string const Server::checkPassword(char *pass)
 {
 	std::string const pw = pass;
 	for (std::string::const_iterator it = pw.begin(); it != pw.end(); ++it)

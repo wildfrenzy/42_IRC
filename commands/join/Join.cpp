@@ -29,7 +29,7 @@ std::string vecToUsersStr(std::vector<Client *> clients, Channel *cn){
 	return str;
 }
 
-std::string Join::cmdToStr(std::vector<std::string> cmd) const{
+std::string Join::cmdToStr(std::vector<std::string> cmd) {
 	std::string str;
 	for (size_t i = 1; i < cmd.size(); ++i) {
 		str.append(cmd[i]);
@@ -50,7 +50,7 @@ std::vector<std::string> split(std::string str, char delim){
 	return vec;
 }
 
-bool Join::validateChannelName(std::string channel) const {
+bool Join::validateChannelName(std::string channel) {
 	if (channel.size() > 1 && (channel[0] == '#' || channel[0] == '&')){
 		for (std::string::const_iterator it = channel.begin(); it < channel.end(); ++it) {
 			if (!isprint(*it) || *it < 33)
@@ -61,7 +61,14 @@ bool Join::validateChannelName(std::string channel) const {
 	return false;
 }
 
-void Join::joined(Client &who, std::string channel, std::map <std::string, Channel *> &channels) const {
+bool isInvited(std::vector<Client *> invites, Client *who){
+	std::vector <Client *>::iterator i = std::find(invites.begin(), invites.end(), who);
+	if (i != invites.end())
+		return true;
+	return false;
+}
+
+void Join::joined(Client &who, const std::string& channel, std::map <std::string, Channel *> &channels) const {
 	Server *serv = who.getServer();
 	std::vector<Client *> members = channels[channel]->getMembers();
 
@@ -99,7 +106,7 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 	std::map<std::string, Channel *> &channels = serv->getChannels();
 	for (size_t i = 0; i < cmd.size(); ++i) {
 		ch = split(cmd[i], ' ');
-		if (ch.size() < 1){
+		if (ch.empty()){
 			serv->reply(&who,"ERR_NEEDMOREPARAMS","JOIN :Not enough parameters");
 			return;
 		}
@@ -112,7 +119,7 @@ void Join::execute(Client &who, std::vector <std::string> cmd) const {
 		} else if ((!channels[ch[0]]->getKey().empty()) && (ch.size() != 2 || channels[ch[0]]->getKey() != ch[1])) {
 			serv->reply(&who, "ERR_BADCHANNELKEY", ch[0] + " :Cannot join channel (+k)");
 			return;
-		} else if (channels[ch[0]]->getInviteOnly()){ //add check if user is invited
+		} else if (channels[ch[0]]->getInviteOnly() && !isInvited(channels[ch[0]]->getInvitee(), &who)){
 			serv->reply(&who, "ERR_INVITEONLYCHAN", ch[0] + " :Cannot join channel (+i)");
 			return;
 		} else if (channels[ch[0]]->getMemberSize() == channels[ch[0]]->getUserLimit()){

@@ -15,6 +15,8 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <map>
 
 #include "./../../cmd/Cmd.hpp"
 
@@ -32,9 +34,9 @@ public:
 private:
 	Join(Join const &j);
 	Join &operator=(Join const &j);
-	void joined(Client &who, std::string channel, std::map <std::string, Channel *> &channels) const;
-	bool validateChannelName(std::string channel) const;
-	std::string cmdToStr(std::vector<std::string> cmd) const;
+	void joined(Client &who, const std::string& channel, std::map <std::string, Channel *> &channels) const;
+	static bool validateChannelName(std::string channel) ;
+	static std::string cmdToStr(std::vector<std::string> cmd) ;
 };
 
 

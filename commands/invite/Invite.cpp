@@ -68,6 +68,8 @@ void Invite::execute(Client &who, std::vector <std::string> cmd) const {
 	}
 	Client &member = findClientt(serv->getClients(), cmd[1]);
 
+	channels.find(cmd[2])->second->addInvitee(&member);
+
 	serv->replyNoServ(&who, ":" + who.getNickName() + "!" +
 		who.getUserName() + "@" + who.getHost() + " 341 " +  who.getNickName() + " " + cmd[1] + " " + cmd[2]);
 
