@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/20 18:52:45 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/28 18:08:27 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         }
         if (cmd[2][1] == 'l' )
         {
-            int i = atoi(cmd[3].c_str());
-            if (i < 1)
+            long long i = atoi(cmd[3].c_str());
+            if (i < 1 || !intcheck(cmd[3]) || i > 2147483647)
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",

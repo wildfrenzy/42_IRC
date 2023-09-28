@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 15:33:39 by yli               #+#    #+#             */
-/*   Updated: 2023/09/18 17:43:04 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/28 17:33:33 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,16 @@ Client* Cmd::findClient(Client& who, std::string nickName) const
             return *it;
     }
     return cl;
+}
+
+bool    Cmd::intcheck(std::string cmd) const
+{
+    for (size_t i = 0; i < cmd.size(); ++i)
+    {
+        if (cmd[i] < '0' || cmd[i] > '9')
+            return false;
+    }
+    return true;
 }
 
 // Client& Cmd::findClient(Client& who, std::string nickName) const
