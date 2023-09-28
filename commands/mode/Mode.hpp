@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:53:01 by yli               #+#    #+#             */
-/*   Updated: 2023/09/20 18:53:02 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/28 19:46:37 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class   Mode: public Cmd
         void    unsetKey(Channel*    channel) const;
         void    setTopicRight(Channel*    channel) const;
         void    unsetTopicRight(Channel*    channel) const;
-        void    setUserLimit(size_t size, Channel*    channel) const;
+        void    setUserLimit(unsigned long long int size, Channel*    channel) const;
         void    unsetUserLimit(Channel*    channel) const;
         void    setUserPrivilege(Client& c, Channel*    channel) const;
         void    unsetUserPrivilege(Client& c, Channel*    channel)  const;

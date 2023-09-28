@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/28 18:08:27 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/28 19:55:45 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void    Mode::unsetTopicRight(Channel*    channel) const
     channel->setTopicRight(false);
 }
 
-void    Mode::setUserLimit(size_t size, Channel*    channel) const
+void    Mode::setUserLimit(unsigned long long int size, Channel*    channel) const
 {
     channel->setUserLimit(size);
 }
@@ -123,14 +123,14 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         if (cmd[2][1] == 'l' )
         {
             long long i = atoi(cmd[3].c_str());
-            if (i < 1 || !intcheck(cmd[3]) || i > 2147483647)
+            if (i < 1 || !intcheck(cmd[3]) || i > 100000)
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
                                 ":is unknown mode char to me");
                 return;          
             }
-            setUserLimit((size_t)i, channel);
+            setUserLimit(i, channel);
             who.getServer()->reply(&who,
                                 "RPL_CHANNELMODEIS",
                             cmd[1] + " " + cmd[2] + " " + cmd[3]);

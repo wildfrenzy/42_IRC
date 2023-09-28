@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:54:42 by yli               #+#    #+#             */
-/*   Updated: 2023/09/20 18:54:43 by yli              ###   ########.fr       */
+/*   Updated: 2023/09/28 19:35:25 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class Channel
 
 
         void    setInviteOnly(bool invite_only);
-        void    setUserLimit(size_t size);
+        void    setUserLimit(unsigned long long int size);
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
         std::string getKey(void);
@@ -61,7 +61,7 @@ class Channel
 
     private:
         std::string _channelName;
-        size_t  _user_limit;
+        unsigned long long int  _user_limit;
         bool    _invite_only;
         bool    _topic_right;
         std::string _key;
