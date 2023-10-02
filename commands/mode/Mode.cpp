@@ -6,12 +6,13 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by yli               #+#    #+#             */
-/*   Updated: 2023/10/02 23:11:00 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/10/03 00:14:18 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Mode.hpp"
 #include "./../../channel/Channel.hpp"
+#include <stdint.h>
 
 Mode::Mode() : Cmd() {}
 
@@ -58,7 +59,7 @@ void    Mode::unsetTopicRight(Channel*    channel) const
     channel->setTopicRight(false);
 }
 
-void    Mode::setUserLimit(unsigned long long int size, Channel*    channel) const
+void    Mode::setUserLimit(int size, Channel*    channel) const
 {
     channel->setUserLimit(size);
 }
@@ -122,18 +123,19 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
         }
         if (cmd[2][1] == 'l' )
         {
-            long long i = atoi(cmd[3].c_str());
-            if (i < 1 || !intcheck(cmd[3]) || i > 100000)
+			char *end;
+			long i = std::strtol(cmd[3].c_str(), &end, 10);
+            if (i < 1 || *end != '\0' || i > INT32_MAX)
             {
-                who.getServer()->reply(&who,
-                                    "ERR_UNKNOWNMODE",
+                who.getServer()->reply(&who,"ERR_UNKNOWNMODE",
                                 cmd[3] + " :is unknown mode char to me");
-                return;          
+                return;
             }
-            setUserLimit(i, channel);
+            setUserLimit(static_cast <int>(i), channel);
             who.getServer()->reply(&who,
                                 "RPL_CHANNELMODEIS",
-                            cmd[1] + " " + cmd[2] + " " + cmd[3]);
+                            cmd[1] + " " + cmd[2] + " " +
+							(cmd[3][0] == '+' ? &(cmd[3][1]) : cmd[3]));
             return;
         }
         if (cmd[2][1] == 'o' )
