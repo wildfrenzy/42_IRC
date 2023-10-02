@@ -83,7 +83,6 @@ public:
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
-	Bot*	getBot(void);
 	void	cleaner();
 
 private:
@@ -102,7 +101,6 @@ private:
 	void	_select();
 	void	_setReplies();
 	void	_createCommands();
-	Bot*	_bot;
 };
 
 
