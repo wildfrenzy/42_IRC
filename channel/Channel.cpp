@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:25:34 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/28 19:35:29 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/03 00:26:59 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void    Channel::setInviteOnly(bool invite_only)
     this->_invite_only = invite_only;
 }
 
-void    Channel::setUserLimit(unsigned long long int user_limit)
+void    Channel::setUserLimit(int user_limit)
 {
     this->_user_limit = user_limit;
 }

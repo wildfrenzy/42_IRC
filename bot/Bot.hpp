@@ -15,9 +15,7 @@
 
 #include "./../cmd/Cmd.hpp"
 #include <ctime>
-#include <exception>
 #include <unistd.h>
-#include "./../cmd/Cmd.hpp"
 
 class Cmd;
 class Client;

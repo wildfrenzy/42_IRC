@@ -12,7 +12,6 @@
 
 #include "Bot.hpp"
 #include "./../client/Client.hpp"
-#include "./../channel/Channel.hpp"
 
 Bot::Bot() : Cmd() {}
 
