@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by yli               #+#    #+#             */
-/*   Updated: 2023/10/02 18:34:55 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/02 23:11:00 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
     }
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    cmd[3] + " :is unknown mode char to me");
+                    cmd[2] + " :is unknown mode char to me");
     return;
 }
 
@@ -218,7 +218,7 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
     } 
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    ":is unknown mode char to me");
+						   cmd[3] + " :is unknown mode char to me");
 }
 
 void    Mode::execute(Client& who, std::vector<std::string> cmd) const
@@ -255,7 +255,7 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
     {
         who.getServer()->reply(&who,
                                 "ERR_UNKNOWNMODE",
-							   ":is unknown mode char to me");
+							   cmd[3] + " :is unknown mode char to me");
         return;          
     }
     if (channel->operatorRight(who))
@@ -268,5 +268,5 @@ void    Mode::execute(Client& who, std::vector<std::string> cmd) const
     }
     who.getServer()->reply(&who,
                         "ERR_NOPRIVILEGES",
-                        ":Permission Denied- You're not an IRC operator");
+                        ":Permission Denied: You're not an IRC operator");
 }
