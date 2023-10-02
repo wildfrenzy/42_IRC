@@ -99,7 +99,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
     {
         who.getServer()->reply(&who,
                         "ERR_CHANOPRIVSNEEDED",
-                        ":You're not channel operator");        
+                        c->getChannelName() + " :You're not channel operator");
         return;
     }
     if(cmdcheck(cmd[2]) || cmd[2][0] != ':')
