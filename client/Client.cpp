@@ -38,7 +38,6 @@ Client &Client::operator=(Client &c) {
 	return *this;
 }
 
-//if there is no spaces in input string, we are probably in trouble :D [need to test]
 std::vector <std::string> Client::cmdTokens(std::string &input) {
 	std::string deli = " ";
 	std::vector<std::string> tokens;
@@ -51,13 +50,12 @@ std::vector <std::string> Client::cmdTokens(std::string &input) {
 		token = input.substr(0, pos);
 		if (token.find('\r') != std::string::npos)
 			token = token.substr(0, token.find('\r'));
-		tokens.push_back(token);
+		if (!token.empty())
+			tokens.push_back(token);
 		input.erase(0, pos + deli.size());
 		pos = input.find(deli);
 	}
-	/*token = *tokens.end();
-	if (token.find('\r') != std::string::npos)
-		token = token.substr(0, token.find('\r'));*/
+
 	std::cout << "Tokens check: ";
 	for (size_t i = 0; i < tokens.size(); ++i) {
 		std::cout << "[" << tokens[i] << "]";
