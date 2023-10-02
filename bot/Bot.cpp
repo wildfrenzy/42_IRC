@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:54:59 by yli               #+#    #+#             */
-/*   Updated: 2023/09/22 17:14:13 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/02 17:44:42 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 #include "./../client/Client.hpp"
 #include "./../channel/Channel.hpp"
 
-Bot::Bot()
-{
-  //setClient();
-}
+Bot::Bot() : Cmd() {}
 
-Bot::~Bot()
-{
-  //delete this->_bot;
-}
+Bot::~Bot() {}
 
 Bot::Bot(const Bot& other) {(void) other;}
 
@@ -31,31 +25,6 @@ Bot& Bot::operator=(const Bot& other)
 	(void) other;
 	return *this;
 }
-
-
-// Client* Bot::getClient(void)
-// {
-//   return this->_bot;
-// }
-
-// void    Bot::setClient(void)
-// {
-//   int pipefd[2];
-// 	srand(std::time(NULL));
-// 	if (pipe2(pipefd, O_NONBLOCK))
-// 		throw Bot::PipeErrorException();
-// 	std::string bot = "bot";
-// 	this->_bot = new Client();
-// 	this->_bot->setRealName(bot);
-// 	this->_bot->setUserName(bot);
-// 	this->_bot->setNickName(bot);
-// 	this->_bot->setHost("127.0.0.1");
-//   this->_bot->setFd(pipefd[0]);
-//   this->_pipe_fd = pipefd[1];
-//   std::cout << "-----------client in bot created!-------" << std::endl;
-// }
-
-
 
 std::string    Bot::answerTime() const
 {
@@ -155,28 +124,18 @@ std::string    Bot::drawanimals(std::string str) const
 	return ("please type cat/dog/bird");
 }
 
-// void	Bot::addToAllChannel(Client &bot, Client& who) const
-// {
-// 	std::map<std::string, Channel *> tmp = who.getServer()->getChannels();
-// 	for (std::map<std::string, Channel *>::iterator it = tmp.begin(); it != tmp.end(); ++it)
-// 	{
-// 		it->second->addMember(bot);
-// 		it->second->addOperator(bot);
-// 	}
-// }
-
-void    Bot::botexecute(Client &who, std::vector<std::string> cmd) const
+void Bot::execute(Client &who, std::vector <std::string> cmd) const
 {
-  std::string sub = cmd[2].substr(1);
+  std::string sub = cmd[1].substr(1);
 	if (sub == "time")
 	{
 		std::string msg = answerTime();
  		who.getServer()->replyNoServ(&who, msg);
                 return;
 	}
-	if (sub == "draw" && cmd[3] == "a")
+	if (sub == "draw" && cmd[2] == "a")
 	{
-		std::string msg = drawanimals(cmd[4]);
+		std::string msg = drawanimals(cmd[3]);
  		who.getServer()->replyNoServ(&who, msg);
                 return;		
 	}

@@ -43,7 +43,6 @@ Server::Server(char *port, char *password){
 
 	this->_createCommands();
 	this->_setReplies();
-	this->_bot = new Bot();
 	this->_select();
 }
 
@@ -59,7 +58,6 @@ void	Server::_cleaner()
 	for (std::map<std::string, Channel *>::iterator it = _channels.begin(); it != _channels.end(); ++it) {
 		delete it->second;
 	}
-	delete this->_bot;
 	_clients.clear();
 	_commands.clear();
 	_channels.clear();
@@ -283,6 +281,7 @@ void Server::_createCommands() {
 	this->_commands["TOPIC"] = new Topic();
 	this->_commands["MODE"] = new Mode();
 	this->_commands["PING"] = new Ping();
+	this->_commands["BOT"] = new Bot();
 }
 
 void Server::_setReplies() {
@@ -352,11 +351,6 @@ void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string m
 	std::string message;
 	message += channelname + " " + who->getNickName() + "!" + who->getUserName() + "@" + who->getHost() + " " + strTime;
 	this->reply(clients, msg, message);
-}
-
-Bot* Server::getBot(void)
-{
-	return this->_bot;
 }
 
 std::string const Server::checkPassword(char *pass)

@@ -92,8 +92,6 @@ public:
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
-	Bot*	getBot(void);
-
 private:
 	int				_mainFd;
 	uint16_t		_port;
@@ -112,7 +110,6 @@ private:
 	void	_createCommands();
 	void	_printClient(int i);
 	void	_cleaner();
-	Bot*	_bot;
 };
 
 

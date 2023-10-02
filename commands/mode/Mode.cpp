@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by yli               #+#    #+#             */
-/*   Updated: 2023/09/28 19:55:45 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/02 18:34:55 by yli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me");
+                                cmd[3] + " :is unknown mode char to me");
                 return;
             }   
             setKey(cmd[3], channel);
@@ -127,7 +127,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
             {
                 who.getServer()->reply(&who,
                                     "ERR_UNKNOWNMODE",
-                                ":is unknown mode char to me");
+                                cmd[3] + " :is unknown mode char to me");
                 return;          
             }
             setUserLimit(i, channel);
@@ -155,7 +155,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
     }
     who.getServer()->reply(&who,
                         "ERR_UNKNOWNMODE",
-                    ":is unknown mode char to me");
+                    cmd[3] + " :is unknown mode char to me");
     return;
 }
 
