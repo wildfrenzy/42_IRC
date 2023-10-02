@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 14:35:19 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/25 01:14:44 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/10/02 22:33:18 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void Join::joined(Client &who, const std::string& channel, std::map <std::string
 	if (channels[channel]->getTopic().empty())
 		serv->reply(&who, "RPL_NOTOPIC", channel + " :No topic is set");
 	else
-		serv->reply(&who, "RPL_TOPIC", channel + " :Channel topic is " +
-							channels[channel]->getTopic() + "!");
+		serv->reply(&who, "RPL_TOPIC", channel + " :" +
+							channels[channel]->getTopic());
 	serv->reply(&who, "RPL_NAMREPLY",  "= " + channel + " :" + vecToUsersStr(members, channels[channel]));
 	serv->reply(&who, "RPL_ENDOFNAMES",  channel + " :End of user's list.");
 	
