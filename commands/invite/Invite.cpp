@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 03:35:02 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/22 16:26:28 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/02 18:02:35 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,3 @@ void Invite::execute(Client &who, std::vector <std::string> cmd) const {
 							who.getUserName() + "@" + who.getHost() + " INVITE " + cmd[1] + " " + cmd[2]);
 
 }
-
-//channels[cmd[2]]->addMember(member); - apparently we don't add user to channel during invitation xD
-
-// Client& findClient(Client& who, std::string nickName) const;

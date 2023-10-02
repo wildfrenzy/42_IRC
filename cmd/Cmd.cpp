@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "Cmd.hpp"
-//#include "./../channel/Channel.hpp"
-// #include "./../server/Server.hpp"
 #include "./../client/Client.hpp"
 Cmd::Cmd() {}
 
@@ -72,16 +70,3 @@ bool    Cmd::intcheck(std::string cmd) const
     }
     return true;
 }
-
-// Client& Cmd::findClient(Client& who, std::string nickName) const
-// {
-//     std::vector<Client*>::const_iterator it;
-// 	//Client *cl = NULL;
-//     for(it = who.getServer()->getClients().begin(); it != who.getServer()->getClients().end(); ++it)
-//     {
-//         if ((*it)->getNickName() == nickName)
-//             return *(*it);
-//     }
-// 	//return *cl; //this way it works, but u need to check on the output if its not null
-//     return *who.getServer()->getClients().front(); //set bot as first client !!!!
-// }

@@ -17,7 +17,6 @@
 #include <vector>
 
 #include "./../../cmd/Cmd.hpp"
-//#include "./../../client/Client.hpp"
 
 class Cmd;
 class Client;
@@ -30,8 +29,6 @@ public:
 	void execute(Client &who, std::vector<std::string> cmd) const;
 
 private:
-	//std::vector<std::string> _pass;
-	//std::string _reply(int err);
 
 	Pass(Pass const &p);
 	Pass &operator=(Pass const &p);

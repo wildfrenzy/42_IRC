@@ -13,7 +13,6 @@
 #ifndef CMD_HPP
 #define CMD_HPP
 
-//#include "./../client/Client.hpp"
 #include <vector>
 #include <string>
 #include <map>

@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:31:20 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/10/02 18:44:43 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:25:42 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ Server::Server(char *port, char *password){
 	this->_select();
 }
 
-void	Server::cleaner()
+void	Server::_cleaner()
 {
 	for (std::vector <Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
 		close((*it)->getFd());
@@ -69,7 +69,7 @@ void	Server::cleaner()
 }
 
 Server::~Server() {
-	cleaner();
+	_cleaner();
 }
 
 Server::Server(const Server &s) {
@@ -127,7 +127,7 @@ void Server::_select() {
 			}
 		}
 		if (select(maxFd + 1, &r, &w, 0, 0) == -1){
-			cleaner();
+			_cleaner();
 			throw std::runtime_error("irc server select: " + std::string(strerror(errno)));
 		}
 

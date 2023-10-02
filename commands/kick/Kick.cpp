@@ -24,14 +24,6 @@ Kick &Kick::operator=(const Kick &k) {
 	return *this;
 }
 
-//Command: KICK
-//   Parameters: <channel> <user> *( "," <user> ) [<comment>]
-
-// "Servers MAY limit the number of target users per KICK command
-// and silently drop targets if the number of targets exceeds the limit."
-
-// - so no matter how many arguments we have, we will kick only first user xD
-
 bool Kick::isMember(std::vector<Client *> members, std::string nick) const{
 	for (std::vector<Client*>::iterator it = members.begin() ; it != members.end() ; ++it) {
 		if ((*it)->getNickName() == nick)
@@ -68,6 +60,7 @@ Client *findNotHim(std::vector<Client *> clients, std::string nick) {
 	return cl;
 }
 
+//   Parameters: <channel> <user> [<comment>]
 void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 	Server *serv = who.getServer();
 	std::map<std::string, Channel *> &channels = serv->getChannels();
@@ -116,13 +109,4 @@ void Kick::execute(Client &who, std::vector <std::string> cmd) const {
 	}
 	else
 		std::cout << RED"not found"RES << std::endl;
-
-/*
-	std::vector<Client*> members = channels[cmd[1]]->getMembers();
-	std::cout << "Members check after kick: " << std::endl;
-	for (std::vector<Client*>::iterator it = members.begin() ; it != members.end() ; ++it) {
-		std::cout << (*it)->getNickName() + " ";
-	}
-	std::cout  << std::endl;
-*/
 }

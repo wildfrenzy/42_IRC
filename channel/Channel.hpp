@@ -17,7 +17,6 @@
 #include "../client/Client.hpp"
 #include <string>
 #include <vector>
-//#include "./../bot/Bot.hpp"
 
 class Client;
 class Server;

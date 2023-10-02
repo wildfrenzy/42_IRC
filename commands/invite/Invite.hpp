@@ -1,6 +1,14 @@
-//
-// Created by Nadiia Maliarenko on 15.09.23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Invite.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/15 03:33:36 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/10/02 19:22:05 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef INVITE_HPP
 #define INVITE_HPP
@@ -27,6 +35,5 @@ private:
 	bool isMember(std::vector<Client *> members, std::string nick) const;
 	Client &findClientt(std::vector<Client *> clients, std::string nick) const;
 };
-
 
 #endif //INVITE_HPP

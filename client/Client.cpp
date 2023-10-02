@@ -11,16 +11,12 @@
 /* ************************************************************************** */
 
 #include "Client.hpp"
-// #include "./../server/Server.hpp"
 
 #define YELLOW "\x1b[1;93m"
 #define RES "\x1b[0m"
 
 Client::Client(int fd, Server *s) : _fd(fd), _server(s), _nickName(""),
 		_authenticated(false), _registered(false){}
-
-
-// Client::Client(): _fd(),_authenticated(true), _registered(true){}
 
 Client::~Client() {}
 

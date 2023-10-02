@@ -1,6 +1,14 @@
-//
-// Created by Nadiia Maliarenko on 17.09.23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Ping.hpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/17 20:31:04 by nmaliare          #+#    #+#             */
+/*   Updated: 2023/10/02 19:33:17 by nmaliare         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PING_HPP
 #define PING_HPP
@@ -14,7 +22,7 @@ class Cmd;
 class Client;
 class Channel;
 
-class Ping  : public Cmd{
+class Ping : public Cmd{
 public:
 	Ping();
 	~Ping();
@@ -26,4 +34,4 @@ private:
 };
 
 
-#endif //INC_42_IRC_PING_HPP
+#endif

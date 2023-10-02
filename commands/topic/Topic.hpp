@@ -14,8 +14,6 @@
 #define TOPIC_HPP
 
 #include "./../../cmd/Cmd.hpp"
-// #include "./../../channel/Channel.hpp"
-// #include "./../../client/Client.hpp"
 #include <ctime>
 
 class Client;

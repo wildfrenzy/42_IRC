@@ -193,11 +193,6 @@ void    Channel::addMember(Client& c)
     this->_members.push_back(&c);
 }
 
-/*void    Channel::addInvitee(Client& c)
-{
-    this->_invitee.push_back(&c);
-}*/
-
 void    Channel::addInvitee(Client* c)
 {
 	std::vector <Client *>::iterator i = std::find(this->_invitee.begin(), this->_invitee.end(), c);
@@ -219,34 +214,12 @@ void    Channel::deleteMembers(Client* c)
 	}
 }
 
-//this one didnt delete it >.<, we have to delete by pointer, not reference.
-// the one up works :)
-/*void    Channel::deleteMembers(Client& c)
-{
-    for (std::vector<Client*>::iterator it = this->_members.begin(); it != this->_members.end(); ++it)
-    {
-        if (*it == &c)
-            this->_members.erase(it);
-        return;
-    }
-}*/
-
 void	Channel::removeInvitee(Client* c)
 {
 	std::vector <Client *>::iterator i = std::find(this->_invitee.begin(), this->_invitee.end(), c);
 	if (i != this->_invitee.end())
 		this->_invitee.erase(i);
 }
-
-/*void    Channel::deleteInvitee(Client& c)
-{
-    for (std::vector<Client*>::iterator it = this->_invitee.begin(); it != this->_invitee.end(); ++it)
-    {
-        if (*it == &c)
-            this->_invitee.erase(it);
-        return;
-    }
-}*/
 
 void	Channel::resetInvitee()
 {

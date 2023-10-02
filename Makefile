@@ -3,17 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yli <yli@student.42.fr>                    +#+  +:+       +#+         #
+#    By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/27 15:53:14 by nmaliare          #+#    #+#              #
 #    Updated: 2023/09/19 20:57:47 by yli              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -std=c++98 -g3 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
 #
 
-#-Werror
 CC = c++
 
 NAME = irc
