@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:31:20 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/09/28 18:10:52 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/02 18:44:43 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Server::Server(char *port, char *password){
 
 	if ((this->_mainFd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		throw std::runtime_error("irc server socket: " + std::string(strerror(errno)));
-	if (setsockopt(this->_mainFd, SOL_SOCKET,  SO_REUSEPORT, &opt,sizeof(int))) // SO_REUSEADDR |
+	if (setsockopt(this->_mainFd, SOL_SOCKET,  SO_REUSEADDR | SO_REUSEPORT, &opt,sizeof(int)))
 		throw std::runtime_error("irc server setsockopt: " + std::string(strerror(errno)));
 
 	fcntl(this->_mainFd, F_SETFL, O_NONBLOCK);
@@ -168,23 +168,20 @@ void Server::_select() {
 					this->_clients[i]->getReadBuff().append(buf);
 				}
 
-				std::cout << YELLOW"CLIENT [";
-				if (this->_clients[i]->getNickName().empty())
-					std::cout << i;
-				else
-					std::cout << this->_clients[i]->getNickName();
-				std::cout << "] " RES << std::endl;
-
 				// executing commands
-				std::istringstream stream(this->_clients[i]->getReadBuff());
-				std::string rb;
-				while (std::getline(stream, tmp)) {
-					rb = this->_clients[i]->getReadBuff();
-					rb = rb.substr(rb.find('\n') + 1);
-					this->_clients[i]->setReadBuff(rb);
-					this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(tmp));
+				if (this->_clients[i]->getReadBuff().find('\r') != std::string::npos) {
+					std::istringstream stream(this->_clients[i]->getReadBuff());
+					std::string rb;
+					while (std::getline(stream, tmp)) {
+						rb = this->_clients[i]->getReadBuff();
+						rb = rb.substr(rb.find('\n') + 1);
+						this->_clients[i]->setReadBuff(rb);
+						_printClient(i);
+						this->_clients[i]->callExecute(this->_clients[i]->cmdTokens(
+								tmp));
+					}
+					continue;
 				}
-				continue ;
 			}
 			if (FD_ISSET(this->_clients[i]->getFd(), &w)){
 				bytes = send(this->_clients[i]->getFd(), this->_clients[i]->getWriteBuff().c_str(),
@@ -290,7 +287,6 @@ void Server::_createCommands() {
 
 void Server::_setReplies() {
 
-//:You must authenticate with the server using PASS command first
 	this->_replies["ERR_NOTREGISTERED"] = "451";
 
 	this->_replies["RPL_WELCOME"] = "001";
@@ -344,10 +340,6 @@ void Server::_setReplies() {
 	this->_replies["ERR_NOORIGIN"] = "409";
 	this->_replies["ERR_UNKNOWNCOMMAND"] = "421";
 
-/*	this->_replies[""] = "";
-	this->_replies[""] = "";
-	this->_replies[""] = "";*/
-
 }
 
 void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channelname)
@@ -355,7 +347,6 @@ void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string m
 	char buffer[80];
 
 	std::time_t now = std::time(0);
-	//std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
 	std::strftime(buffer, sizeof(buffer), "%s", std::localtime(&now));
 	std::string strTime(buffer);
 	std::string message;
@@ -363,14 +354,6 @@ void	Server::replyTime(Client *who, std::vector<Client *> clients, std::string m
 	this->reply(clients, msg, message);
 }
 
-/*void    Server::setBot(void)
-{
-	this->_bot = new Bot();
-	// this->_clients.push_back(this->_bot->getClient());
-	// this->_bot->getClient()->setServer(this);
-	// std::cout << "hello" << _bot->getClient()->getNickName() << std::endl; 
-}*/
-	
 Bot* Server::getBot(void)
 {
 	return this->_bot;
@@ -385,4 +368,13 @@ std::string const Server::checkPassword(char *pass)
 			throw std::runtime_error("irc server: Password must include only printable characters");
 	}
 	return pw;
+}
+
+void Server::_printClient(int i) {
+	std::cout << YELLOW"CLIENT [";
+	if (this->_clients[i]->getNickName().empty())
+		std::cout << i;
+	else
+		std::cout << this->_clients[i]->getNickName();
+	std::cout << "] " RES << std::endl;
 }

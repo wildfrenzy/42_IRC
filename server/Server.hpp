@@ -102,6 +102,7 @@ private:
 	void	_select();
 	void	_setReplies();
 	void	_createCommands();
+	void	_printClient(int i);
 	Bot*	_bot;
 };
 
