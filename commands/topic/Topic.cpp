@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:53:35 by yli               #+#    #+#             */
-/*   Updated: 2023/09/28 17:11:39 by yli              ###   ########.fr       */
+/*   Updated: 2023/10/02 22:47:18 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ Topic&  Topic::operator=(const Topic& other)
     return *this;
 }
 
-void    Topic::setTopic(std::string& topic, Channel *c) const
+void    Topic::setTopic(std::string topic, Channel *c) const
 {
     c->setTopic(topic);
 }
@@ -51,10 +51,8 @@ void    Topic::unsetTopic(Channel *c) const
 
 void    Topic::checkTopic(Client& who, Channel *c, std::string channelName) const
 {
-    if (c->getTopic() == "")
-        who.getServer()->reply(&who,
-                        "RPL_TOPIC",
-                        " " + channelName + " :no topic");
+    if (c->getTopic().empty())
+		who.getServer()->reply(&who, "RPL_NOTOPIC", channelName + " :No topic is set");
     else
         who.getServer()->reply(&who,
                         "RPL_TOPIC",
@@ -118,15 +116,14 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
             sub += " ";
             sub += cmd[i];
         }
-        setTopic(sub, c);
-        who.getServer()->replyTime(&who, c->getMembers(),"RPL_TOPICWHOTIME",
-                            cmd[1]);
+		setTopic(sub, c);
+		who.getServer()->reply(c->getMembers(),"RPL_TOPIC", cmd[1] + " " + cmd[2]);
+		who.getServer()->replyTime(&who, c->getMembers(),"RPL_TOPICWHOTIME",cmd[1]);
     }
     else
     {
         unsetTopic(c);
-        who.getServer()->reply(&who,
-                            "RPL_TOPIC",
-                            cmd[0] + " " + cmd[1] + " " + cmd[2]);
+        who.getServer()->reply(c->getMembers(),
+                            "RPL_TOPIC", cmd[1] + " " + cmd[2]);
     }
 }
