@@ -30,14 +30,6 @@ class   Mode: public Cmd
     
         virtual    void    execute(Client& who, std::vector<std::string> cmd) const;
 
-        void    setInviteOnly(Channel*    channel) const;
-        void    unsetInviteOnly(Channel*    channel) const;
-        void    setKey(const std::string key, Channel*    channel) const;
-        void    unsetKey(Channel*    channel) const;
-        void    setTopicRight(Channel*    channel) const;
-        void    unsetTopicRight(Channel*    channel) const;
-        void    unsetUserLimit(Channel*    channel) const;
-        void    setUserPrivilege(Client& c, Channel*    channel) const;
         void    plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
         void    minusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const;
 	private:

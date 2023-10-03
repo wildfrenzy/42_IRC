@@ -12,8 +12,9 @@
 
 #include "Channel.hpp"
 #include <algorithm>
+#include <stdint.h>
 
-Channel::Channel(): _user_limit(10000), _invite_only(false), _topic_right(true), _key("")
+Channel::Channel(): _user_limit(INT32_MAX), _invite_only(false), _topic_right(true)
 {}
 
 Channel::~Channel() {}
@@ -53,6 +54,10 @@ std::string Channel::getKey(void)
 void    Channel::setKey(const std::string key)
 {
     this->_key = key;
+}
+
+void	Channel::resetKey() {
+	this->_key.erase();
 }
 
 void    Channel::setTopic(std::string& topic)
@@ -121,19 +126,6 @@ void    Channel::addOperator(Client& c)
     this->_operators.push_back(&c);
 }
 
-void    Channel::deleteOperator(Client& c)
-{
-    for (std::vector<Client*>::iterator it = this->_operators.begin(); it != this->_operators.end(); ++it)
-    {
-        if (*it == &c)
-            this->_operators.erase(it);
-    }
-    if (this->_operators.size() == 0 && this->_members.size() != 0)
-    {
-        Client* tmp = this->_members[0];
-        this->_operators.push_back(tmp);
-    }   
-}
 void    Channel::deleteOperator(Client* c)
 {
 	std::vector <Client *>::iterator i = std::find(this->_operators.begin(),
@@ -156,34 +148,6 @@ bool    Channel::belongToGroup(Client& who, std::vector<Client*> group)
             return true;
     }
     return false;
-}
-
-bool    Channel::addMemberCheck(Client& c, Client& who)
-{   
-    if (getInviteOnly())
-    {
-        if (!belongToGroup(who, this->_operators))
-        {
-            who.getServer()->reply(&who,
-                        "ERR_NOPRIVILEGES",
-                        this->getChannelName() + " :Permission Denied- You're not an IRC operator");
-            return false;
-        }  
-    }
-    else
-    {
-        if (!belongToGroup(who, this->_members))
-        who.getServer()->replyNoServ(&who,
-                            "442 " +this->getChannelName() + " :You're not on that channel");
-            return false;
-    }
-    if (belongToGroup(c, this->_members))
-    {
-        who.getServer()->replyNoServ(&who,
-                            "443 " + c.getNickName() + " " +this->getChannelName() + " :is already on channel");
-        return false;
-    }
-    return true;   
 }
 
 void    Channel::addMember(Client& c)

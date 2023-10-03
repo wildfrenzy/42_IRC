@@ -32,6 +32,7 @@ class Channel
         void    setChannelName(std::string& channelName);
         void    setKey(const std::string key);
         std::string getKey(void);
+		void	resetKey();
         void    setTopic(std::string& topic);
         void    unsetTopic(void);
         void    setTopicRight(bool topic_right);
@@ -43,7 +44,6 @@ class Channel
         bool    getTopicRight(void);
         std::string getTopic(void);
         void    addOperator(Client& c);
-        void    deleteOperator(Client& c);
 		void    deleteOperator(Client* c);
 		void    deleteMembers(Client* c);
         void    addMember(Client& c);
@@ -52,7 +52,6 @@ class Channel
         void    removeInvitee(Client* c);
         void    resetInvitee();
         bool    belongToGroup(Client& who, std::vector<Client*> group);
-        bool    addMemberCheck(Client& c, Client& who);
 		std::vector<Client*> &getMembers();
 		void    broadcast(Server* server, Client* c, std::string msg);
         std::vector<Client*> &getOperators(void);
