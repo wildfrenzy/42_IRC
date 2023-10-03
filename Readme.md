@@ -9,7 +9,7 @@
 
 </div>
 
-# About The Project
+## About The Project
 It is a group project about creating your own IRC server.
 We use an actual IRC client [Irssi v1.4.4](https://irssi.org/) to connect to our server and test it.
 
@@ -17,7 +17,7 @@ We use an actual IRC client [Irssi v1.4.4](https://irssi.org/) to connect to our
 It offers real-time messaging that can be either public or private. Users can exchange
 direct messages and join group channels.
 
-# Subject requirements
+## Subject requirements
 
 * Your code must comply with the C++ 98 standard. Then, it should still compile if you add the flag -std=c++98.
 * The server must be capable of handling multiple clients at the same time and never
@@ -44,24 +44,24 @@ hang.
       * l: Set/remove the user limit to channel
 
 
-# Usage
+## Usage
 
 To start server:
-```
+```sh
 make
 ./irc <port> <pass>
 ```
 For client:
-```
+```sh
 irssi
 /connect -nocap -notls localhost <port>
-/quote PASS <pass set while starting server>
+/quote PASS <server pass>
 /join <channel name>
 ```
 
 ![irssi example](https://i.imgur.com/h7YfGgX.png)
 
-# Useful links
+## Useful links
 1. https://modern.ircdocs.horse/
 2. https://irssi.org/
 3. http://chi.cs.uchicago.edu/chirc/irc_examples.html

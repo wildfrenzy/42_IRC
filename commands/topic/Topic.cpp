@@ -117,7 +117,7 @@ void    Topic::execute(Client& who, std::vector<std::string> cmd) const
             sub += cmd[i];
         }
 		setTopic(sub, c);
-		who.getServer()->reply(c->getMembers(),"RPL_TOPIC", cmd[1] + " " + cmd[2]);
+		who.getServer()->reply(c->getMembers(),"RPL_TOPIC", cmd[1] + " :" + sub);
 		who.getServer()->replyTime(&who, c->getMembers(),"RPL_TOPICWHOTIME",cmd[1]);
     }
     else
