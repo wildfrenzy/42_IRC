@@ -6,7 +6,7 @@
 /*   By: yli <yli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 01:37:14 by yli               #+#    #+#             */
-/*   Updated: 2023/10/03 00:14:18 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:44:18 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,6 @@ void    Mode::unsetTopicRight(Channel*    channel) const
     channel->setTopicRight(false);
 }
 
-void    Mode::setUserLimit(int size, Channel*    channel) const
-{
-    channel->setUserLimit(size);
-}
-
 void    Mode::unsetUserLimit(Channel*    channel) const
 {
     channel->setUserLimit(100000);
@@ -72,11 +67,6 @@ void    Mode::unsetUserLimit(Channel*    channel) const
 void    Mode::setUserPrivilege(Client& c, Channel*    channel) const
 {
     channel->addOperator(c);
-}
-
-void    Mode::unsetUserPrivilege(Client& c, Channel*    channel) const
-{
-    channel->deleteOperator(c);
 }
 
 void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    channel) const
@@ -131,7 +121,7 @@ void    Mode::plusmode(Client& who, std::vector<std::string> cmd, Channel*    ch
                                 cmd[3] + " :is unknown mode char to me");
                 return;
             }
-            setUserLimit(static_cast <int>(i), channel);
+			channel->setUserLimit(static_cast <int>(i));
             who.getServer()->reply(&who,
                                 "RPL_CHANNELMODEIS",
                             cmd[1] + " " + cmd[2] + " " +
@@ -212,7 +202,7 @@ void    Mode::minusmode(Client& who, std::vector<std::string> cmd, Channel*    c
                             ":No such nick");
             return;    
         }
-        unsetUserPrivilege(*c, channel);
+		channel->deleteOperator(c);
         who.getServer()->reply(&who,
                             "RPL_CHANNELMODEIS",
                         cmd[1] + " " + cmd[2] + " " + cmd[3]);  
