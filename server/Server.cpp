@@ -187,7 +187,7 @@ void Server::_select() {
 						std::cout << i;
 					else
 						std::cout << this->_clients[i]->getNickName();
-					std::cout << "] closed during recv()" RES << std::endl;
+					std::cout << "] closed" RES << std::endl;
 					close(this->_clients[i]->getFd());
 					deleteClient(this->_clients[i]);
 					clientnum--;
@@ -229,7 +229,7 @@ void Server::_select() {
 				else if (bytes <= 0) {
 					close(this->_clients[i]->getFd());
 					deleteClient(this->_clients[i]);
-					std::cout << RED "Connection to Client["<< i << "] closed during send()" RES << std::endl;
+					std::cout << RED "Connection to Client["<< i << "] closed" RES << std::endl;
 					clientnum--;
 					break ;
 				}

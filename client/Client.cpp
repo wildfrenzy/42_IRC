@@ -52,11 +52,11 @@ std::vector <std::string> Client::cmdTokens(std::string &input) {
 		pos = input.find(deli);
 	}
 
-	std::cout << "Tokens check: ";
+/*	std::cout << "Tokens check: ";
 	for (size_t i = 0; i < tokens.size(); ++i) {
 		std::cout << "[" << tokens[i] << "]";
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 	return tokens;
 }
 
