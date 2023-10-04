@@ -6,7 +6,7 @@
 /*   By: nmaliare <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 16:31:20 by nmaliare          #+#    #+#             */
-/*   Updated: 2023/10/02 19:25:42 by nmaliare         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:50:48 by nmaliare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,14 @@
 #include <climits>
 #include <stdint.h>
 
+extern Server *ptr;
+bool g_cleaned;
+
 Server::Server(char *port, char *password){
 	int opt = 1;
 
+	ptr = this;
+	g_cleaned = false;
 	this->_port = this->validatePort(port);
 	this->_password = this->checkPassword(password);
 
@@ -46,11 +51,30 @@ Server::Server(char *port, char *password){
 	this->_select();
 }
 
+void Server::_signalCatch(int signum) {
+	if (signum == SIGINT)
+	{
+		ptr->_cleaner();
+		exit(130);
+	}
+	else if (signum == SIGQUIT)
+	{
+		ptr->_cleaner();
+		exit(131);
+	}
+}
+
 void	Server::_cleaner()
 {
+	if (g_cleaned){
+		Server::~Server();
+		return;
+	}
 	for (std::vector <Client *>::iterator it = _clients.begin(); it != _clients.end(); ++it) {
 		close((*it)->getFd());
-		delete *it;
+		(*it)->getWriteBuff().clear();
+		(*it)->getReadBuff().clear();
+		delete (*it);
 	}
 	for (std::map<std::string, Cmd *>::iterator it = _commands.begin(); it != _commands.end(); ++it) {
 		delete it->second;
@@ -61,13 +85,18 @@ void	Server::_cleaner()
 	_clients.clear();
 	_commands.clear();
 	_channels.clear();
+	_replies.erase(_replies.begin(), _replies.end());
+	_clients.erase(_clients.begin(), _clients.end());
 	if (close(_mainFd) == -1){
 		throw std::runtime_error("irc server close: " + std::string(strerror(errno)));
 	}
+	g_cleaned = true;
+	Server::~Server();
 }
 
 Server::~Server() {
-	_cleaner();
+	if (!g_cleaned)
+		_cleaner();
 }
 
 Server::Server(const Server &s) {
@@ -112,6 +141,9 @@ void Server::_select() {
 
 	while (42)
 	{
+		signal(SIGINT, _signalCatch);
+		signal(SIGQUIT, _signalCatch);
+
 		FD_ZERO(&r);
 		FD_ZERO(&w);
 		FD_SET(this->_mainFd, &r);

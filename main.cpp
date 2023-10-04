@@ -13,6 +13,8 @@
 #include "./server/Server.hpp"
 #include <exception>
 
+Server *ptr;
+
 int main(int ac, char *av[]) {
 	if (ac < 3) {
 		std::cout << RED"USAGE: ./irc <port> <pass>"RES << std::endl;

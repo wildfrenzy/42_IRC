@@ -10,8 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
-#
+FLAGS = -Wall -Wextra -Werror -std=c++98 -g3
+#-fsanitize=address
 
 CC = c++
 

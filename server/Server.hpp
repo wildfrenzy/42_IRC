@@ -60,6 +60,11 @@
 //unix timestamp
 #include <ctime>
 
+//signal
+# include <sys/wait.h>
+# include <signal.h>
+# include <unistd.h>
+
 // colors
 #define BLUE "\x1b[1;36m"
 #define YELLOW "\x1b[1;93m"
@@ -92,6 +97,9 @@ public:
 	void	reply(std::vector <Client *> _clients, std::string reply, std::string msg);
 	void	replyTime(Client *who, std::vector<Client *> clients, std::string msg, std::string channel);
 
+	void	_cleaner();
+	static void	_signalCatch(int signum);
+
 private:
 	int				_mainFd;
 	uint16_t		_port;
@@ -109,7 +117,6 @@ private:
 	void	_setReplies();
 	void	_createCommands();
 	void	_printClient(int i);
-	void	_cleaner();
 };
 
 

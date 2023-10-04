@@ -12,6 +12,7 @@
 
 #include "Mode.hpp"
 #include "./../../channel/Channel.hpp"
+#include <stdint.h>
 
 Mode::Mode() : Cmd() {}
 
